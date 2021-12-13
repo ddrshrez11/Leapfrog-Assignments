@@ -40,7 +40,7 @@ a{
     padding: 4px;
     background-color: #CCEFF7;
     float: left;
-    /* display: inline-block; */
+
 }
 #search-icon{
     padding: 5px 4px 3px;
@@ -48,24 +48,23 @@ a{
     float: left;
     margin-left: 1px;
     border-left: 1px solid #7DD9E8;
-    /* display: inline-block; */
+
 }
 .search-bar{
     float: left;
     background: url(../images/search-bar.png); 
-    background-size: contain;
     background-repeat: no-repeat;
     padding: 0px 7px;
 }
 .search-btn{
-    /* display: inline-block; */
+
     padding: 4px 11px;
     background-color: #275056;
     color:#ffffff;
     margin-left: 7px;
     float: left;
     background: url(../images/search-btn.png); 
-    background-size: contain;
+
     background-repeat: no-repeat;
 }
 .search-btn a{
@@ -78,7 +77,7 @@ a{
     float:right;
     text-align: right;
     padding-top: 28px;
-    /* padding-bottom: 23px; */
+
 }
 .user-info h4{
     font-weight: bold;
@@ -87,7 +86,7 @@ a{
     margin-top: 6px;
 }
 .user-info ul li{
-    display: inline-block;
+    display: inline;
     border-right: solid 2px #000000;
     padding: 0 5px;
     font-size: 10px;
@@ -97,7 +96,7 @@ a{
     padding-right: 0;
 }
 .user-info a{
-    /* text-decoration: none; */
+
     font-weight: bold;
     color: #000000;
 }
@@ -113,11 +112,10 @@ a{
     float:left;
 }
 .menu ul li{
-    display: inline-block;
+    display: inline;
     padding:0 15px;
 }
 .menu a{
-    /* text-decoration: none; */
     color: #000000;
     font-weight: bold;
 }
@@ -129,7 +127,7 @@ a{
     float: right;
 }
 .status ul li{
-    display: inline-block;
+    display: inline;
     padding:0 15px;
 }
 .status ul li:last-child{
@@ -172,7 +170,7 @@ a{
 .tab-types{
     float: left;
     background-color: #F5F5F5;
-    width: 248px;
+    width: 258px;
     position: relative;
 }
 .tab-types:last-child{
@@ -192,32 +190,22 @@ a{
 }
 .tab-link{
     padding: 7px 0;
-    width: 112px;
-    /* background-color: #dddddd; */
+    width: 119px;
     color: #000000;
-    /* width: 92px; */
     text-align: center;
     margin: 0 5px;
-    /* position: relative; */
     background: url(../images/nav-tab-bg.png); 
-    background-size: contain;
     background-repeat: no-repeat;
 }
 
 .tab-link:hover{
-    /* background-color: #2FC1DA; */
     color: #ffffff;
     background: url(../images/nav-tab-active-bg.png); 
-    background-size: cover;
-    background-size: contain;
     background-repeat: no-repeat;
 }
 .tab-link.active{
-    /* background-color: #2FC1DA; */
     color: #ffffff;
     background: url(../images/nav-tab-active-bg.png); 
-    background-size: cover;
-    background-size: contain;
     background-repeat: no-repeat;
 }
 .tab-types ul li:last-child{
@@ -244,7 +232,6 @@ a{
     margin-right: 10px;
 }
 .card{
-    /* margin-bottom: 6px; */
     line-height: 15px;
     padding: 15px 0;
     border-bottom: 1px solid #d8d8d8;
@@ -276,12 +263,9 @@ footer{
     float: left;
 }
 .quick-links ul li{
-    display: inline-block;
+    display: inline;
     padding: 0 5px;
     color:#ffffff;
-}
-.quick-links a{
-    /* text-decoration: none; */
 }
 .quick-links ul a li:hover{
     text-decoration: underline;
