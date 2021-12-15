@@ -27,6 +27,7 @@ a{
 .search{
     float:left;
     margin-top: 40px;
+    display: none;
 }
 #search{
     background-color: #CCEFF7;
@@ -77,6 +78,7 @@ a{
     float:right;
     text-align: right;
     padding-top: 28px;
+    display: none;
 
 }
 .user-info h4{
@@ -96,12 +98,17 @@ a{
     padding-right: 0;
 }
 .user-info a{
-
     font-weight: bold;
     color: #000000;
 }
 .user-info a:hover{
     text-decoration: underline;
+}
+.header-icons{
+    padding-top: 25px;
+}
+.header-icons span{
+    padding: 0px 5px;
 }
 
 
@@ -110,6 +117,7 @@ a{
 }
 .menu{
     float:left;
+    display: none;
 }
 .menu ul li{
     display: inline;
@@ -139,10 +147,15 @@ a{
     bottom: 3px;
     padding-left: 5px;
 }
-
-.left-sidebar{
-    background-color: #F5F5F5;
+.status-title{
+    display: none;
 }
+.expand{
+    display: block;
+}
+
+
+
 .sidebar-top img{
     margin-left: 20px;
 }
@@ -151,6 +164,9 @@ a{
     background-color: #2FC1DA;
     padding: 12px 12px;
 
+}
+.sidebar-links{
+    display: none;
 }
 .sidebar-links ul li{
     color:#000000;
@@ -162,25 +178,40 @@ a{
 .sidebar-links ul li img{
     float: right;
 }
+.video-tutorials{
+    display: block;
+}
 
 
 .nav-tabs{
     border-bottom: 2px solid #2FC1DA;
 }
 .tab-types{
-    float: left;
+    width: 100%;
     background-color: #F5F5F5;
-    width: 258px;
     position: relative;
+    margin-bottom: 2%;
 }
 .tab-types:last-child{
-    float: right;
+    margin-bottom: 0;
 }
 .tab-types h4{
     text-align: center;
     padding: 10px 0;
     font-size: 12px;
 }
+.tab-types span{
+    width: 2%;
+}
+.tab-wrapper{
+
+    width: 94%;
+}
+.tab-link-wrapper{
+    margin: 0 auto;
+    width: 100%;
+}
+
 
 .float-left{
     float: left;
@@ -193,7 +224,7 @@ a{
     width: 119px;
     color: #000000;
     text-align: center;
-    margin: 0 5px;
+    /* margin: 0 5px; */
     background: url(../images/nav-tab-bg.png); 
     background-repeat: no-repeat;
 }
@@ -258,10 +289,9 @@ a{
 footer{
     padding: 15px 30px;
     font-size: 10px;
+    text-align: center;
 }
-.quick-links{
-    float: left;
-}
+
 .quick-links ul li{
     display: inline;
     padding: 0 5px;
@@ -279,6 +309,7 @@ footer{
     color: #ffffff;
 }
 .copyright{
-    float: right;
+    /* float: right; */
+    margin-top: 3%;
     color:#ffffff;
 }

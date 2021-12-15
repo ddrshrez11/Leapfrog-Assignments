@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700;900&display=swap" rel="stylesheet">
 </head>
 
@@ -46,11 +47,23 @@
                             <li><a href="#" title="Log Out">Log Out</a></li>
                         </ul>
                     </div>
+
+                    <div class="header-icons float-right">
+                        <span>
+                            <img src="https://img.icons8.com/material-outlined/30/000000/search--v1.png"/>
+                        </span>
+                        <span>
+                            <img src="https://img.icons8.com/ios-glyphs/30/000000/user--v1.png"/>
+                        </span>
+                    </div>
                 </div>
             </div>
             
             <div class="nav">
                 <div class="container">
+                    <span class="menu-btn">
+                        <img src="https://img.icons8.com/material-outlined/24/000000/menu.png"/>
+                    </span>
                     <div class="menu">
                         <ul>
                             <li><a href="#"> Create New Entry</a></li>
@@ -63,11 +76,13 @@
                         <ul>
                             <li>
                                 <img src="images/box-invite.png" height="16" alt="box invites">
-                                <span>Topic Boxes Invites - 2</span>
+                                <span class="status-title">Topic Boxes Invites -</span>
+                                <span> 2</span>
                             </li>
                             <li>
                                 <img src="images/friend-invite.png" alt="friend invites">
-                                <span>Friend Requests - 0</span>
+                                <span class="status-title">Friend Requests -</span>
+                                <span> 0</span>
                             </li>
                         </ul>
                     </div>
@@ -81,8 +96,11 @@
 
                 <aside class="left-sidebar">
                     <section class="sidebar-top">
-                        <div class="sidebar-heading">
-                            <h4>Recent Searches</h4>
+                        <div class="sidebar-heading clearfix">
+                            <h4 class="float-left">Recent Searches</h4>
+                            <span class="expand float-right">
+                                <img src="https://img.icons8.com/external-those-icons-fill-those-icons/10/000000/external-down-arrows-those-icons-fill-those-icons-7.png"/>
+                            </span>
                         </div>
                         <div class="sidebar-links">
                             <ul>
@@ -102,8 +120,11 @@
                         </div>
                     </section>
                     <section class="sidebar-bottom">
-                        <div class="sidebar-heading">
-                            <h4>Recent Searches</h4>
+                        <div class="sidebar-heading clearfix">
+                            <h4 class="float-left">Recent Searches</h4>
+                            <span class="expand float-right">
+                                <img src="https://img.icons8.com/external-those-icons-fill-those-icons/10/000000/external-down-arrows-those-icons-fill-those-icons-7.png"/>
+                            </span>
                         </div>
                         <div class="sidebar-links">
                             <ul>
@@ -153,26 +174,42 @@
                 <main>
                     <h1>Entries</h1>
                     <div class="nav-tabs clearfix">
-                        <div class="tab-types">
-                            <h4>All Entries</h4>
-                            <div class="tab-link-wrapper clearfix">
-                                
+                        <div class="tab-types clearfix">
+                            <span class="tab-group-left">
+                                <img src="images/tab-group-left.png" alt="" class="float-left">
+                            </span>
+                            <div class="float-left tab-wrapper">
+                                <h4>All Entries</h4>
+                                <div class="tab-link-wrapper clearfix">
+                                    
                                     <!-- <div class="tab-left-border"> </div> -->
-                                <div class="active tab-link float-left"> <a href="#">All Members</a></div>
+                                    <div class="active tab-link float-left"> <a href="#">All Members</a></div>
                                     <!-- <div class="tab-right-border"> </div> -->
-                                <div class="tab-link float-right"> <a href="#"> Friends</a></div>
+                                    <div class="tab-link float-right"> <a href="#"> Friends</a></div>
+                                </div>
                             </div>
-
+                            <span class="float-right  tab-group-right">
+                                <img src="images/tab-group-right.png" alt="" class="float-right">
+                            </span>
+                            
                         </div>
-                        <div class="tab-types">
-                            <h4>Subscribed</h4>
-                            <div class="tab-link-wrapper clearfix">
-                                
-                                <!-- <div class="tab-left-border"> </div> -->
-                                <div class="tab-link float-left"> <a href="#">New Entries</a></div>
+                        <div class="tab-types clearfix">
+                            <span class="tab-group-left">
+                                <img src="images/tab-group-left.png" alt="" class="float-left">
+                            </span>
+                            <div class="float-left tab-wrapper">
+                                <h4>Subscribed</h4>
+                                <div class="tab-link-wrapper clearfix">
+                                    
+                                    <!-- <div class="tab-left-border"> </div> -->
+                                    <div class="tab-link float-left"> <a href="#">New Entries</a></div>
                                     <!-- <div class="tab-right-border"> </div> -->
-                                <div class="tab-link float-right"> <a href="#"> New Comments</a></div>
+                                    <div class="tab-link float-right"> <a href="#"> New Comments</a></div>
+                                </div>
                             </div>
+                            <span class="float-right  tab-group-right">
+                                <img src="images/tab-group-right.png" alt="" class="float-right">
+                            </span>
                         </div>
                     </div>
                     
@@ -245,11 +282,86 @@
                 </main>
                 
                 <!-- Right sidebar -->
+                <aside class="left-sidebar-resp">
+                    <section class="sidebar-top">
+                        <div class="sidebar-heading clearfix">
+                            <h4 class="float-left">Recent Searches</h4>
+                            <span class="expand float-right">
+                                <img src="https://img.icons8.com/external-those-icons-fill-those-icons/10/000000/external-down-arrows-those-icons-fill-those-icons-7.png"/>
+                            </span>
+                        </div>
+                        <div class="sidebar-links">
+                            <ul>
+                                <a href="#">
+                                    <li class="clearfix">
+                                        <span>Nick Cave and the<br> Bad Seeds</span>
+                                        <img src="images/sidebar-download.png" alt="Download">
+                                    </li>
+                                </a>
+                                <a href="#">
+                                    <li class="clearfix">
+                                        <span>African Animals</span>
+                                        <img src="images/sidebar-download.png" alt="Download">        
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="sidebar-bottom">
+                        <div class="sidebar-heading clearfix">
+                            <h4 class="float-left">Recent Searches</h4>
+                            <span class="expand float-right">
+                                <img src="https://img.icons8.com/external-those-icons-fill-those-icons/10/000000/external-down-arrows-those-icons-fill-those-icons-7.png"/>
+                            </span>
+                        </div>
+                        <div class="sidebar-links">
+                            <ul>
+                                <a href="#">
+                                    <li>
+                                        <span>Different versions of the Tristan Und Isolde Prelude</span>
+                                        <img src="images/sidebar-burger.png" alt="Search Result">  
+                                    </li>
+                                </a>
+                                <a href="#">
+                                    <li>
+                                        <span>Music</span>
+                                        <img src="images/sidebar-burger.png" alt="Search Result"> 
+                                    </li>
+                                </a>
+                                <a href="#">
+                                    <li>
+                                        <span>Guitar</span>
+                                        <img src="images/sidebar-burger.png" alt="Search Result"> 
+                                    </li>
+                                </a>
+                                <a href="#">
+                                    <li>
+                                        <span>Bob Cohen</span>
+                                        <img src="images/sidebar-burger.png" alt="Search Result">
+                                    </li>
+                                </a>
+                                <a href="#">
+                                    <li>
+                                        <span>Mark Schnack</span>
+                                        <img src="images/sidebar-burger.png" alt="Search Result"> 
+                                    </li>
+                                </a>
+                                <a href="#">
+                                    <li>
+                                        <span>Jefferson Dickey</span>
+                                        <img src="images/sidebar-burger.png" alt="Search Result"> 
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </section>
+                </aside>
+
                 <aside class="right-sidebar">
                     <div class="sidebar-heading">
                         <h4>Video Tutorials</h4>
                     </div>
-                    <div class="sidebar-links">
+                    <div class="sidebar-links video-tutorials">
                         <ul>
                             <a href="#">
                                 <li>Overview of TuTangle</li>
