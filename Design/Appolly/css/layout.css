@@ -1,0 +1,21 @@
+.container{
+    max-width: 90%;
+    margin: 0 auto;
+}
+.clearfix::after{
+    content: '';
+    clear: both;
+    display: table;
+}
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+}
+
+.hero-section{
+    padding-top: 40px;
+    background-image: url('../images/Background-Image.png');
+    background-position: center;
+}

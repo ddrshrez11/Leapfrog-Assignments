@@ -1,0 +1,153 @@
+img {
+    max-width: 100%;
+    height: auto;
+  }
+
+@media screen and (min-width:365px) {
+    .hero-text-wrapper{
+        width: 365px;
+        margin: 0 auto;
+    }
+    .hero-phone{
+        padding-left: 20%;
+        /* object-position: 100px 0; */
+        /* float: none; */
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+    .hero-section{
+        padding-top: 25px;
+    }
+    .contact{
+        display: block;
+        margin-bottom: 42px;
+    }
+    .nav-menu-icon{
+        margin: 18px;
+    }
+    .nav-wrapper{
+        margin: 16px 0;
+    }
+    .logo-wrapper{
+        width: 200px;
+        padding: 31px 17px; 
+        top:69px;
+    }
+    .logo-wrapper img{
+        opacity: 1;
+    }
+    .nav-download-btn{
+        padding: 20px 15px 12px;
+        margin: 5px;
+    }
+    .nav-download-btn a{
+        font-size: 20px;
+    }
+
+
+    .hero-text-section{
+        padding: 221px 0;
+        position: relative;
+    }
+    .hero-text-wrapper{
+        margin-top: 0px;
+        float: left;
+        width: 390px;
+        margin-top: 70px;
+    }
+    .bg-img{
+        margin-top: -10px;
+        padding-left: 15px;
+    }
+    .hero-text{
+        padding: 14px 7px 14px 18px;
+        /* margin: 33px 0px; */
+        width: 356px;
+    }
+    .hero-text h2{
+        font-size: 31px;
+        font-weight: 700;
+        line-height: 47.25px;
+        /* padding-right: 7px; */
+        margin-bottom: 6px;
+    }
+    .hero-text h5{
+        margin-bottom: 23px;
+    }
+    .hero-text p{
+        padding-right: 5px;
+    }
+    .app-store img{
+        width: 149px;
+        height: auto;
+        padding-right:14px ;
+    }
+    .hero-phone{
+        float: right;
+        height: 423px;
+        object-fit: cover;
+        object-position: 55px 0;
+        margin: 0;
+        margin-right: -40px;
+        padding-left: 0;
+    }
+    
+}
+
+@media screen and (min-width: 1172px) {
+    .main-container-wrapper{
+        min-width: 1171px;
+    }
+    .container{
+        width: 1171px;
+    }
+
+    .hero-section{
+        padding-top: 35px;
+    }
+    .contact{
+        margin-bottom: 23px;
+    }
+    .nav-menu-icon{
+        display: none;
+    }
+    .nav-menu-left{
+        height: 100%;
+    }
+    .nav-menu {
+        display: block;
+        height: 100%;
+    }
+    .logo-wrapper{
+        top: 59px;
+    }
+
+    .hero-text-section{
+        padding: 67px 0 83px;
+    }
+    .hero-text-wrapper{
+        width: 620px;
+        margin-top: 70px;
+    }
+    .bg-img{
+        padding-left: 50px;
+    }
+    .hero-text{
+        padding: 40px 0px 40px 30px;
+        margin: 40px 0px;
+        width: 570px;
+    }
+    .hero-text h2{
+        font-size: 49px;
+        font-weight: 700;
+        line-height: 63.48px;
+        padding-right: 23px;
+    }
+    .hero-phone{
+        height: 646px;
+
+    }
+
+}

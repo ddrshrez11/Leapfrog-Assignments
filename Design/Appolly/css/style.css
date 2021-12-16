@@ -1,0 +1,138 @@
+html{
+    font-family: 'Josefin Sans', sans-serif;
+    /* background-color: #5956E9; */
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+h2{
+    font-size: 25px;
+    line-height: 37.5px;
+}
+
+h5{
+    font-size: 20px;
+    line-height: 30px;
+}
+p{
+    font-weight: 400;
+}
+
+
+
+.contact{
+    display: none;
+}
+.contact span{ 
+    color: #fff;
+    font-size: 16px;
+    /* vertical-align: middle; */
+}
+.contact span svg{
+    vertical-align: bottom;
+    margin-right: 15px;
+}
+.contact-email{
+    margin-right: 47px;
+}
+
+.nav-wrapper{
+    margin: 11px 0;
+    text-transform: uppercase;
+    background-color: #fff;
+    border-radius: 3px;
+}
+.nav-menu-icon{
+    margin: 8px;
+    cursor: pointer;
+}
+.nav-menu {
+    display: none;
+    font-size: 20px;
+    margin: 0 30px;
+}
+.nav-menu ul li{
+    display: inline-block;
+    margin: 20px;
+}
+.nav-menu a:hover{
+    color: #5956E9;
+    text-decoration: underline;
+}
+.logo-wrapper{
+    width: 100px;
+    padding: 24px 10px; 
+    background-color: #fff;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    /* width: 30%; */
+    /* display: inline-block; */
+    position: absolute;
+    margin: 0 auto;
+    top: 40px;
+    left: 0;
+    right: 0;
+}
+.logo-wrapper img{
+    opacity: 0.24;
+    margin: 0 auto;
+}
+.nav-download-btn{
+    padding: 12px 6px;
+    margin: 3px;
+    float: right;
+    background-color: #5956E9;
+    border-radius: 3px;
+    cursor: pointer;
+    
+}
+.nav-download-btn a{
+    font-size: 10px;
+    vertical-align: middle;
+    color: #fff;
+}
+
+.hero-text-wrapper{
+    position: relative;
+    margin-top: 98px;
+}
+.bg-img{
+    padding-left: 20px;
+    height: 100%;
+    float: right;
+}
+.hero-text{
+    padding: 30px 10px 20px 18px;
+    margin: 20px 0px;
+    float: left;
+    position: absolute;
+    width: 95%;
+    background-color: #fff;
+
+}
+.hero-text h2{
+    color: #5956E9;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+.hero-text h5{
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+.app-store img{
+    width: 109px;
+    padding-right:10px ;
+    float: left;
+}
+.hero-phone{
+    height: 466px;
+    margin-top: 40px;
+    margin-bottom: 120px;
+    object-fit: cover;
+    object-position: 55px 0;
+    /* padding: 40px 55px; */
+}
