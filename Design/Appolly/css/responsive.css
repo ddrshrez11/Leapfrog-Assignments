@@ -17,6 +17,12 @@ img {
 }
 
 @media screen and (min-width: 768px) {
+    h2{
+        font-size: 31px;
+        font-weight: 700;
+        line-height: 47.25px;
+    
+    }
     .hero-section{
         padding-top: 25px;
     }
@@ -66,11 +72,8 @@ img {
         /* margin: 33px 0px; */
         width: 356px;
     }
+    /* padding-right: 7px; */
     .hero-text h2{
-        font-size: 31px;
-        font-weight: 700;
-        line-height: 47.25px;
-        /* padding-right: 7px; */
         margin-bottom: 6px;
     }
     .hero-text h5{
@@ -93,10 +96,39 @@ img {
         margin-right: -40px;
         padding-left: 0;
     }
-    
+
+
+    .section-heading{
+        width: 450px;
+    }
+    .extra-tab{
+        display: inline;
+    }
+    .about-body{
+        margin-top: 60px;
+        padding-bottom: 159px;
+    }
+    .about-body img{
+        float: left;
+        width: 35%;
+        margin: 0;
+    }
+    .about-card-group{
+        width: 65%;
+        float: right;
+        padding: 0px;
+        padding-left: 60px;
+    }
 }
 
 @media screen and (min-width: 1172px) {
+    h2{
+        font-size: 49px;
+        font-weight: 700;
+        line-height: 63.48px;
+    }
+    
+
     .main-container-wrapper{
         min-width: 1171px;
     }
@@ -140,14 +172,27 @@ img {
         width: 570px;
     }
     .hero-text h2{
-        font-size: 49px;
-        font-weight: 700;
-        line-height: 63.48px;
         padding-right: 23px;
     }
     .hero-phone{
         height: 646px;
+    }
 
+
+    .section-heading{
+        width: 570px;
+    }
+    .extra-desktop{
+        display: inline;
+    }
+    .about-card{
+        margin-bottom: 40px;
+    }
+    .about-body img{
+        width: 30%;
+    }
+    .about-card-group{
+        width: 60%;
     }
 
 }
