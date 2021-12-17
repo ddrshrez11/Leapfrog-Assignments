@@ -109,6 +109,9 @@ p{
     vertical-align: middle;
     color: #fff;
 }
+.nav-download-btn:hover{
+    text-decoration: underline;
+}
 
 .hero-text-wrapper{
     position: relative;
@@ -153,6 +156,16 @@ p{
     object-position: 55px 0;
     /* padding: 40px 55px; */
 }
+img[alt="app-store-apple"]:hover{
+    transform: scale(1.2);
+}
+img[alt="app-store-google"]:hover{
+    transform: scale(1.2);
+}
+.logo-wrapper:hover{
+    opacity: 1;
+    transform: scale(1.1);
+}
 
 
 .about{
@@ -189,6 +202,9 @@ p{
 .about-card:last-child{
     margin-bottom: 0;
 }
+.about-card:hover{
+    transform: scale(1.1);
+}
 .about-card-icon{
     margin-right: 18px;
 }
@@ -219,6 +235,9 @@ p{
     text-align: center;
     width: 223px;
 }
+.feature-card:hover{
+    transform: scale(1.1);
+}
 .feature-top .feature-card{
     margin-top: 23px;
 }
@@ -248,7 +267,7 @@ p{
 .app-screenshot .section-heading{
     width: 300px;
 }
-.screenshot-carousel{
+.screenshot-carousel-wrapper{
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -316,6 +335,9 @@ p{
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
 }
+.stats-card:hover{
+    transform: scale(1.1);
+}
 .stat-icon{
     margin-bottom: 8px;
 }
@@ -360,7 +382,10 @@ p{
     bottom:50%;
     transform: translate(-50%, -50%);
 }
-
+.video-icon:hover{
+    opacity: .7;
+    transform: scale3d(1.5);
+}
 
 .team{
     margin-top: 35%;
@@ -372,6 +397,9 @@ p{
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     margin: 30px 0;
+}
+.team-card:hover{
+    transform: scale(1.1);
 }
 .team-card h3{
     padding-top: 66px;
@@ -414,6 +442,9 @@ p{
     border-radius: 10px;
     margin-top: 40px;
 }
+.customer-card:hover{
+    transform: scale(1.1);
+}
 .cus-carousel{
     position: relative;
     z-index: 5;
@@ -448,13 +479,16 @@ p{
 
 .blog-card-group{
     margin-top: 40px;
-    padding-bottom: 20%;
+    padding-bottom: 90px;
 }
 .blog-card{
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     margin: 40px 0;
     height: 100%;
+}
+.blog-card:hover{
+    transform: scale(1.05);
 }
 .blog-card-img img{
     filter: drop-shadow(0px 1px 10px rgba(0, 0, 0, 0.1));
@@ -499,6 +533,14 @@ footer h4,footer p, footer li{
 .footer-contact-email{
     padding-bottom: 30px;
 }
+.footer-contact-email:hover{
+    color: #5956E9;
+    transform: scale(1.05);
+}
+.footer-contact-phone:hover{
+    color: #5956E9;
+    transform: scale(1.05);
+}
 .footer-contact-email:after{
     content:'';
     display:inline-block;
@@ -532,6 +574,11 @@ footer h4,footer p, footer li{
 .quick-links ul li{
     margin: 12px 0;
 }
+.quick-links ul li:hover{
+    text-decoration: underline;
+    color: #5956E9;
+}
+
 
 .newsletter{
     padding-bottom: 60px;
@@ -558,6 +605,7 @@ footer h4,footer p, footer li{
 }
 .subscribe-btn{
     float: right;
+    cursor: pointer;
 }
 .subscribe-btn a{
     background-color: #5956E9;
@@ -579,4 +627,8 @@ footer h4,footer p, footer li{
 .copyright-text{
     font-size: 12.5px;
     font-weight: 300;
+}
+
+svg:hover{
+    transform: scale(1.2);
 }

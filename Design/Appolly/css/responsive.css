@@ -34,12 +34,7 @@ img {
         line-height: 47.25px;
     
     }
-    .sm-img,.md-img{
-        display: none;
-    }
-    .lg-img{
-        display: revert;
-    }
+    
 
 
     .hero-section{
@@ -185,9 +180,9 @@ img {
     .feature-bottom{
         margin-top: 60px;
     }
-    /* .app-screenshot .section-heading{
+    .app-screenshot .section-heading{
         width: 450px;
-    } */
+    }
     
     .main-image img{
         margin: 40px 0;
@@ -280,14 +275,16 @@ img {
     .blog-card-group{
         margin-left: auto;
         margin-right: auto;
+        display: table;
+        table-layout: fixed;
+        border-spacing:15px;
+        border-collapse:separate;
+        
     }
     .blog-card{
         width: 32%;
         display: table-cell;
-        /* float: left; */
-        /* display: inline-block; */
-        margin: 0;
-        padding-right: 2%;
+        /* border-spacing:5px; */
     }
     .blog-card:last-child{
         padding-right: 0;
@@ -363,6 +360,12 @@ img {
         font-weight: 700;
         line-height: 63.48px;
     } */
+    .sm-img,.md-img{
+        display: none;
+    }
+    .lg-img{
+        display: revert;
+    }
     .main-container-wrapper{
         min-width: 1171px;
     }
@@ -460,6 +463,34 @@ img {
     .app-screenshot .section-heading{
         width: 650px;
     }
+    .screenshot-carousel-wrapper{
+        display: table;
+        table-layout: fixed;
+    }
+    .left-nav,.right-nav{
+        display: table-cell;
+        width: 10%;
+        vertical-align: middle;
+        background-color: white;
+        position: relative;
+        z-index: 5;  
+    } 
+    .right-nav img{
+        transform: rotate(180deg);
+    }
+    .right-nav img:hover{
+        border-radius: 50%;
+        background-color: #d1d1e0;
+    }
+    .left-nav img:hover{
+        border-radius: 50%;
+        background-color: #d1d1e0;
+    }
+    
+    .screenshot-carousel{
+        display: table-cell;
+        width: 80%;
+    }
 
 
     .download-app{
@@ -520,6 +551,9 @@ img {
     .customer-designation{
         font-size: 20px;
         line-height: 30px;
+    }
+    .cus-carousel-left,.cus-carousel-right{
+        margin-top: 0px;
     }
 
 
