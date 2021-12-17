@@ -9,14 +9,22 @@ a{
     text-decoration: none;
     color: inherit;
 }
-h2{
+h3{
+    font-size:31.25px;
+    line-height: 47.3px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+h4{
     font-size: 25px;
     line-height: 37.5px;
+    text-transform: uppercase;
 }
 
 h5{
     font-size: 20px;
     line-height: 30px;
+    text-transform: uppercase;
 }
 p{
     font-weight: 400;
@@ -115,7 +123,7 @@ p{
     background-color: #fff;
 
 }
-.hero-text h2{
+.hero-text h4{
     color: #5956E9;
     margin-bottom: 18px;
     text-transform: uppercase;
@@ -147,7 +155,7 @@ p{
     margin: 0 auto;
     text-align: center;
 }
-.section-heading h2{
+.section-heading h4{
     text-transform: uppercase;
     margin-bottom: 18px;
 }
@@ -162,7 +170,7 @@ p{
     margin: 40px 0;
 }
 .about-card-group{
-    padding: 92px;
+    padding-bottom: 92px;
 }
 .about-card{
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
@@ -194,7 +202,211 @@ p{
 }
 
 
-
 .app-features{
     color: #fff;
+    padding: 60px 0px;
+}
+.feature-card{
+    margin: 40px auto;
+    text-align: center;
+    width: 223px;
+}
+.feature-top .feature-card{
+    margin-top: 23px;
+}
+.feature-right{
+    margin-top: 120px;
+    position: relative;
+    height: 100%;
+}
+.feature-card h5{
+    text-transform: uppercase;
+    margin: 30px 0 18px;
+}
+.feature-app-img{
+    /* margin: 0 auto; */
+    text-align: center;
+}
+.feature-app-img img{
+    filter: drop-shadow(40px 40px 100px rgba(24, 48, 63, 0.5));
+    border-radius: 40px;
+    width: 70%;
+}
+
+
+.app-screenshot{
+    padding: 60px 0;
+}
+.app-screenshot .section-heading{
+    width: 300px;
+}
+.screenshot-carousel{
+    text-align: center;
+}
+.main-image img{
+    margin: 40px 0;
+    width: 70%;
+}
+
+.download-app{
+    padding-bottom: 60px;
+}
+.download-app-store{
+    padding-bottom: 40px;
+}
+.download-app-store img{
+    width: 49%;
+    padding: 10px;
+}
+.stats-card{
+    background-color: #5956E9;
+    color: #fff;
+    padding: 13px 0px;
+    width: 30%;
+    margin: 1.5%;
+    float: left;
+    text-align: center;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+.stat-icon{
+    margin-bottom: 8px;
+}
+.download-app-img{
+    margin: 60px 0 0;
+}
+
+.use-app{
+    padding-bottom: 100px;
+    color: #fff;
+    /* margin-bottom: -50%; */
+    position: relative;
+}
+.use-app-video{
+    width: 80%;
+    height: 35%;
+    /* padding-top: 40px; */
+    margin: 0 auto;
+    background: linear-gradient(0deg, rgba(88, 81, 234, 0.4), rgba(88, 81, 234, 0.4)), url('../images/use-app-img.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0px 10px 100px rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+    position: absolute;
+
+    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: -15%;
+
+}
+/* .use-app-video{
+    position: relative;
+}
+.use-app-video .back-img{
+    position: relative;
+} */
+.use-app-video .video-icon{
+    position: absolute;
+    top:50%;
+    bottom:50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.team{
+    margin-top: 35%;
+    text-align: center;
+    margin-bottom: 60px;
+}
+.team-card{
+    padding: 29px 0 63px;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 30px 0;
+}
+.team-card h3{
+    padding-top: 66px;
+}
+.team-card h5{
+    color: #6C6C72;
+}
+.team-card p{
+    padding: 20px;
+}
+.team-social div {
+    display: inline-block;
+    line-height: normal;
+    padding: 0 ;
+    border-right: 1px solid #000;
+    /* vertical-align: bottom; */
+    width: 20%;
+    /* text-align: center; */
+}
+.team-social div:last-child{
+    border-right: none;
+}
+
+
+.customers{
+    color: #ffffff;
+
+}
+.customer-card{
+    margin: 0 auto;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    padding: 20px 10px;
+    max-width: 343px;
+    box-shadow: 0px 10px 100px rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+    margin-top: 40px;
+}
+.customer-card-img img{
+    width: 50px;
+    height: auto;
+    margin-bottom: 12px;
+}
+.customer-designation{
+    color: #6C6C72;
+}
+.customer-slider{
+    margin-top: 40px;
+    text-align: center;
+}
+
+
+.blog-card-group{
+    margin-top: 40px;
+    padding-bottom: 10%;
+}
+.blog-card{
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 40px 0;
+    height: 100%;
+}
+.blog-card-img img{
+    filter: drop-shadow(0px 1px 10px rgba(0, 0, 0, 0.1));
+    border-radius: 10px 10px 0px 0px;
+    width: 100%;
+}
+.blog-card-info{
+    padding: 30px 18px;
+}
+.blog-card-info a{
+    color: #5956E9;
+    text-decoration: underline;
+}
+
+
+.footer{
+    color: #000;
+}
+.footer-contact{
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
 }

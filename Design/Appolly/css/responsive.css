@@ -6,18 +6,29 @@ img {
 @media screen and (min-width:365px) {
     .hero-text-wrapper{
         width: 365px;
-        margin: 0 auto;
+        margin-left: auto;
+        margin-right: auto;
     }
     .hero-phone{
-        padding-left: 20%;
+        /* padding-left: 20%; */
         /* object-position: 100px 0; */
         /* float: none; */
     }
+}
 
+@media screen and (min-width: 450px) {
+    .team{
+        margin-top: 25%;
+    }
+}
+@media screen and (min-width: 600px) {
+    .team{
+        margin-top: 20%;
+    }
 }
 
 @media screen and (min-width: 768px) {
-    h2{
+    h4{
         font-size: 31px;
         font-weight: 700;
         line-height: 47.25px;
@@ -73,7 +84,7 @@ img {
         width: 356px;
     }
     /* padding-right: 7px; */
-    .hero-text h2{
+    .hero-text h4{
         margin-bottom: 6px;
     }
     .hero-text h5{
@@ -106,7 +117,7 @@ img {
     }
     .about-body{
         margin-top: 60px;
-        padding-bottom: 159px;
+        padding-bottom: 120px;
     }
     .about-body img{
         float: left;
@@ -119,16 +130,167 @@ img {
         padding: 0px;
         padding-left: 60px;
     }
+
+    .feature-left{
+        float: left;
+        width:35%;
+        /* margin: 40px 0; */
+    }
+    .feature-left .feature-card{
+        margin: 40px;
+        margin-right: 20px;
+        text-align: right;
+        float: right;
+    }
+    .feature-card{
+        position: relative;
+        z-index: 5;
+    }
+    .feature-right .feature-card, .feature-left .feature-card{
+        width: 250px;
+        margin: 20px;
+    }
+    .feature-app-img{
+        float: left;
+        width:30%;
+        position: relative;
+        z-index: 0;
+        filter: drop-shadow(10px 10px 100px rgba(24, 48, 63, 0.3));
+    }
+    .feature-right{
+        margin-top: 0;
+        float: right;
+        text-align: left;
+        width:35%;
+    }
+    .feature-right .feature-card{
+        margin-left: 20px;
+        text-align: left;
+        float: left;
+    }
+    .feature-bottom{
+        margin-top: 60px;
+    }
+    /* .app-screenshot .section-heading{
+        width: 450px;
+    } */
+    .main-image img{
+        margin: 40px 0;
+        width: 30%;
+    }
+
+
+
+    .download-app{
+        padding-top: 60px;
+        padding-bottom: 120px;
+    }
+    .download-app-text{
+        float: left;
+        width: 50%;
+    }
+    
+    .download-app-img{
+        padding-left: 28px;
+        float: right;
+        width: 50%;
+        margin-top:10%;
+    }
+
+    
+    .use-app{
+        padding-bottom: 200px;
+    }
+    /* .use-app .section-heading{
+        width: 450px;
+    } */
+    .use-app-video{
+        width: 70%;
+        height: 45%;
+        bottom: -20%;
+    }
+
+
+    .team{
+        margin-top: 15%;
+        margin-bottom: 120px;
+    }
+    .team h3{
+        font-size: 20px;
+        line-height: 30px;
+        text-transform: uppercase;
+        font-weight: normal;
+    }
+    .team h5{
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+    .team-card{
+        display: inline-block;
+        width: 30%;
+        margin-top: 32px;
+        margin-right: 3%;
+        /* vertical-align: top; */
+    }
+    .team-card:last-child{
+        margin-right: 0px;
+    }
+    .team-card h3{
+        padding-top: 11px;
+    }
+
+    .customers{
+        padding: 120px 0;
+    }
+    .customers .section-heading h4{
+        width: auto;
+    }
+    .customer-card{
+        max-width: 450px;
+    }
+    .customer-card h4{
+        font-size: 25px;
+        line-height: 37.5px;
+    }
+
+    
+    .blog{
+        padding: 120px 0;
+    }
+    .blog-card-group{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .blog-card{
+        width: 32%;
+        display: table-cell;
+        /* float: left; */
+        /* display: inline-block; */
+        margin: 0;
+        padding-right: 2%;
+    }
+    .blog-card:last-child{
+        padding-right: 0;
+    }
+
+    
 }
 
+
+
+
+
+
+
+
+
 @media screen and (min-width: 1172px) {
-    h2{
+    /* h4{
         font-size: 49px;
         font-weight: 700;
         line-height: 63.48px;
-    }
-    
-
+    } */
     .main-container-wrapper{
         min-width: 1171px;
     }
@@ -163,6 +325,11 @@ img {
         width: 620px;
         margin-top: 70px;
     }
+    .hero-text h4{
+        font-size: 49px;
+        font-weight: 700;
+        line-height: 63.48px;
+    }
     .bg-img{
         padding-left: 50px;
     }
@@ -171,7 +338,7 @@ img {
         margin: 40px 0px;
         width: 570px;
     }
-    .hero-text h2{
+    .hero-text h4{
         padding-right: 23px;
     }
     .hero-phone{
@@ -180,7 +347,7 @@ img {
 
 
     .section-heading{
-        width: 570px;
+        width: 600px;
     }
     .extra-desktop{
         display: inline;
@@ -193,6 +360,90 @@ img {
     }
     .about-card-group{
         width: 60%;
+    }
+    .feature-right{
+        position: relative;
+    }
+    .feature-right .feature-card, .feature-left .feature-card{
+        width: 300px;
+    }
+    .feature-left .feature-card{
+        margin-right: 50px;
+        
+    }
+    .feature-right .feature-card{
+        margin-left: 50px;
+    }
+    .card-top{
+        padding-bottom: 30%;
+    }
+    .card-bottom{
+        padding-top: 30%;
+    }
+    .break{
+        display: none;
+    }
+    
+
+    .app-screenshot .section-heading{
+        width: 650px;
+    }
+
+
+    .download-app{
+        padding-bottom: 140px;
+    }
+    .download-app-img{
+        padding-left: 80px;
+        margin-top: 0;
+    }
+
+    .use-app{
+        padding-bottom: 200px;
+    }
+    .use-app .section-heading{
+        width: 630px;
+    }
+    .use-app-video{
+        max-width: 770px;
+        width: 60%;
+        height: 70%;
+        bottom: -35%;
+    }
+    .team{
+        margin-top: 216px;
+    }
+    .team h3{
+        font-size:31.25px;
+        line-height: 47.3px;
+        font-weight: bold;
+    }
+    .team h5{
+        font-size: 25px;
+        line-height: 37.5px;
+    }
+    .team-card{
+        margin-top: 60px;
+    }
+
+
+    .customer-card{
+        margin-top: 60px;
+        max-width: 770px;
+        padding: 40px 60px;
+    }
+    .customer-card-img img{
+        width: 96px;
+        height: auto;
+    }
+    .customer-card h4{
+        font-size:31.25px;
+        line-height: 47.3px;
+        font-weight: bold;
+    }
+    .customer-designation{
+        font-size: 20px;
+        line-height: 30px;
     }
 
 }

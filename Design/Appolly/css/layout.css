@@ -18,10 +18,39 @@
     padding-top: 40px;
     background-image: url('../images/Background-Image.png');
     background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .app-features{
     padding-top: 40px;
     background-image: url('../images/Background-Image.png');
     background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.use-app{
+    padding-top: 60px;
+    background-image: url('../images/Background-Image.png');
+    background-position: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.customers{
+    padding: 60px 0;
+    background-image: url('../images/Background-Image.png');
+    background-position: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+.blog{
+    padding: 60px 0;
+}
+
+.footer{
+    background-color: #232233;
 }
