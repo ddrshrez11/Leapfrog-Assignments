@@ -30,7 +30,12 @@ p{
     font-weight: 400;
     line-height: 24px;
 }
-
+.lg-img,.md-img{
+    display: none;
+}
+/* .sm-img{
+    display: ;
+} */
 
 
 .contact{
@@ -137,6 +142,9 @@ p{
     padding-right:10px ;
     float: left;
 }
+.hero-img-wrapper{
+    text-align: center;
+}
 .hero-phone{
     height: 466px;
     margin-top: 40px;
@@ -230,7 +238,7 @@ p{
 .feature-app-img img{
     filter: drop-shadow(40px 40px 100px rgba(24, 48, 63, 0.5));
     border-radius: 40px;
-    width: 70%;
+    /* width: 70%; */
 }
 
 
@@ -242,10 +250,49 @@ p{
 }
 .screenshot-carousel{
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.sc-carousel img{
+    filter: drop-shadow(0px 1px 10px rgba(0, 0, 0, 0.1));
+}
+.sc-carousel-left,.sc-carousel-right{
+    position: absolute;
+    margin: 40px 0;
+    top:0px;
+    left: 0;
+    right: 0;
+}
+.sc-carousel-left-1{
+    z-index: 3;
+    /* opacity: 0.8; */
+    transform: scale(1);
+    transform: translate(-20%,10%);
+}
+.sc-carousel-left-2{ 
+    z-index: 1;
+    /* opacity: 0.6; */
+    transform: scale(0.6);
+    transform: translate(-40%,10%);
+}
+.sc-carousel-right-1{
+    z-index: 3;
+    /* opacity: 0.8; */
+    transform: scale(1);
+    transform: translate(20%,10%);
+}
+.sc-carousel-right-2{ 
+    z-index: 1;
+    /* opacity: 0.6; */
+    transform: scale(0.6);
+    transform: translate(40%,10%);
 }
 .main-image img{
     margin: 40px 0;
-    width: 70%;
+    position: relative;
+    z-index: 5;
+    filter: drop-shadow(0px 1px 10px rgba(0, 0, 0, 0.1));
+    /* width: 60%; */
 }
 
 .download-app{
@@ -353,6 +400,9 @@ p{
     color: #ffffff;
 
 }
+.customer-card-group{
+    position: relative;
+}
 .customer-card{
     margin: 0 auto;
     background-color: #fff;
@@ -363,6 +413,24 @@ p{
     box-shadow: 0px 10px 100px rgba(0, 0, 0, 0.24);
     border-radius: 10px;
     margin-top: 40px;
+}
+.cus-carousel{
+    position: relative;
+    z-index: 5;
+}
+.cus-carousel-left,.cus-carousel-right{
+    position: absolute;
+    margin: 0px;
+    opacity: 0.4;
+    top:0px;
+    transform: scale(0.8);
+    z-index: 1;
+}
+.cus-carousel-left{
+    left: 0px;
+}
+.cus-carousel-right{
+    right: 0px;
 }
 .customer-card-img img{
     width: 50px;
@@ -380,7 +448,7 @@ p{
 
 .blog-card-group{
     margin-top: 40px;
-    padding-bottom: 10%;
+    padding-bottom: 20%;
 }
 .blog-card{
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
@@ -402,11 +470,113 @@ p{
 }
 
 
-.footer{
-    color: #000;
+footer{
+    color: #ffffff;
+    position: relative;
+}
+footer h4,footer p, footer li{
+    font-weight: normal;
 }
 .footer-contact{
+    width: 90%;
+    position: absolute;
+    top: -150px;
+    margin: 0 auto;
+    left:0;
+    right:0;
     background-color: #ffffff;
     color: #000000;
     text-align: center;
+    padding: 30px 0;
+    border-radius: 10px;
+    filter: drop-shadow(0px 10px 100px rgba(0, 0, 0, 0.24));
+}
+.footer-contact img{
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+.footer-contact-email{
+    padding-bottom: 30px;
+}
+.footer-contact-email:after{
+    content:'';
+    display:inline-block;
+    width:117px; height:20px;
+    margin : 0 auto;
+    border-bottom:1px solid #000;
+}
+.footer{
+    padding-top: 220px;
+}
+.footer-social div {
+    display: inline-block;
+    line-height: normal;
+    padding: 0 ;
+    border-right: 1px solid #ffffff;
+    /* vertical-align: bottom; */
+    width: 20%;
+    margin-top: 38px;
+    text-align: center;
+}
+.footer-social div:first-child{
+    width: 12.5%;
+    text-align: left;
+}
+.footer-social div:last-child{
+    border-right: none;
+}
+.quick-links{
+    margin: 60px 0;
+}
+.quick-links ul li{
+    margin: 12px 0;
+}
+
+.newsletter{
+    padding-bottom: 60px;
+
+}
+.newsletter h4{
+    margin-bottom: 11px;
+}
+.newsletter p{
+    margin-bottom: 33px;
+}
+.subscribe{
+    background-color: #ffffff;
+    border-radius: 4px;
+    position: relative;
+}
+.subscribe input{
+    height: 50px;
+    width: 80%;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+    padding: 10px 17px;
+    border: none;
+}
+.subscribe-btn{
+    float: right;
+}
+.subscribe-btn a{
+    background-color: #5956E9;
+    padding: 8px 12px;
+    position: relative;
+    right: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 3px 1px;
+    border-radius: 4px;
+}
+.copyright{
+    text-align: center;
+}
+.copyright-icon{
+    font-size: 18px;
+    font-weight: normal;
+}
+.copyright-text{
+    font-size: 12.5px;
+    font-weight: 300;
 }

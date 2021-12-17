@@ -34,6 +34,14 @@ img {
         line-height: 47.25px;
     
     }
+    .sm-img,.md-img{
+        display: none;
+    }
+    .lg-img{
+        display: revert;
+    }
+
+
     .hero-section{
         padding-top: 25px;
     }
@@ -69,9 +77,9 @@ img {
         position: relative;
     }
     .hero-text-wrapper{
+        width: 390px;
         margin-top: 0px;
         float: left;
-        width: 390px;
         margin-top: 70px;
     }
     .bg-img{
@@ -163,6 +171,12 @@ img {
         text-align: left;
         width:35%;
     }
+    .card-top{
+        padding-bottom: 10%;
+    }
+    .card-bottom{
+        padding-top: 10%;
+    }
     .feature-right .feature-card{
         margin-left: 20px;
         text-align: left;
@@ -174,9 +188,10 @@ img {
     /* .app-screenshot .section-heading{
         width: 450px;
     } */
+    
     .main-image img{
         margin: 40px 0;
-        width: 30%;
+        /* width: 30%; */
     }
 
 
@@ -236,6 +251,10 @@ img {
     .team-card:last-child{
         margin-right: 0px;
     }
+    .team-card img{
+        width: 178px;
+        height: 178px;
+    }
     .team-card h3{
         padding-top: 11px;
     }
@@ -274,11 +293,64 @@ img {
         padding-right: 0;
     }
 
+    .footer-contact{
+        display: table;
+        table-layout: fixed;
+        width: 90%;
+        top: -80px;
+    }
+    .footer{
+        padding-top: 120px;
+    }
+    .footer-contact h5, .footer-contact img{
+        display: inline-block;
+        vertical-align: middle;
+        margin-bottom: 0;
+        font-size: 16px;
+    }
+    .footer-contact-email, .footer-contact-phone{
+        display: table-cell;
+        /* position: absolute; */
+        vertical-align: middle;
+        text-align: left;
+        padding: 0 30px;
+        width: 50%;
+    }
+    .footer-contact-email{
+        border-right: 1px solid #000000;
+        /* width: 50%; */
+    }
+
+    .footer-info,.quick-links,.newsletter{
+        width: 25%;
+        display: table-cell;
+        padding: 20px;
+
+    }
+    footer h4{
+        font-size: 20px;
+    }
+    .footer-contact-email:after{
+        content:'';
+        display:none;
+        
+    }
+    /* .quick-links{
+        width: 30%;
+        display: table-cell;
+    }
+    .newsletter{
+        width: 30%;
+        display: table-cell;
+    } */
+
     
 }
 
+@media screen and (min-width: 825px) {
 
 
+}
 
 
 
@@ -425,6 +497,10 @@ img {
     .team-card{
         margin-top: 60px;
     }
+    .team-card img{
+        width: 220px;
+        height: 220px;
+    }
 
 
     .customer-card{
@@ -446,4 +522,8 @@ img {
         line-height: 30px;
     }
 
+
+    .footer-contact{
+        max-width: 1170px;
+    }
 }
