@@ -370,7 +370,8 @@ img {
         min-width: 1171px;
     }
     .container{
-        width: 1171px;
+        max-width: 1170px;
+        overflow-x: hidden;
     }
 
     .hero-section{
