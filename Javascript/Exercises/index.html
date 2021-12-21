@@ -9,6 +9,183 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <div>
+        <h1>Question 1</h1>
+        <pre>
+            function pattern(rows) {
+                for (var i = rows; i > 0; i--) {
+                    let line = "";
+                    for (var j = 0; j < i; j++) {
+                        line += "* ";
+                    }
+                    console.log(line);
+                }
+            }
+        </pre>
+        <hr>
+    </div>
+
+    <div>
+        <h1>Question 2</h1>
+        <pre>
+        var yunip = {
+            name: "Yunip Lal Shrestha",
+            address: "Gwarko Height",
+            emails: ["yunipshrestha@gmail.com", "yuniplal.074@kathford.edu.np"],
+            interests: ["Programming", "Gaming", "Chelsea"],
+            education: [
+              {
+                name: "United Academy",
+                enrolledDate: "2014",
+              },
+              {
+                name: "Kathford International College of Engineering & Management",
+                enrolledDate: "2017",
+              },
+            ],
+          };
+          
+          console.log(yunip);
+          
+          yunip.education.forEach((edu_level) => {
+            console.log("Name: ", edu_level.name, ", Date: ", edu_level.enrolledDate);
+          }); 
+        </pre>
+        <hr>
+    </div>
+
+    <div>
+        <h1>Question 3</h1>
+        <pre>
+          var fruits = [
+            { id: 1, name: "Banana", color: "Yellow" },
+            { id: 2, name: "Apple", color: "Red" },
+          ];
+          
+          function searchByName(arr, searchName) {
+            var searchIndex = undefined;
+            arr.forEach((item, index) => {
+              if (item.name === searchName) {
+                searchIndex = index;
+                // return arr[index];
+              }
+            });
+            if (searchIndex != undefined) {
+              return arr[searchIndex];
+            } else {
+              return "Not Found";
+            }
+          }
+          
+          function searchByKey(arr, searchkey, searchValue) {
+            var searchIndex = undefined;
+            arr.forEach((item, index) => {
+              if (item[searchkey] === searchValue) {
+                searchIndex = index;
+              }
+            });
+            if (searchIndex != undefined) {
+              return arr[searchIndex];
+            } else {
+              return "Not Found";
+            }
+          }
+          
+          console.log(searchByName(fruits, "Apple"));
+          console.log(searchByKey(fruits, "color", "Yellow"));
+          
+        </pre>
+        <hr>
+    </div>
+    <div>
+        <h1>Question 4</h1>
+        <pre>
+            function transform(collection, transFunc) {
+                return collection.map(((value) => {
+                    return transFunc(value);
+                }));
+            };
+            
+            var output = transform(numbers, function (num) {
+                return num *2;
+            })
+            
+            console.log(output)
+        </pre>
+        <hr>
+    </div>
+    <div>
+        <h1>Question 5</h1>
+        <pre>
+            function sortBy(array, key) {
+                if (array.length === 0){
+                    return array;
+                }
+                new_arr= array.slice();
+                for (let i = 0; i < new_arr.length; i++) {
+                    var least = i       
+                    for (let j = i; j < new_arr.length; j++) {
+                        if (new_arr[j][key] < new_arr[least][key]){
+                            least = j;
+                        };
+                    };
+                    // console.log(new_arr)
+                    if (least != i){
+                        temp = new_arr[i]
+                        new_arr[i] = new_arr[least]
+                        new_arr[least] = temp
+                    } 
+                }
+                return new_arr;
+            }
+            
+            var sorted = sortBy(arr, 'name');
+            console.log(sorted)
+        </pre>
+        <hr>
+    </div>
+    <div>
+        <h1>Question 6</h1>
+        <pre>
+            function normalization() {
+                var output = {};
+                function childArray(person) {
+                  return person.children.map(function (child) {
+                    return child.id;
+                  });
+                }
+                function addChildren(person) {
+                  let child_arr = childArray(person);
+                  person.children.forEach((child) => {
+                    output[child.id] = child;
+                    if (child.children) {
+                      // console.log(child)
+                      addChildren(child);
+                    }
+                  });
+                  changeChildrenFormat(person.id, child_arr);
+                }
+              
+                function changeChildrenFormat(person_id, child_arr) {
+                  output[person_id].children = child_arr;
+                }
+                Object.keys(input).forEach((person_id) => {
+                  output[person_id] = input[person_id];
+                  person = input[person_id];
+                  if (person.children) {
+                    addChildren(person);
+                  }
+                });
+                return output;
+              }
+              console.log(normalization());
+              
+        </pre>
+        <hr>
+    </div>
+
+
+
     <script src="js/question1.js"></script>
     <script src="js/question2.js"></script>
     <script src="js/question3.js"></script>
