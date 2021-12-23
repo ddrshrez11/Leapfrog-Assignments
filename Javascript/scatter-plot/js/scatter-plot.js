@@ -13,6 +13,7 @@ graph.style.width = "600px";
 graph.style.backgroundColor = "pink";
 graph.style.color = "white";
 graph.style.position="relative";
+graph.style.border = "2px solid #000";
 
 const handleHover = (event) =>{
     console.log(event);

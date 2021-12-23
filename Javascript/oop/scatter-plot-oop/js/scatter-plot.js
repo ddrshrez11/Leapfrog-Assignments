@@ -17,6 +17,7 @@ class Box {
         this.element.style.height = x+"px";
         this.element.style.width = y+"px";
         this.element.style.backgroundColor = "pink";
+        this.element.style.border = "2px solid #000";
         // this.element.style.color = "white";
         this.element.style.position="relative";
         
