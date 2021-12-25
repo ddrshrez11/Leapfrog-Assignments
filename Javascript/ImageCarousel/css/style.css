@@ -1,0 +1,66 @@
+img {
+    width: 100%;
+    height: auto;
+  }
+#image_carousel{
+    /* display: block; */
+    width: 600px;
+    /* height: 355px; */
+    border: 2px solid #000;
+    overflow: hidden;
+    position: relative;
+}
+#image_wrapper{
+    /* width: 3000px; */
+    /* height: 350px; */
+    position: relative;
+}
+#image_wrapper img{
+    /* width: 556px; */
+    /* height: 350px; */
+    position: absolute;
+    top: 0;
+}
+
+#carousel-navigation{
+    z-index: 5;
+}
+#prev{
+    left: 0;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: rgb(210 211 213 / 53%);
+}
+#next{
+    /* z-index: 5; */
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: rgb(210 211 213 / 53%);
+}
+#prev img, #next img{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#carousel-dots-container{
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.carousel-dot{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 1px 1px 2px #000;
+    margin: 3px;
+}
+.carousel-dot.active{
+    background-color: rgba(255, 255, 255, 1);
+
+}
