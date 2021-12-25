@@ -32,16 +32,3 @@ img {
     left: 50%;
     transform: translateX(-50%);
 }
-.carousel-dot{
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    background-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 1px 1px 2px #000;
-    margin: 3px;
-}
-.carousel-dot.active{
-    background-color: rgba(255, 255, 255, 1);
-
-}

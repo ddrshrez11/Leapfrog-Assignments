@@ -31,9 +31,9 @@ imagesWrapper.style.position = `relative`;
 imagesWrapper.style.height = `${images[0].height}px`;
 
 const handleNext = () => {
-    dotContainer.children[currentIndex].classList.toggle('active');
+    revertDot(currentIndex);
     (currentIndex === imageCount-1) ? currentIndex = 0 : currentIndex++;
-    dotContainer.children[currentIndex].classList.toggle('active');
+    activeDot(currentIndex);
     // imagesWrapper.style.left = `-${imageWidth * currentIndex}px`;
     if (currentIndex){
         const transition = setInterval(() => {
@@ -59,7 +59,8 @@ const handleNext = () => {
 }
 const handlePrev = () => {
     // imagesWrapper.style.left = `-${imageWidth * currentIndex}px`;
-    dotContainer.children[currentIndex].classList.toggle('active');
+    revertDot(currentIndex);
+    
     if (currentIndex){
         const transition = setInterval(() => {
             carouselPosition = carouselPosition - speed;
@@ -85,7 +86,7 @@ const handlePrev = () => {
             }, 0);
     }
     (currentIndex === 0) ? currentIndex = imageCount-1 : currentIndex--;
-    dotContainer.children[currentIndex].classList.toggle('active');
+    activeDot(currentIndex);
 }
 
 // Aligning images in a horizontal line
@@ -133,6 +134,13 @@ navigation.append(dotContainer);
 for (let i = 0; i<imageCount; i++){
     let dot = document.createElement('div');
     dot.setAttribute('class','carousel-dot');
+    dot.style.height = '10px';
+    dot.style.width = '10px';
+    dot.style.borderRadius = '50%';
+    dot.style.display = 'inline-block';
+    dot.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+    dot.style.boxShadow = '1px 1px 2px #000';
+    dot.style.margin = '3px';
     dotContainer.append(dot);
     dot.addEventListener('click', ()=>{
         let selected = i;
@@ -151,12 +159,23 @@ for (let i = 0; i<imageCount; i++){
     });
 }
 const dots = Array.from(dotContainer.children);
-dotContainer.children[currentIndex].classList.add('active');
+activeDot(currentIndex);
 
-//Change slide with indicators
-dots.forEach((dot,index) => {
+function revertDot (index){
+    dots[index].style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+    dots[index].classList.toggle('active');
+    images[index].classList.toggle('active');
     
-});
+}
+function activeDot (index){
+    dots[index].style.backgroundColor = 'rgba(255, 255, 255, 1)';
+    dots[index].classList.toggle('active');
+    images[index].classList.toggle('active');
+}
+
+
+
+
 
 
 
