@@ -5,30 +5,3 @@ img {
 #image_carousel{
     border: 2px solid #000;
 }
-
-#prev{
-    left: 0;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    background-color: rgb(210 211 213 / 15%);
-}
-#next{
-    /* z-index: 5; */
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    background-color: rgb(210 211 213 / 15%);
-}
-#prev img, #next img{
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-#carousel-dots-container{
-    position: absolute;
-    bottom: 3%;
-    left: 50%;
-    transform: translateX(-50%);
-}
