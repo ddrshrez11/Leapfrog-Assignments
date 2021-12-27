@@ -187,4 +187,11 @@ function handleClick(event) {
 
 // function
 
+<<<<<<< HEAD
 start();
+=======
+
+start();
+
+
+>>>>>>> 868ba48e07a407ba768e817368a609bd196068c8
