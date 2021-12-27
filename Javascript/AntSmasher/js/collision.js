@@ -18,10 +18,20 @@ const actionArea = {
   clear: function () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
+  winGame: function () {
+    this.context.textAlign = "center";
+    this.context.fillStyle = "Blue";
+    this.context.font = "100px Ubuntu";
+    this.context.fillText(
+      "YOU WIN",
+      this.canvas.width / 2,
+      this.canvas.height / 2
+    );
+  },
 };
 function updateActionArea() {
   actionArea.clear();
-//   speed = 1;
+  //   speed = 1;
   ants.forEach((ant) => {
     // speed *= 0.9
     ant.x += ant.dx * ant.speed;
@@ -30,33 +40,43 @@ function updateActionArea() {
     antCollision(ant);
     ant.update();
   });
+
+  if (ants.length == 0) {
+    actionArea.winGame();
+  }
 }
 
-function Ball(radius, color, x, y) {
+function Ant(radius, color, x, y) {
   this.radius = radius;
   this.x = x;
   this.y = y;
   this.dx = Math.random() > 0.5 ? 1 : -1;
   this.dy = Math.random() > 0.5 ? 1 : -1;
-  this.speed = Math.random()* 2;
+  this.speed = Math.random() * 2;
   this.img = document.createElement("img");
   this.img.src = "images/ant.png";
   this.update = function () {
     ctx = actionArea.context;
     antSize = 40;
-    ctx.drawImage(this.img, this.x - (antSize/2) - 20, this.y - (antSize/2), antSize, antSize);
+    ctx.drawImage(
+      this.img,
+      this.x - antSize / 2 - 20,
+      this.y - antSize / 2,
+      antSize,
+      antSize
+    );
     ctx.stroke();
     ctx.fill();
   };
 }
 
 function start() {
-  antNum = getRandomFromRange(10, 60);
+  antNum = 2; //getRandomFromRange(10, 60);
   actionArea.startAction();
-  generateBalls(antNum);
+  generateAnts(antNum);
 }
 
-function generateBalls(antNum) {
+function generateAnts(antNum) {
   while (ants.length < antNum) {
     let overlapping = false;
     let color = getRandomColor();
@@ -88,12 +108,11 @@ function generateBalls(antNum) {
         break;
       }
     }
-    if (!overlapping)
-      ants.push(new Ball(randomRadius, color, randomX, randomY));
+    if (!overlapping) ants.push(new Ant(randomRadius, color, randomX, randomY));
   }
-  // ants.push(new Ball(20,'red',50,50));
-  // ants.push(new Ball(20,'red',150,250));
-  // ants.push(new Ball(20,'red',100,40));
+  // ants.push(new Ant(20,'red',50,50));
+  // ants.push(new Ant(20,'red',150,250));
+  // ants.push(new Ant(20,'red',100,40));
 }
 
 function wallCollision(ant) {
@@ -117,31 +136,31 @@ function wallCollision(ant) {
 }
 
 function antCollision(ant) {
-  // let otherBalls = ants;
+  // let otherAnts = ants;
   for (let i = 0; i < ants.length; i++) {
-    let otherBall = ants[i];
+    let otherAnt = ants[i];
     let ratio = 0.05;
-    if (ant == otherBall) continue;
+    if (ant == otherAnt) continue;
     distance = getDistance(
-      otherBall.x + otherBall.radius,
+      otherAnt.x + otherAnt.radius,
       ant.x + ant.radius,
-      otherBall.y + otherBall.radius,
+      otherAnt.y + otherAnt.radius,
       ant.y + ant.radius
     );
-    // distance = getDistance(otherBall.x, ant.x, otherBall.y, ant.y);
-    // console.log(ant.x,otherBall.x);
+    // distance = getDistance(otherAnt.x, ant.x, otherAnt.y, ant.y);
+    // console.log(ant.x,otherAnt.x);
     if (
       distance <
-      (otherBall.radius + ant.radius) * (otherBall.radius + ant.radius)
+      (otherAnt.radius + ant.radius) * (otherAnt.radius + ant.radius)
     ) {
-      if (ant.x < otherBall.x) {
+      if (ant.x < otherAnt.x) {
         ant.x -= ant.radius * ratio;
         ant.dx = -Math.abs(ant.dx);
       } else {
         ant.x += ant.radius * ratio;
         ant.dx = Math.abs(ant.dx);
       }
-      if (ant.y < otherBall.y) {
+      if (ant.y < otherAnt.y) {
         ant.y -= ant.radius * ratio;
         ant.dy = -Math.abs(ant.dy);
       } else {
@@ -149,10 +168,10 @@ function antCollision(ant) {
         ant.dy = Math.abs(ant.dy);
       }
 
-      // otherBall.dx = -otherBall.dx;
-      // otherBall.dy = -otherBall.dy;
+      // otherAnt.dx = -otherAnt.dx;
+      // otherAnt.dy = -otherAnt.dy;
 
-      // console.log('collision',distance,otherBall.radius+ant.radius);
+      // console.log('collision',distance,otherAnt.radius+ant.radius);
     }
   }
 }
