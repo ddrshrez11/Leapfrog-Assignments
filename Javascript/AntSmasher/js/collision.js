@@ -1,5 +1,6 @@
 let ants = [];
 const FPS = 16;
+const speedLimit = 2;
 
 const actionArea = {
   viewport: document.getElementById("viewport"),
@@ -20,11 +21,11 @@ const actionArea = {
 };
 function updateActionArea() {
   actionArea.clear();
-  speed = 1;
+//   speed = 1;
   ants.forEach((ant) => {
     // speed *= 0.9
-    ant.x += ant.dx * speed;
-    ant.y += ant.dy * speed;
+    ant.x += ant.dx * ant.speed;
+    ant.y += ant.dy * ant.speed;
     wallCollision(ant);
     antCollision(ant);
     ant.update();
@@ -37,15 +38,13 @@ function Ball(radius, color, x, y) {
   this.y = y;
   this.dx = Math.random() > 0.5 ? 1 : -1;
   this.dy = Math.random() > 0.5 ? 1 : -1;
+  this.speed = Math.random()* 2;
   this.img = document.createElement("img");
   this.img.src = "images/ant.png";
   this.update = function () {
     ctx = actionArea.context;
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    // ctx.arc(this.x,this.y,this.radius,0,2*Math.PI);
-    // ctx.drawImage(this.img, this.x, this.y, 40, 40);
-    ctx.drawImage(this.img, this.x - 20, this.y - 20, 40, 40);
+    antSize = 40;
+    ctx.drawImage(this.img, this.x - (antSize/2) - 20, this.y - (antSize/2), antSize, antSize);
     ctx.stroke();
     ctx.fill();
   };
@@ -121,7 +120,7 @@ function antCollision(ant) {
   // let otherBalls = ants;
   for (let i = 0; i < ants.length; i++) {
     let otherBall = ants[i];
-    ratio = 0.05;
+    let ratio = 0.05;
     if (ant == otherBall) continue;
     distance = getDistance(
       otherBall.x + otherBall.radius,
