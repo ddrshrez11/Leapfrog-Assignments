@@ -49,7 +49,7 @@ function Ball(radius, color,x,y){
 }
 
 function start(){
-    ballNum = 200;
+    ballNum = 1000;
     actionArea.startAction();
     generateBalls(ballNum);
     
