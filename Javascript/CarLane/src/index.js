@@ -25,28 +25,32 @@ function start(){
 
 }
 
+function collisionDetect(obstacle) {
+    if (
+      obstacle.x + 60 > car.x &&
+      obstacle.y < car.y + 70 &&
+      obstacle.x < car.x + 40 &&
+      95 + obstacle.y > car.y
+    ) {
+    //   gameOver();
+    console.log('Game Over')
+    }
+  }
 
 
 function updateActionArea() {
     actionArea.clear();
+    displayScore();
     car.update();
     obstacles.forEach(obstacle => {
-        obstacle1.update()
-        obstacle2.update()
+        collisionDetect(obstacle)
+        obstacle.update()
     });
     laneBackground.print();
-    //   speed = 1;
-    // ants.forEach((ant) => {
-    //   // speed *= 0.9
-    //   ant.x += ant.dx * ant.speed;
-    //   ant.y += ant.dy * ant.speed;
-    //   wallCollision(ant);
-    //   antCollision(ant);
-    //   ant.update();
-    // });
-  
-  
-    // if (ants.length == 0) {
-    //   actionArea.winGame();
-    // }
   }
+
+function displayScore(){
+    actionArea.context.font = "50px Ubuntu";
+    actionArea.context.fillStyle = "white";
+    actionArea.context.fillText(`Score: ${score}`,150, 50 );
+}

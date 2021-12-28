@@ -11,6 +11,8 @@ const actionArea = {
     this.context = this.canvas.getContext("2d");
     document.body.addEventListener("keydown", this.handleKeyPress);
     this.viewport.appendChild(this.canvas);
+    this.viewport.style.width = '100%';
+    this.viewport.style.textAlign = 'center';
     this.interval = setInterval(updateActionArea, FPS);
   },
   clear: function () {
@@ -71,6 +73,7 @@ function Obstacle(w, h, y){
   this.dy = 1;
   this.index = getRandomIndex();
   this.x = laneMap[this.index];
+
   this.update = function () {
     ctx = actionArea.context;
     ctx.globalCompositeOperation='destination-over';
@@ -86,6 +89,7 @@ function Obstacle(w, h, y){
     this.y += this.dy * this.speed;
   }
   this.reset = function() {
+    score++;
     this.y = this.initialY;
     this.index = getRandomIndex();
     this.x = laneMap[this.index];
