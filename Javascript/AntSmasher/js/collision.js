@@ -71,7 +71,7 @@ function Ant(radius, color, x, y) {
 }
 
 function start() {
-  antNum = getRandomFromRange(10, 60);
+  let antNum = getRandomFromRange(10,60);
   actionArea.startAction();
   generateAnts(antNum);
 }
