@@ -59,7 +59,10 @@ const actionArea = {
       console.log("right")
       car.moveRight();
     }
-
+    if (e.keyCode == '32' && bullet === undefined){
+      console.log('fire bullet');
+      car.fireBullet();
+    }
   },
   gameOver: function () {
     clearInterval(this.interval);
@@ -168,7 +171,7 @@ function Car(w, h) {
   this.h = h;
   this.y = 400;
   this.index = 1;
-  this.bulletCount = 0;
+  // this.bulletCount = 6;
   this.x = laneMap[this.index];
   // this.color = color;
   this.speed = speed;
@@ -176,8 +179,10 @@ function Car(w, h) {
     ctx = actionArea.context;
     this.img = document.createElement("img");
     this.img.src = "images/car.png";
-    
-      ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    if (bullet!= undefined){
+      bullet.update()
+    }
   };
   this.moveLeft = function() {
     if (this.index > 0){
@@ -192,11 +197,64 @@ function Car(w, h) {
     }
   }
   this.fireBullet = function(){
-    
+    bullet = new Bullet(this.x,this.y);
+    bulletCount--;
+
   }
 }
 
-function Bullet(w,h){
+function Bullet(x,y){
+  this.x = x+15;
+  this.y = y;
+  this.w = 10;
+  this.h = 20;
+  this.dy = 1;
+  this.speed = speed;
+  this.update = function () {
+    ctx = actionArea.context;
+    this.img = document.createElement("img");
+    this.img.src = "images/bullet.png";
+    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    this.moveBullet();
+    if (bullet.y <=0){
+      this.reset();
+    } 
+  };
+  this.moveBullet = function () {
+    this.y -= this.dy * speed;
+  }
+  this.reset = function(){
+    bullet = undefined;
+  }
+  
+}
+
+function Ammo(w,h,y){
   this.w = w;
   this.h = h;
+  this.y = y;
+  this.initialY = y;
+  this.dy = 1;
+  this.index = getRandomIndex();
+  this.x = laneMap[this.index];
+
+  this.update = function () {
+    ctx = actionArea.context;
+    this.img = document.createElement("img");
+    this.img.src = "images/ammo.png";
+    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    this.moveObstacle();
+    if (this.y >= actionArea.canvas.height){
+      this.reset();
+    }
+  }
+  this.moveObstacle = function () {
+    this.y += this.dy * speed;
+  }
+  this.reset = function() {
+    score++;
+    this.y = this.initialY;
+    this.index = getRandomIndex();
+    this.x = laneMap[this.index];
+  }
 }

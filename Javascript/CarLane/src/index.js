@@ -1,8 +1,11 @@
 let car;
 let laneBackground;
 let obstacles = [];
+let ammo;
 const FPS = 16;
 let speed = 2;
+let bullet;
+let bulletCount=6;
 const laneMap = [200,440,650];
 //     0: 200, //laneLeft
 //     1:440, //laneMiddle
@@ -81,9 +84,27 @@ function collisionDetect(obstacle) {
       obstacle.y + carHeight  > car.y
     ) {
       actionArea.gameOver();
-    console.log('Game Over')
+    console.log('Game Over');
     }
+    
+   
   }
+
+function collisionDetectBullet(obstacle){
+    if ( bullet != undefined &&
+        obstacle.x < bullet.x + bullet.w &&
+        obstacle.x + obstacle.w > bullet.x &&
+        obstacle.y < bullet.y + bullet.h &&
+        obstacle.h + obstacle.y > bullet.y
+      ) {
+      //   actionArea.gameOver();
+      obstacle.reset();
+      bullet.reset();
+      score+=5;
+      console.log('Bullet hit')
+      }
+      
+}
 
 
 function updateActionArea() {
@@ -92,8 +113,10 @@ function updateActionArea() {
     car.update();
     obstacles.forEach(obstacle => {
         collisionDetect(obstacle)
+        collisionDetectBullet(obstacle)
         obstacle.update()
     });
+    
     laneBackground.print();
     
   }
@@ -102,8 +125,11 @@ function displayScore(){
     actionArea.context.font = "30px Ubuntu";
     actionArea.context.fillStyle = "white";
     actionArea.context.fillText(`Score: ${score}`,150, 50 );
-    actionArea.context.font = "30px Ubuntu";
-    actionArea.context.fillStyle = "white";
+    // actionArea.context.font = "30px Ubuntu";
+    // actionArea.context.fillStyle = "white";
     actionArea.context.fillText(`Highscore: ${highscore}`,350, 50 );
+    // actionArea.context.font = "30px Ubuntu";
+    // actionArea.context.fillStyle = "white";
+    actionArea.context.fillText(`Bullets: ${bulletCount}`,550, 50 );
 
 }
