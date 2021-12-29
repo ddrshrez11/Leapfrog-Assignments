@@ -5,7 +5,7 @@ let ammo;
 const FPS = 16;
 let speed = 2;
 let bullet;
-let bulletCount=6;
+let bulletCount=1;
 const laneMap = [200,440,650];
 //     0: 200, //laneLeft
 //     1:440, //laneMiddle
@@ -67,6 +67,9 @@ function startGame(startMenu){
     obstacle2 = new Obstacle(carWidth,carHeight,-250);
     obstacles.push(obstacle1);
     obstacles.push(obstacle2);
+    setInterval(() => {
+        if(ammo === undefined) ammo = new Ammo(carWidth,carWidth,-100);
+    }, getRandomFromRange(1000,2000));
     if (localStorage.getItem("highscore") !== null){
         highscore = (localStorage.getItem("highscore"));
     }
@@ -89,6 +92,20 @@ function collisionDetect(obstacle) {
     
    
   }
+
+function collisionDetectAmmo(ammo) {
+if (ammo != undefined &&
+    ammo.x < car.x + car.w &&
+    ammo.x + ammo.w > car.x &&
+    ammo.y < car.y + car.h &&
+    ammo.h + ammo.y > car.y
+) {
+    ammo.collected();
+    console.log('ammo added');
+}
+
+
+}
 
 function collisionDetectBullet(obstacle){
     if ( bullet != undefined &&
@@ -114,8 +131,10 @@ function updateActionArea() {
     obstacles.forEach(obstacle => {
         collisionDetect(obstacle)
         collisionDetectBullet(obstacle)
+        collisionDetectAmmo(ammo)
         obstacle.update()
     });
+    if (ammo != undefined) ammo.update();
     
     laneBackground.print();
     

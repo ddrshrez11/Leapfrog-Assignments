@@ -191,15 +191,16 @@ function Car(w, h) {
     }
   }
   this.moveRight = function() {
-    if (this.index < laneMap.length){
+    if (this.index < laneMap.length-1){
       this.index++;
       this.x = laneMap[this.index];
     }
   }
   this.fireBullet = function(){
-    bullet = new Bullet(this.x,this.y);
-    bulletCount--;
-
+    if (bulletCount>0){
+      bullet = new Bullet(this.x,this.y);
+      bulletCount--;
+    }
   }
 }
 
@@ -251,10 +252,11 @@ function Ammo(w,h,y){
   this.moveObstacle = function () {
     this.y += this.dy * speed;
   }
+  this.collected = function() {
+    bulletCount++;
+    ammo= undefined;
+  }
   this.reset = function() {
-    score++;
-    this.y = this.initialY;
-    this.index = getRandomIndex();
-    this.x = laneMap[this.index];
+    ammo= undefined;
   }
 }
