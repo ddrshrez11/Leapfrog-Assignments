@@ -14,7 +14,7 @@ const actionArea = {
         this.viewport.appendChild(this.canvas);
         this.viewport.style.width = "100%";
         this.viewport.style.textAlign = "center";
-        this.interval = setInterval(updateActionArea, FPS);
+        this.interval; // = setInterval(updateActionArea, FPS);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -27,14 +27,14 @@ const actionArea = {
                 index--;
                 if (index == 0) {
                     bird.gravity = 0;
-                    console.log(bird.gravity);
+                    // console.log(bird.gravity);
                 } else if (index < 0) {
                     bird.gravity = GRAVITY;
                     console.log(bird.gravity);
                     clearInterval(jumpAnimation);
                 } else {
                     bird.gravity = Math.abs(GRAVITY) + index;
-                    console.log(bird.gravity);
+                    // console.log(bird.gravity);
                 }
             }, 100);
         }
@@ -49,13 +49,35 @@ const actionArea = {
                 console.log(bird.gravity);
             } else if (index < 0) {
                 bird.gravity = GRAVITY;
-                console.log(bird.gravity);
+                // console.log(bird.gravity);
                 clearInterval(jumpAnimation);
             } else {
                 bird.gravity = Math.abs(GRAVITY) + index;
-                console.log(bird.gravity);
+                // console.log(bird.gravity);
             }
         }, 100);
+    },
+    displayScore: function () {
+        this.x = 150;
+        this.y = 50;
+        this.w = 30;
+        this.h = 45;
+
+        let ctx = this.context;
+        let score_str = score.toString();
+        for (let i = 0; i < score_str.length; i++) {
+            this.img = document.createElement("img");
+            this.img.src = `assets/sprites/${score_str[i]}.png`;
+            ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+        }
+
+        //     this.moveBird();
+        //     actionArea.context.font = "30px Ubuntu";
+        //     actionArea.context.fillStyle = "white";
+        //     actionArea.context.fillText(`Score: ${score}`, 150, 50);
+        //     // actionArea.context.font = "30px Ubuntu";
+        //     // actionArea.context.fillStyle = "white";
+        //     actionArea.context.fillText(`Highscore: ${highscore}`, 350, 50);
     },
     // gameOver: function () {
     //     clearInterval(this.interval);
@@ -178,61 +200,82 @@ function Bird() {
         this.img.src = `assets/sprites/${
             this.color + this.srcSuffix[this.index]
         }`;
-        // console.log([this.index]);
         ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
         this.moveBird();
     };
     this.moveBird = function () {
         this.y -= this.gravity; //* speed;
     };
-    // this.moveLeft = function () {
-    //     if (this.index > 0) {
-    //         this.index--;
-    //         this.x = laneMap[this.index];
-    //     }
-    // };
-    // this.moveRight = function () {
-    //     if (this.index < laneMap.length - 1) {
-    //         this.index++;
-    //         this.x = laneMap[this.index];
-    //     }
-    // };
 }
 
-function Obstacle(h, gap, y) {
+function Obstacle(x) {
     this.w = 52;
-    this.h = this.h;
     this.maxHeight = 320;
-    this.y = y;
-    this.initialY = y;
-    this.dy = 1;
-    this.index = getRandomIndex();
-    // this.x = laneMap[this.index];
+    this.y1 = 0;
+    this.dx = 1;
+    this.x = x + actionArea.canvas.width;
+    this.initialX = this.x;
+    this.h1 = getRandomPipe();
+    this.gap = getRandomGap();
+    this.y2 = this.h1 + this.gap;
+    this.h2 = background.height - background.baseHeight - this.y2;
+    this.scoreToggle = true;
     // this.carExplosionSound = new Sound('sounds/car-explosion.wav');
+    this.img1 = document.createElement("img");
+    this.img1.src = "assets/sprites/pipe-green-top.png";
+    this.img2 = document.createElement("img");
+    this.img2.src = "assets/sprites/pipe-green.png";
+
     this.update = function () {
         ctx = actionArea.context;
-        this.img = document.createElement("img");
-        this.img.src = "images/obstacle.png";
-        ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+        // ctx2 = actionArea.context;
+        // ctx.rotate((180 * Math.PI) / 180);
+        // console.log(this.maxHeight - this.h1 - 20);
+        ctx.drawImage(
+            this.img1,
+            0,
+            this.maxHeight - this.h1,
+            this.w,
+            this.h1,
+            this.x,
+            this.y1,
+            this.w,
+            this.h1
+        );
+        ctx.drawImage(
+            this.img2,
+            0,
+            0,
+            this.w,
+            this.h2,
+            this.x,
+            this.y2,
+            this.w,
+            this.h2
+        );
+
         this.moveObstacle();
-        if (this.y >= actionArea.canvas.height) {
+        if (this.x <= -this.w) {
             this.reset();
         }
     };
     this.moveObstacle = function () {
-        this.y += this.dy * speed;
+        this.x -= this.dx * speed;
     };
     this.reset = function () {
-        score++;
-        this.y = this.initialY;
-        this.index = getRandomIndex();
-        this.x = laneMap[this.index];
+        obstacles.shift();
+        // destruct(obstacles, this.w);
+        //     score++;
+        //     this.x = obstacle2.x + 300;
+        //     // // this.index = getRandomIndex();
+        //     this.h1 = getRandomPipe();
+        //     this.gap = getRandomGap();
     };
 }
 
 function baseCollision(obj) {
     maxHeight = actionArea.canvas.height - obj.h - background.baseHeight;
-    console.log(maxHeight);
+    // console.log(maxHeight);
     if (obj.y <= 5) {
         obj.gravity = GRAVITY;
         obj.y = 5;
@@ -240,6 +283,29 @@ function baseCollision(obj) {
         obj.gravity = 0;
         obj.y = maxHeight;
         console.log("GAME OVER");
-        clearInterval(actionArea.interval);
+
+        gameOver();
+    }
+}
+
+function obstacleCollision(obj) {
+    if (bird.x + bird.w >= obj.x && bird.x + bird.w <= obj.x + obj.w) {
+        if (bird.y <= obj.h1 || bird.y + bird.h >= obj.y2) {
+            console.log("collision");
+            gameOver();
+        }
+    }
+}
+
+function scoring(obj) {
+    if (
+        bird.x + bird.w >= obj.x + obj.w / 2 &&
+        bird.x + bird.w <= obj.x + obj.w
+    ) {
+        if (bird.y > obj.h1 && bird.y < obj.y2) {
+            console.log("score");
+            obj.scoreToggle = false;
+            score++;
+        }
     }
 }
