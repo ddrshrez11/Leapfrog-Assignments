@@ -62,6 +62,7 @@ function startGame(startMenu){
     startMenu.style.display = 'none';
     actionArea.startAction();
     car = new Car(carWidth,carHeight);
+    
     laneBackground = new Background(speed);
     obstacle1 = new Obstacle(carWidth,carHeight,-100);
     obstacle2 = new Obstacle(carWidth,carHeight,-250);
@@ -115,8 +116,10 @@ function collisionDetectBullet(obstacle){
         obstacle.h + obstacle.y > bullet.y
       ) {
       //   actionArea.gameOver();
+      obstacle.carExplosionSound.play()
       obstacle.reset();
       bullet.reset();
+
       score+=5;
       console.log('Bullet hit')
       }
@@ -152,3 +155,18 @@ function displayScore(){
     actionArea.context.fillText(`Bullets: ${bulletCount}`,550, 50 );
 
 }
+
+function Sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+      this.sound.play();
+    }
+    this.stop = function(){
+      this.sound.pause();
+    }
+  }

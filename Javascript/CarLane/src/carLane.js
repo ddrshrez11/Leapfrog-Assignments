@@ -143,7 +143,7 @@ function Obstacle(w, h, y){
   this.dy = 1;
   this.index = getRandomIndex();
   this.x = laneMap[this.index];
-
+  this.carExplosionSound = new Sound('sounds/car-explosion.wav');
   this.update = function () {
     ctx = actionArea.context;
     this.img = document.createElement("img");
@@ -174,6 +174,8 @@ function Car(w, h) {
   // this.bulletCount = 6;
   this.x = laneMap[this.index];
   // this.color = color;
+  this.carIgnitionSound = new Sound('sounds/car-ignition.wav')
+  this.carIgnitionSound.play();
   this.speed = speed;
   this.update = function () {
     ctx = actionArea.context;
@@ -238,7 +240,7 @@ function Ammo(w,h,y){
   this.dy = 1;
   this.index = getRandomIndex();
   this.x = laneMap[this.index];
-
+  this.ammoSound = new Sound('sounds/ammo.wav')
   this.update = function () {
     ctx = actionArea.context;
     this.img = document.createElement("img");
@@ -254,6 +256,7 @@ function Ammo(w,h,y){
   }
   this.collected = function() {
     bulletCount++;
+    this.ammoSound.play()
     ammo= undefined;
   }
   this.reset = function() {
