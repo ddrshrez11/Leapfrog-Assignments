@@ -14,16 +14,16 @@ const actionArea = {
         this.viewport.appendChild(this.canvas);
         this.viewport.style.width = "100%";
         this.viewport.style.textAlign = "center";
-        this.interval; // = setInterval(updateActionArea, FPS);
+        this.interval; //= setInterval(updateActionArea, FPS);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
-    handleKeyPress: function (e) {
+    handleKeyPress: (e) => {
         console.log(e);
         if (e.keyCode == "32") {
             let index = 4;
-            let jumpAnimation = setInterval(() => {
+            this.jumpAnimation = setInterval(() => {
                 index--;
                 if (index == 0) {
                     bird.gravity = 0;
@@ -39,7 +39,7 @@ const actionArea = {
             }, 100);
         }
     },
-    handleClick: function (e) {
+    handleClick: (e) => {
         console.log(e);
         let index = 4;
         let jumpAnimation = setInterval(() => {
@@ -57,72 +57,6 @@ const actionArea = {
             }
         }, 100);
     },
-    displayScore: function () {
-        this.x = 150;
-        this.y = 50;
-        this.w = 30;
-        this.h = 45;
-
-        let ctx = this.context;
-        let score_str = score.toString();
-        for (let i = 0; i < score_str.length; i++) {
-            this.img = document.createElement("img");
-            this.img.src = `assets/sprites/${score_str[i]}.png`;
-            ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
-        }
-
-        //     this.moveBird();
-        //     actionArea.context.font = "30px Ubuntu";
-        //     actionArea.context.fillStyle = "white";
-        //     actionArea.context.fillText(`Score: ${score}`, 150, 50);
-        //     // actionArea.context.font = "30px Ubuntu";
-        //     // actionArea.context.fillStyle = "white";
-        //     actionArea.context.fillText(`Highscore: ${highscore}`, 350, 50);
-    },
-    // gameOver: function () {
-    //     clearInterval(this.interval);
-    //     if (score > highscore) {
-    //         localStorage.setItem("highscore", score);
-    //     }
-    //     this.viewport.position = "relative";
-    //     const gameoverDiv = document.createElement("div");
-    //     gameoverDiv.id = "gameOverDiv";
-    //     this.viewport.append(gameoverDiv);
-    //     gameoverDiv.style.width = "900px";
-    //     gameoverDiv.style.height = "400px";
-    //     gameoverDiv.style.position = "absolute";
-    //     gameoverDiv.style.top = "5px";
-    //     gameoverDiv.style.left = "50%";
-    //     // gameoverDiv.style.right = "0";
-    //     gameoverDiv.style.transform = "translateX(-50%)";
-    //     gameoverDiv.style.backgroundColor = "black";
-    //     gameoverDiv.style.textAlign = "center";
-    //     gameoverDiv.style.color = "white";
-    //     gameoverDiv.style.fontSize = "100px";
-    //     gameoverDiv.style.fontFamily = "Ubuntu";
-    //     gameoverDiv.style.paddingTop = "10%";
-    //     gameoverDiv.innerHTML = "Game Over";
-
-    //     const reloadBtn = document.createElement("div");
-    //     reloadBtn.style.position = "absolute";
-    //     reloadBtn.style.height = "50px";
-    //     reloadBtn.style.width = "150px";
-    //     reloadBtn.style.padding = "10px";
-    //     reloadBtn.style.borderRadius = "20%";
-
-    //     reloadBtn.style.fontSize = "40px";
-    //     reloadBtn.style.backgroundColor = "red";
-    //     reloadBtn.style.bottom = "30px";
-    //     reloadBtn.style.marginLeft = "50%";
-    //     reloadBtn.style.transform = "translateX(-50%)";
-    //     // reLoad.style.marginBottom = "30px";
-    //     reloadBtn.innerText = "Reload";
-    //     gameoverDiv.append(reloadBtn);
-    //     reloadBtn.onclick = function () {
-    //         window.location.reload();
-    //         startGame();
-    //     };
-    // },
 };
 
 function Background() {
@@ -138,7 +72,7 @@ function Background() {
     this.baseY = 530;
     this.baseHeight = this.height - this.baseY;
     this.update = function () {
-        ctx = actionArea.context;
+        let ctx = actionArea.context;
         ctx.drawImage(
             this.img,
             this.x,
@@ -195,7 +129,7 @@ function Bird() {
         this.index = (this.index + 1) % 3;
     }, 100);
     this.update = function () {
-        ctx = actionArea.context;
+        let ctx = actionArea.context;
         this.img = document.createElement("img");
         this.img.src = `assets/sprites/${
             this.color + this.srcSuffix[this.index]
@@ -227,7 +161,7 @@ function Obstacle(x) {
     this.img2.src = "assets/sprites/pipe-green.png";
 
     this.update = function () {
-        ctx = actionArea.context;
+        let ctx = actionArea.context;
         // ctx2 = actionArea.context;
         // ctx.rotate((180 * Math.PI) / 180);
         // console.log(this.maxHeight - this.h1 - 20);
@@ -283,7 +217,7 @@ function baseCollision(obj) {
         obj.gravity = 0;
         obj.y = maxHeight;
         console.log("GAME OVER");
-
+        gameOverState = true;
         gameOver();
     }
 }
@@ -292,6 +226,7 @@ function obstacleCollision(obj) {
     if (bird.x + bird.w >= obj.x && bird.x + bird.w <= obj.x + obj.w) {
         if (bird.y <= obj.h1 || bird.y + bird.h >= obj.y2) {
             console.log("collision");
+            gameOverState = true;
             gameOver();
         }
     }
@@ -309,3 +244,31 @@ function scoring(obj) {
         }
     }
 }
+function displayScore() {
+    this.x = 150;
+    this.y = 50;
+    this.w = 30;
+    this.h = 45;
+
+    let ctx = actionArea.context;
+    let score_str = score.toString();
+
+    for (let i = 0; i < score_str.length; i++) {
+        let num_shift = 0;
+        this.img = document.createElement("img");
+        this.img.src = `assets/sprites/${score_str[i]}.png`;
+        ctx.drawImage(this.img, this.x + num_shift, this.y, this.w, this.h);
+        num_shift += this.w;
+    }
+}
+function displayScoreClear() {
+    actionArea.context.clearRect(0, 0, displayScore.w, displayScore.h);
+}
+
+//     this.moveBird();
+//     actionArea.context.font = "30px Ubuntu";
+//     actionArea.context.fillStyle = "white";
+//     actionArea.context.fillText(`Score: ${score}`, 150, 50);
+//     // actionArea.context.font = "30px Ubuntu";
+//     // actionArea.context.fillStyle = "white";
+//     actionArea.context.fillText(`Highscore: ${highscore}`, 350, 50);
