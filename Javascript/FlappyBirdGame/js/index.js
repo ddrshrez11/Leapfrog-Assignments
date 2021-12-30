@@ -67,6 +67,7 @@ function updateActionArea() {
 }
 
 function gameOver() {
+    bird.dieSound.play();
     clearInterval(obstacle_gen);
     clearInterval(actionArea.interval);
     clearInterval(actionArea.jumpAnimation);

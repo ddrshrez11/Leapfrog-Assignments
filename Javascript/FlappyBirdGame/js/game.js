@@ -23,6 +23,7 @@ const actionArea = {
         console.log(e);
         if (e.keyCode == "32") {
             let index = 4;
+            bird.flapSound.play();
             this.jumpAnimation = setInterval(() => {
                 index--;
                 if (index == 0) {
@@ -42,6 +43,7 @@ const actionArea = {
     handleClick: (e) => {
         console.log(e);
         let index = 4;
+        bird.flapSound.play();
         let jumpAnimation = setInterval(() => {
             index--;
             if (index == 0) {
@@ -116,6 +118,11 @@ function Bird() {
     this.index = 1;
     this.color = getRandomColor();
     this.gravity = GRAVITY;
+    this.flapSound = new Sound("assets/audio/wing.wav");
+    this.hitSound = new Sound("assets/audio/hit.wav");
+    this.pointSound = new Sound("assets/audio/point.wav");
+    this.dieSound = new Sound("assets/audio/die.wav");
+
     // this.carIgnitionSound = new Sound("sounds/car-ignition.wav");
     // this.carIgnitionSound.play();
     this.srcSuffix = [
@@ -216,6 +223,7 @@ function baseCollision(obj) {
     } else if (obj.y >= maxHeight) {
         obj.gravity = 0;
         obj.y = maxHeight;
+        bird.hitSound.play();
         console.log("GAME OVER");
         gameOverState = true;
         gameOver();
@@ -226,6 +234,7 @@ function obstacleCollision(obj) {
     if (bird.x + bird.w >= obj.x && bird.x + bird.w <= obj.x + obj.w) {
         if (bird.y <= obj.h1 || bird.y + bird.h >= obj.y2) {
             console.log("collision");
+            bird.hitSound.play();
             gameOverState = true;
             gameOver();
         }
@@ -240,6 +249,7 @@ function scoring(obj) {
         if (bird.y > obj.h1 && bird.y < obj.y2) {
             console.log("score");
             obj.scoreToggle = false;
+            bird.pointSound.play();
             score++;
         }
     }
