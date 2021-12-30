@@ -60,8 +60,8 @@ function updateActionArea() {
     bird.update();
 
     if (gameOverState) {
-        document.body.removeEventListener("keydown", this.handleKeyPress);
-        document.body.removeEventListener("click", this.handleClick);
+        document.body.removeEventListener("keydown", actionArea.handleKeyPress);
+        document.body.removeEventListener("click", actionArea.handleClick);
         clearInterval(actionArea.interval);
     }
 }
@@ -73,8 +73,8 @@ function gameOver() {
     clearInterval(actionArea.jumpAnimation);
     // displayScoreClear();
 
-    document.body.removeEventListener("keydown", this.handleKeyPress);
-    document.body.removeEventListener("click", this.handleClick);
+    document.body.removeEventListener("keydown", actionArea.handleKeyPress);
+    document.body.removeEventListener("click", actionArea.handleClick);
 
     actionArea.clear();
     background.update();
