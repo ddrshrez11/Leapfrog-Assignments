@@ -8,7 +8,7 @@ canvas.width = GAME_WIDTH;
 canvas.height = GAME_HEIGHT;
 canvas.style.border = "2px solid #000";
 
-let game = new Game(GAME_WIDTH, GAME_HEIGHT);
+let game = new Game(GAME_WIDTH, GAME_HEIGHT, canvas);
 game.start();
 
 let lastTime = 0;
@@ -25,3 +25,6 @@ let gameLoop = (timestamp) => {
 };
 
 requestAnimationFrame(gameLoop);
+
+//! REMOVE
+window.game = game;

@@ -1,4 +1,8 @@
 export default class Junk {
+    /**
+     * @constructor
+     * @param {Game} game Game object
+     */
     constructor(game) {
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
@@ -9,6 +13,10 @@ export default class Junk {
         };
     }
 
+    /**
+     * draw junk on game screen
+     * @param {context} ctx Context of canvas
+     */
     draw = (ctx) => {
         console.log("draw");
         ctx.beginPath();
@@ -17,11 +25,20 @@ export default class Junk {
         ctx.stroke();
         ctx.fill();
     };
+
+    /**
+     * update position of junk
+     * @param {number} deltaTime change in time from previous frame
+     */
     update = (deltaTime) => {
         // this.wallCollisionDetect();
         // this.position.y += (this.direction.y * this.speed) / deltaTime;
         // console.log(this.position.y, this.direction.y, deltaTime);
     };
+
+    /**
+     * detect the bottom of the fish tank
+     */
     wallCollisionDetect = () => {
         if (this.position.y > this.gameHeight - this.r) {
             this.direction.y = 0;

@@ -7,11 +7,11 @@ function getRandomIndex() {
 }
 
 function getRandomDirection() {
-    return Math.random()>0.5 ? 1:-1;
+    return Math.random() > 0.5 ? 1 : -1;
 }
 
 function getDistance(x1, x2, y1, y2) {
-    return Math.floor((x1 - x2) ** 2 + (y1 - y2) ** 2);
+    return Math.floor(Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2));
 }
 
 const getRandomColor = () => {
