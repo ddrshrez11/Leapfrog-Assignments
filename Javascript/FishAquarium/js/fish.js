@@ -44,7 +44,7 @@ export default class Fish {
         );
 
         this.startHungerIncreaseInterval();
-        this.startHealthDecreaseInterval();
+        // this.startHealthDecreaseInterval();
     }
 
     /**

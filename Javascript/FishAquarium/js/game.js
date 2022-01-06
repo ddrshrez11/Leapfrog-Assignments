@@ -109,6 +109,11 @@ export default class Game {
         this.junks = this.junks.filter((junk) => {
             return !junk.cleaned;
         });
+        if (this.junks.length === 0) {
+            this.fish.startHealthDecreaseInterval();
+        } else {
+            clearInterval(this.fish.healthDecreaseInterval);
+        }
         this.updateGameObjects();
     };
 }
