@@ -60,8 +60,8 @@ function updateActionArea() {
     bird.update();
 
     if (gameOverState) {
-        document.body.removeEventListener("keydown", this.handleKeyPress);
-        document.body.removeEventListener("click", this.handleClick);
+        document.body.removeEventListener("keydown", actionArea.handleKeyPress);
+        document.body.removeEventListener("click", actionArea.handleClick);
         clearInterval(actionArea.interval);
     }
 }
@@ -73,8 +73,8 @@ function gameOver() {
     clearInterval(actionArea.jumpAnimation);
     // displayScoreClear();
 
-    document.body.removeEventListener("keydown", this.handleKeyPress);
-    document.body.removeEventListener("click", this.handleClick);
+    document.body.removeEventListener("keydown", actionArea.handleKeyPress);
+    document.body.removeEventListener("click", actionArea.handleClick);
 
     actionArea.clear();
     background.update();
@@ -86,31 +86,31 @@ function gameOver() {
 
     let ctx = actionArea.context;
     ctx.fillStyle = "#ded895";
-    ctx.fillRect(130, 60, 100, 120);
+    ctx.fillRect(130, 80, 100, 120);
 
     actionArea.context.font = "22px Ubuntu";
     actionArea.context.fillStyle = "red";
-    actionArea.context.fillText(`Score`, 155, 85);
+    actionArea.context.fillText(`Score`, 155, 105);
 
     let score_str = score.toString();
     for (let i = 0; i < score_str.length; i++) {
         let num_shift = 0;
         this.img = document.createElement("img");
         this.img.src = `assets/sprites/${score_str[i]}.png`;
-        ctx.drawImage(this.img, 170 + num_shift, 95, 16, 24);
+        ctx.drawImage(this.img, 170 + num_shift, 115, 16, 24);
         num_shift += 16;
     }
 
     actionArea.context.font = "22px Ubuntu";
     actionArea.context.fillStyle = "red";
-    actionArea.context.fillText(`Best`, 160, 140);
+    actionArea.context.fillText(`Best`, 160, 160);
 
     let highscore_str = highscore.toString();
     for (let i = 0; i < highscore_str.length; i++) {
         let num_shift = 0;
         this.img1 = document.createElement("img");
         this.img1.src = `assets/sprites/${highscore_str[i]}.png`;
-        ctx.drawImage(this.img1, 170 + num_shift, 145, 16, 24);
+        ctx.drawImage(this.img1, 170 + num_shift, 165, 16, 24);
         num_shift += num_shift;
     }
 
