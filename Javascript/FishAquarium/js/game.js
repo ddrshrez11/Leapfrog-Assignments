@@ -16,8 +16,12 @@ export default class Game {
         this.canvasPosition = this.canvas.getBoundingClientRect();
         this.gameMode = 1;
         this.gameModes = {
-            NORMAL: 0,
+            MOVE: 0,
             FEED: 1,
+            CLEAN: 2,
+        };
+        this.changeInterval = {
+            junk: 10000,
         };
         this.mouse = {
             x: 0,
@@ -37,11 +41,13 @@ export default class Game {
         this.foods = [];
         this.food = new Food(this, 400, 100);
         this.junks = [];
-        for (let index = 0; index < 5; index++) {
-            this.junks.push(new Junk(this));
-        }
-
-        this.gameObjects = [this.fish, ...this.foods]; // ...this.junks];
+        // for (let index = 0; index < 5; index++) {
+        //     this.createJunk();
+        //     //this.junks.push(new Junk(this));
+        // }
+        setInterval(this.createJunk, this.changeInterval.junk);
+        this.gameObjects = []; // ...this.junks];
+        this.updateGameObjects();
         this.inputHandler = new InputHandler(this);
     };
 
@@ -68,9 +74,41 @@ export default class Game {
     createFood = () => {
         //if (this.gameMode === 1 && this.mouse.click) {
         this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
-        this.gameObjects = [this.fish, ...this.foods];
+        this.updateGameObjects();
         this.mouse.click = false;
         console.log("new food");
         //}
+    };
+
+    createJunk = () => {
+        let newJunk = new Junk(this);
+        let overlapping = false;
+        this.junks.every((junk) => {
+            let dx = junk.position.x - newJunk.position.x;
+            let dy = junk.position.y - newJunk.position.y;
+            let distance = Math.abs(getDistance(dx, dy));
+            if (distance < junk.r + newJunk.r) {
+                overlapping = true;
+                return false;
+            }
+            return true;
+        });
+        if (overlapping) {
+            this.createJunk();
+        } else {
+            this.junks.push(newJunk);
+            this.updateJunks();
+        }
+    };
+
+    updateGameObjects = () => {
+        this.gameObjects = [...this.junks, this.fish, ...this.foods];
+    };
+
+    updateJunks = () => {
+        this.junks = this.junks.filter((junk) => {
+            return !junk.cleaned;
+        });
+        this.updateGameObjects();
     };
 }

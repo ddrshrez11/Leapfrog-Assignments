@@ -3,7 +3,7 @@ import Game from "./game.js";
 const canvas = document.getElementById("gameScreen");
 const ctx = canvas.getContext("2d");
 const GAME_WIDTH = window.innerWidth - 50;
-const GAME_HEIGHT = window.innerHeight - 50;
+const GAME_HEIGHT = window.innerHeight - 80;
 canvas.width = GAME_WIDTH;
 canvas.height = GAME_HEIGHT;
 canvas.style.border = "2px solid #000";

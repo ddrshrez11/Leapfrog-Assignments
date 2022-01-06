@@ -10,7 +10,7 @@ function getRandomDirection() {
     return Math.random() > 0.5 ? 1 : -1;
 }
 
-function getDistance(x1, x2, y1, y2) {
+function getDistance(x1, y1, x2 = 0, y2 = 0) {
     return Math.floor(Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2));
 }
 

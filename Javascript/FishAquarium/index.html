@@ -10,10 +10,20 @@
         <link rel="stylesheet" href="css/style.css" />
     </head>
     <body>
+        <button onClick="handleClick(0)">control fish</button>
+        <button onClick="handleClick(1)">feed fish</button>
+        <button onClick="handleClick(2)">clean tank</button>
+
         <canvas id="gameScreen"></canvas>
 
         <script src="js/utils.js"></script>
         <script src="js/index.js" type="module"></script>
+
+        <script>
+            handleClick = (gameMode) => {
+                window.game.gameMode = gameMode;
+            };
+        </script>
         <!-- <script src="js/fish.js"></script>
         <script src="js/food.js"></script>
         <script src="js/game.js"></script> -->
