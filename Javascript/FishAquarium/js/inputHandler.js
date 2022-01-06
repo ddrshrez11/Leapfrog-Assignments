@@ -19,7 +19,7 @@ export default class InputHandler {
         this.mouse.x = event.x - this.canvasPostion.left;
         this.mouse.y = event.y - this.canvasPostion.top;
         // console.log(this.mouse);
-        if (this.game.gameMode === 1) {
+        if (this.game.gameMode === this.game.gameModes.FEED) {
             this.game.createFood();
         }
     };

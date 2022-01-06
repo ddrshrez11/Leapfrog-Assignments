@@ -6,6 +6,7 @@ export default class Food {
      * @param {number} y Y coordinate to spawn food
      */
     constructor(game, x, y) {
+        this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
         this.r = 10;
@@ -17,6 +18,7 @@ export default class Food {
         this.direction = {
             y: 1,
         };
+        this.eaten = false;
     }
 
     /**
