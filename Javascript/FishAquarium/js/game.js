@@ -14,21 +14,28 @@ export default class Game {
         this.gameHeight = gameHeight;
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
-        this.gameMode = 1;
+        this.gameMode = 0;
+        this.junkLimit = 10;
         this.gameModes = {
             MOVE: 0,
             FEED: 1,
             CLEAN: 2,
         };
         this.changeInterval = {
-            junk: 500,
+            junk: 10000,
         };
         this.mouse = {
             x: 0,
             y: 0,
             click: false,
         };
-        this.junkLimit = 10;
+
+        // this.canvas.style.cursor = `url(
+        //     http://www.rw-designer.com/cursor-extern.php?id=45618
+        // ),default`;
+        this.canvas.style.cursor = `url(
+            http://www.rw-designer.com/cursor-extern.php?id=23450
+        ),default`;
     }
 
     /**
@@ -39,7 +46,7 @@ export default class Game {
         this.fishes = [];
         this.fishes.push(new Fish(this));
         this.fishes.push(new Fish(this));
-        this.fish = new Fish(this);
+        // this.fish = new Fish(this);
         // fish.draw(ctx);
         // }
         this.foods = [];
@@ -114,12 +121,10 @@ export default class Game {
     };
 
     updateGameObjects = () => {
-        this.gameObjects = [
-            ...this.junks,
-            this.fish,
-            ...this.fishes,
-            ...this.foods,
-        ];
+        this.fishes.sort(function (a, b) {
+            return b.r - a.r;
+        });
+        this.gameObjects = [...this.junks, ...this.fishes, ...this.foods];
     };
 
     updateJunks = () => {
@@ -130,14 +135,35 @@ export default class Game {
             this.fishes.forEach((fish) => {
                 fish.startHealthDecreaseInterval();
             });
-            this.fish.startHealthDecreaseInterval();
+            // this.fish.startHealthDecreaseInterval();
         } else {
             this.fishes.forEach((fish) => {
                 clearInterval(fish.healthDecreaseInterval);
             });
-            clearInterval(this.fish.healthDecreaseInterval);
+            // clearInterval(this.fish.healthDecreaseInterval);
         }
 
         this.updateGameObjects();
+    };
+
+    updateCursor = () => {
+        let cursorName;
+        switch (this.gameMode) {
+            case this.gameModes.MOVE:
+                cursorName = "hand-cursor";
+                break;
+            case this.gameModes.FEED:
+                cursorName = "pot-purple";
+                break;
+            case this.gameModes.CLEAN:
+                cursorName = "diamond-pick";
+                break;
+            default:
+                cursorName = "hand-cursor";
+                break;
+        }
+        this.canvas.style.cursor = `url(
+            assets/cursors/${cursorName}.cur
+        ),default`;
     };
 }
