@@ -30,13 +30,18 @@ export default class Fish {
             hunger: 2000,
             healthTimeout: 5000,
             hungerTimeout: 5000,
-            changeYDirection: 5000,
+            changeXDirection: 5000,
+            changeYDirection: 4000,
             resetYDirection: 500,
         };
 
         this.changeYDirectionInterval = setInterval(
             this.changeYDirection,
             this.changeInterval.changeYDirection
+        );
+        this.changeXDirectionInterval = setInterval(
+            this.changeXDirection,
+            this.changeInterval.changeXDirection
         );
         this.healthIncreaseInterval = setInterval(
             this.healthIncrease,
@@ -195,6 +200,10 @@ export default class Fish {
         setTimeout(this.resetYDirection, 500);
     };
 
+    changeXDirection = () => {
+        this.direction.x = getRandomDirection();
+    };
+
     /**
      * Reset Y-direction of fish to zero.
      */
@@ -241,7 +250,11 @@ export default class Fish {
             this.hungerMeter = 100;
             this.healthDecrease();
         }
-        console.log(this.hungerMeter, this.healthMeter);
+        console.log(
+            "hungerIncrease",
+            "hunger:" + this.hungerMeter,
+            "health:" + this.healthMeter
+        );
     };
     hungerDecrease = () => {
         this.hungerMeter -= 20;
@@ -258,7 +271,11 @@ export default class Fish {
                 this.changeInterval.hungerTimeout
             );
         }
-        console.log(this.hungerMeter, this.healthMeter);
+        console.log(
+            "hungerDecrease",
+            "hunger:" + this.hungerMeter,
+            "health:" + this.healthMeter
+        );
     };
     startHungerIncreaseInterval = () =>
         (this.hungerIncreaseInterval = setInterval(

@@ -1,3 +1,4 @@
+import Coin from "./coin.js";
 import Fish from "./fish.js";
 import Food from "./food.js";
 import InputHandler from "./inputHandler.js";
@@ -14,15 +15,19 @@ export default class Game {
         this.gameHeight = gameHeight;
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
-        this.gameMode = 0;
         this.junkLimit = 10;
+        this.money = 0;
+
         this.gameModes = {
             MOVE: 0,
             FEED: 1,
             CLEAN: 2,
+            SELECT: 3,
         };
+        this.gameMode = this.gameModes.MOVE;
         this.changeInterval = {
             junk: 10000,
+            coin: 2000,
         };
         this.mouse = {
             x: 0,
@@ -44,8 +49,9 @@ export default class Game {
     start = () => {
         // for (let index = 0; index < 10; index++) {
         this.fishes = [];
+        this.coins = [];
         this.fishes.push(new Fish(this));
-        this.fishes.push(new Fish(this));
+        // this.fishes.push(new Fish(this));
         // this.fish = new Fish(this);
         // fish.draw(ctx);
         // }
@@ -59,6 +65,10 @@ export default class Game {
         this.createJunkInterval = setInterval(
             this.createJunk,
             this.changeInterval.junk
+        );
+        this.createCoinInterval = setInterval(
+            this.createCoin,
+            this.changeInterval.coin
         );
         this.gameObjects = []; // ...this.junks];
         this.updateGameObjects();
@@ -84,7 +94,10 @@ export default class Game {
             object.draw(ctx);
         });
     };
-
+    buyFish = () => {
+        this.fishes.push(new Fish(this));
+        this.updateGameObjects();
+    };
     createFood = () => {
         //if (this.gameMode === 1 && this.mouse.click) {
         this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
@@ -119,12 +132,42 @@ export default class Game {
             this.updateJunks();
         }
     };
+    createCoin = () => {
+        if (this.coins.length >= this.coinLimit) {
+            clearInterval(this.createCoinInterval);
+            this.createCoinInterval = false;
+            return;
+        }
+        let newCoin = new Coin(this);
+        let overlapping = false;
+        this.coins.every((coin) => {
+            let dx = coin.position.x - newCoin.position.x;
+            let dy = coin.position.y - newCoin.position.y;
+            let distance = Math.abs(getDistance(dx, dy));
+            if (distance < coin.r + newCoin.r) {
+                overlapping = true;
+                return false;
+            }
+            return true;
+        });
+        if (overlapping) {
+            this.createCoin();
+        } else {
+            this.coins.push(newCoin);
+            this.updateCoins();
+        }
+    };
 
     updateGameObjects = () => {
         this.fishes.sort(function (a, b) {
             return b.r - a.r;
         });
-        this.gameObjects = [...this.junks, ...this.fishes, ...this.foods];
+        this.gameObjects = [
+            ...this.junks,
+            ...this.coins,
+            ...this.fishes,
+            ...this.foods,
+        ];
     };
 
     updateJunks = () => {
@@ -146,6 +189,14 @@ export default class Game {
         this.updateGameObjects();
     };
 
+    updateCoins = () => {
+        this.coins = this.coins.filter((coin) => {
+            return !coin.cleaned;
+        });
+
+        this.updateGameObjects();
+    };
+
     updateCursor = () => {
         let cursorName;
         switch (this.gameMode) {
@@ -157,6 +208,9 @@ export default class Game {
                 break;
             case this.gameModes.CLEAN:
                 cursorName = "diamond-pick";
+                break;
+            case this.gameModes.SELECT:
+                cursorName = "hand-cursor";
                 break;
             default:
                 cursorName = "hand-cursor";
