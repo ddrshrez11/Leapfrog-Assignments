@@ -51,8 +51,8 @@ export default class Junk {
                 this.cleaned = true;
                 if (!this.game.createJunkInterval) {
                     this.game.createJunkInterval = setInterval(
-                        this.createJunk,
-                        this.changeInterval.junk
+                        this.game.createJunk,
+                        this.game.changeInterval.junk
                     );
                 }
                 this.game.updateJunks();
