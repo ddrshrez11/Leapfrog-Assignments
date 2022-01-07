@@ -33,6 +33,13 @@ export default class Junk {
      * @param {number} deltaTime change in time from previous frame
      */
     update = (deltaTime) => {
+        this.checkForClean();
+        // this.wallCollisionDetect();
+        // this.position.y += (this.direction.y * this.speed) / deltaTime;
+        // console.log(this.position.y, this.direction.y, deltaTime);
+    };
+
+    checkForClean = () => {
         if (
             this.game.mouse.click &&
             this.game.gameMode === this.game.gameModes.CLEAN
@@ -41,22 +48,18 @@ export default class Junk {
             const dy = this.position.y - this.game.mouse.y;
             if (Math.abs(getDistance(dx, dy)) < this.r) {
                 // console.log("clean");
-                // if (
-                //     this.game.mouse.x >= this.position.x - this.r &&
-                //     this.game.mouse.x <= this.position.x + this.r &&
-                //     this.game.mouse.y >= this.position.y - this.r &&
-                //     this.game.mouse.y > this.position.y + this.r
-                // ) {
                 this.cleaned = true;
+                if (!this.game.createJunkInterval) {
+                    this.game.createJunkInterval = setInterval(
+                        this.createJunk,
+                        this.changeInterval.junk
+                    );
+                }
                 this.game.updateJunks();
                 this.game.mouse.click = false;
             }
         }
-        // this.wallCollisionDetect();
-        // this.position.y += (this.direction.y * this.speed) / deltaTime;
-        // console.log(this.position.y, this.direction.y, deltaTime);
     };
-
     /**
      * detect the bottom of the fish tank
      */

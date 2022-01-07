@@ -21,13 +21,14 @@ export default class Game {
             CLEAN: 2,
         };
         this.changeInterval = {
-            junk: 10000,
+            junk: 500,
         };
         this.mouse = {
             x: 0,
             y: 0,
             click: false,
         };
+        this.junkLimit = 10;
     }
 
     /**
@@ -35,6 +36,9 @@ export default class Game {
      */
     start = () => {
         // for (let index = 0; index < 10; index++) {
+        this.fishes = [];
+        this.fishes.push(new Fish(this));
+        this.fishes.push(new Fish(this));
         this.fish = new Fish(this);
         // fish.draw(ctx);
         // }
@@ -45,7 +49,10 @@ export default class Game {
         //     this.createJunk();
         //     //this.junks.push(new Junk(this));
         // }
-        setInterval(this.createJunk, this.changeInterval.junk);
+        this.createJunkInterval = setInterval(
+            this.createJunk,
+            this.changeInterval.junk
+        );
         this.gameObjects = []; // ...this.junks];
         this.updateGameObjects();
         this.inputHandler = new InputHandler(this);
@@ -81,6 +88,11 @@ export default class Game {
     };
 
     createJunk = () => {
+        if (this.junks.length >= this.junkLimit) {
+            clearInterval(this.createJunkInterval);
+            this.createJunkInterval = false;
+            return;
+        }
         let newJunk = new Junk(this);
         let overlapping = false;
         this.junks.every((junk) => {
@@ -102,7 +114,12 @@ export default class Game {
     };
 
     updateGameObjects = () => {
-        this.gameObjects = [...this.junks, this.fish, ...this.foods];
+        this.gameObjects = [
+            ...this.junks,
+            this.fish,
+            ...this.fishes,
+            ...this.foods,
+        ];
     };
 
     updateJunks = () => {
@@ -110,10 +127,17 @@ export default class Game {
             return !junk.cleaned;
         });
         if (this.junks.length === 0) {
+            this.fishes.forEach((fish) => {
+                fish.startHealthDecreaseInterval();
+            });
             this.fish.startHealthDecreaseInterval();
         } else {
+            this.fishes.forEach((fish) => {
+                clearInterval(fish.healthDecreaseInterval);
+            });
             clearInterval(this.fish.healthDecreaseInterval);
         }
+
         this.updateGameObjects();
     };
 }
