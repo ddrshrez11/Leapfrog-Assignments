@@ -2,6 +2,10 @@ function getRandomFromRange(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+function getRandomFromArray(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
 function getRandomIndex() {
     return getRandomFromRange(0, 3);
 }

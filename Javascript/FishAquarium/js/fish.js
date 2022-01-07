@@ -1,13 +1,22 @@
+import { fishTypes } from "./fishTypes.js";
 export default class Fish {
     /**
      * @constructor
      * @param {Game} game Game object
      */
-    constructor(game) {
+    constructor(game, type) {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
         this.mouse = game.mouse;
+
+        // different for each fish type
+        this.type = fishTypes[type];
+        this.color = this.type.color;
+        this.speed = this.type.speed;
+        this.maxHealthMeter = this.type.maxHealthMeter;
+        this.maxhungerMeter = this.type.maxhungerMeter;
+        this.changeInterval = this.type.changeInterval;
 
         this.r = getRandomFromRange(10, 30);
         this.position = {
@@ -19,21 +28,9 @@ export default class Fish {
             y: getRandomDirection(),
         };
         this.gender = "M"; //!to be implemented
-        this.speed = 10;
         this.level = 1; //!to be implemented
-        this.maxHealthMeter = 100;
-        this.maxhungerMeter = 100;
         this.healthMeter = 100;
         this.hungerMeter = 0;
-        this.changeInterval = {
-            health: 2500,
-            hunger: 2000,
-            healthTimeout: 5000,
-            hungerTimeout: 5000,
-            changeXDirection: 5000,
-            changeYDirection: 4000,
-            resetYDirection: 500,
-        };
 
         this.changeYDirectionInterval = setInterval(
             this.changeYDirection,
@@ -76,7 +73,7 @@ export default class Fish {
     draw = (ctx) => {
         // console.log("draw");
         ctx.beginPath();
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = this.color;
         ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();

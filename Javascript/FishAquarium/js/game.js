@@ -3,6 +3,7 @@ import Fish from "./fish.js";
 import Food from "./food.js";
 import InputHandler from "./inputHandler.js";
 import Junk from "./junk.js";
+import { fishTypes } from "./fishTypes.js";
 
 export default class Game {
     /**
@@ -15,6 +16,7 @@ export default class Game {
         this.gameHeight = gameHeight;
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
+        this.fishTypesArray = Object.keys(fishTypes);
         this.limit = {
             junk: 10,
             coin: 10,
@@ -53,7 +55,9 @@ export default class Game {
         // for (let index = 0; index < 10; index++) {
         this.fishes = [];
         this.coins = [];
-        this.fishes.push(new Fish(this));
+        this.fishes.push(new Fish(this, "blue"));
+        this.fishes.push(new Fish(this, "black"));
+        this.fishes.push(new Fish(this, "green"));
         // this.fishes.push(new Fish(this));
         // this.fish = new Fish(this);
         // fish.draw(ctx);
@@ -98,7 +102,8 @@ export default class Game {
         });
     };
     buyFish = () => {
-        this.fishes.push(new Fish(this));
+        let color = getRandomFromArray(this.fishTypesArray);
+        this.fishes.push(new Fish(this, color));
         this.updateGameObjects();
     };
     createFood = () => {
@@ -135,6 +140,7 @@ export default class Game {
             this.updateJunks();
         }
     };
+
     createCoin = () => {
         if (this.coins.length >= this.limit.coin) {
             clearInterval(this.createCoinInterval);
