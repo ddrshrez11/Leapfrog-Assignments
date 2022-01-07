@@ -18,9 +18,9 @@ export default class Fish {
             x: getRandomDirection(),
             y: getRandomDirection(),
         };
-        this.gender = "M";
+        this.gender = "M"; //!to be implemented
         this.speed = 10;
-        this.level = 1;
+        this.level = 1; //!to be implemented
         this.maxHealthMeter = 100;
         this.maxhungerMeter = 100;
         this.healthMeter = 100;

@@ -15,7 +15,10 @@ export default class Game {
         this.gameHeight = gameHeight;
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
-        this.junkLimit = 10;
+        this.limit = {
+            junk: 10,
+            coin: 10,
+        };
         this.money = 0;
 
         this.gameModes = {
@@ -27,7 +30,7 @@ export default class Game {
         this.gameMode = this.gameModes.MOVE;
         this.changeInterval = {
             junk: 10000,
-            coin: 2000,
+            coin: 10000,
         };
         this.mouse = {
             x: 0,
@@ -108,7 +111,7 @@ export default class Game {
     };
 
     createJunk = () => {
-        if (this.junks.length >= this.junkLimit) {
+        if (this.junks.length >= this.limit.junk) {
             clearInterval(this.createJunkInterval);
             this.createJunkInterval = false;
             return;
@@ -133,7 +136,7 @@ export default class Game {
         }
     };
     createCoin = () => {
-        if (this.coins.length >= this.coinLimit) {
+        if (this.coins.length >= this.limit.coin) {
             clearInterval(this.createCoinInterval);
             this.createCoinInterval = false;
             return;
@@ -176,12 +179,12 @@ export default class Game {
         });
         if (this.junks.length === 0) {
             this.fishes.forEach((fish) => {
-                fish.startHealthDecreaseInterval();
+                clearInterval(fish.healthDecreaseInterval);
             });
             // this.fish.startHealthDecreaseInterval();
         } else {
             this.fishes.forEach((fish) => {
-                clearInterval(fish.healthDecreaseInterval);
+                fish.startHealthDecreaseInterval();
             });
             // clearInterval(this.fish.healthDecreaseInterval);
         }
