@@ -5,6 +5,7 @@ const fishTypes = {
         speed: 10,
         maxHealthMeter: 100,
         maxhungerMeter: 100,
+        baseSize: 9,
         changeInterval: {
             health: 2500,
             hunger: 2000,
@@ -13,6 +14,7 @@ const fishTypes = {
             changeXDirection: 5000,
             changeYDirection: 4000,
             resetYDirection: 500,
+            levelUp: 500,
         },
     },
     black: {
@@ -21,6 +23,7 @@ const fishTypes = {
         speed: 20,
         maxHealthMeter: 100,
         maxhungerMeter: 100,
+        baseSize: 9,
         changeInterval: {
             health: 3500,
             hunger: 3000,
@@ -29,6 +32,7 @@ const fishTypes = {
             changeXDirection: 5000,
             changeYDirection: 4000,
             resetYDirection: 500,
+            levelUp: 2000,
         },
     },
     green: {
@@ -37,6 +41,7 @@ const fishTypes = {
         speed: 30,
         maxHealthMeter: 100,
         maxhungerMeter: 100,
+        baseSize: 9,
         changeInterval: {
             health: 4500,
             hunger: 5000,
@@ -45,6 +50,7 @@ const fishTypes = {
             changeXDirection: 5000,
             changeYDirection: 4000,
             resetYDirection: 500,
+            levelUp: 2000,
         },
     },
 };

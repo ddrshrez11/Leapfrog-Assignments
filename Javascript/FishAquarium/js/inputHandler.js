@@ -16,11 +16,16 @@ export default class InputHandler {
     clickHandler = (event) => {
         // console.log(this.mouse);
         this.mouse.click = true;
+        setTimeout(this.resetMouseClick, 500);
         this.mouse.x = event.x - this.canvasPostion.left;
         this.mouse.y = event.y - this.canvasPostion.top;
         // console.log(this.mouse);
         if (this.game.gameMode === this.game.gameModes.FEED) {
             this.game.createFood();
         }
+    };
+
+    resetMouseClick = () => {
+        this.mouse.click = false;
     };
 }

@@ -141,19 +141,17 @@ export default class Game {
         }
     };
 
-    createCoin = () => {
+    createCoin = (x, y) => {
         if (this.coins.length >= this.limit.coin) {
             clearInterval(this.createCoinInterval);
             this.createCoinInterval = false;
             return;
         }
-        let newCoin = new Coin(this);
+        let newCoin = new Coin(this, x, y);
         let overlapping = false;
         this.coins.every((coin) => {
-            let dx = coin.position.x - newCoin.position.x;
-            let dy = coin.position.y - newCoin.position.y;
-            let distance = Math.abs(getDistance(dx, dy));
-            if (distance < coin.r + newCoin.r) {
+            let dx = Math.abs(coin.position.x - newCoin.position.x);
+            if (dx < coin.r + newCoin.r) {
                 overlapping = true;
                 return false;
             }
@@ -200,7 +198,7 @@ export default class Game {
 
     updateCoins = () => {
         this.coins = this.coins.filter((coin) => {
-            return !coin.cleaned;
+            return !coin.collected;
         });
 
         this.updateGameObjects();

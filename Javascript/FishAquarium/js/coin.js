@@ -5,20 +5,20 @@ export default class Coin {
      * @param {number} x X coordinate to spawn food
      * @param {number} y Y coordinate to spawn food
      */
-    constructor(game) {
+    constructor(game, x, y) {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
         this.r = 10;
         this.position = {
-            x: getRandomFromRange(this.r, this.gameWidth - this.r),
-            y: getRandomFromRange(this.r, this.gameHeight - this.r),
+            x: x ? x : getRandomFromRange(this.r, this.gameWidth - this.r),
+            y: y ? y : getRandomFromRange(this.r, this.gameHeight - this.r),
         };
-        this.speed = 5;
+        this.speed = 25;
         this.direction = {
             y: 1,
         };
-        this.cleaned = false;
+        this.collected = false;
 
         setInterval(() => {}, 2000);
     }
@@ -57,7 +57,7 @@ export default class Coin {
             if (Math.abs(getDistance(dx, dy)) < this.r) {
                 this.game.money++;
                 console.log("Coin Collected", "Coins:", this.game.money);
-                this.cleaned = true;
+                this.collected = true;
                 if (!this.game.createCoinInterval) {
                     this.game.createCoinInterval = setInterval(
                         this.game.createCoin,

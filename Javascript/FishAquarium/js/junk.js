@@ -56,6 +56,7 @@ export default class Junk {
                     );
                 }
                 this.game.updateJunks();
+                this.game.createCoin(this.position.x, this.position.y);
                 this.game.mouse.click = false;
             }
         }

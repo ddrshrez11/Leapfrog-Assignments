@@ -17,8 +17,11 @@ export default class Fish {
         this.maxHealthMeter = this.type.maxHealthMeter;
         this.maxhungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
+        this.baseSize = this.type.baseSize;
 
-        this.r = getRandomFromRange(10, 30);
+        this.level = 1; //!to be implemented
+        this.levelMeter = 0;
+        this.r = this.baseSize + this.level; //getRandomFromRange(10, 30);
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -28,7 +31,6 @@ export default class Fish {
             y: getRandomDirection(),
         };
         this.gender = "M"; //!to be implemented
-        this.level = 1; //!to be implemented
         this.healthMeter = 100;
         this.hungerMeter = 0;
 
@@ -40,12 +42,13 @@ export default class Fish {
             this.changeXDirection,
             this.changeInterval.changeXDirection
         );
-        this.healthIncreaseInterval = setInterval(
-            this.healthIncrease,
-            this.changeInterval.health
-        );
+        // this.healthIncreaseInterval = setInterval(
+        //     this.healthIncrease,
+        //     this.changeInterval.health
+        // );
 
         this.startHungerIncreaseInterval();
+        this.startLevelUpInterval();
         // this.startHealthDecreaseInterval();
     }
 
@@ -274,6 +277,18 @@ export default class Fish {
             "health:" + this.healthMeter
         );
     };
+    levelMeterUp = () => {
+        this.levelMeter += 50;
+        console.log(this.levelMeter);
+        if (this.levelMeter > 100) {
+            this.levelUp();
+        }
+    };
+    levelUp = () => {
+        this.level++;
+        this.r = this.baseSize + this.level;
+        this.levelMeter = 0;
+    };
     startHungerIncreaseInterval = () =>
         (this.hungerIncreaseInterval = setInterval(
             this.hungerIncrease,
@@ -284,4 +299,10 @@ export default class Fish {
             this.healthDecrease,
             this.changeInterval.health
         ));
+    startLevelUpInterval = () => {
+        this.levelUpInterval = setInterval(
+            this.levelMeterUp,
+            this.changeInterval.levelUp * this.level
+        );
+    };
 }
