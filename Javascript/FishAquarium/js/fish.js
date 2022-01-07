@@ -15,7 +15,7 @@ export default class Fish {
         this.color = this.type.color;
         this.speed = this.type.speed;
         this.maxHealthMeter = this.type.maxHealthMeter;
-        this.maxhungerMeter = this.type.maxhungerMeter;
+        this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
         this.baseSize = this.type.baseSize;
 
@@ -80,6 +80,50 @@ export default class Fish {
         ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();
+        this.drawHealthBar(ctx);
+        this.drawHungerBar(ctx);
+    };
+
+    drawHealthBar = (ctx) => {
+        let maxWidth = 40 + this.level;
+        let w = (this.healthMeter / this.maxHealthMeter) * maxWidth;
+        let h = 4;
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#333";
+        ctx.fillStyle = "#6aa06a";
+        ctx.strokeRect(
+            this.position.x - maxWidth / 2,
+            this.position.y - this.r - 17,
+            maxWidth,
+            h
+        );
+        ctx.fillRect(
+            this.position.x - maxWidth / 2,
+            this.position.y - this.r - 17,
+            w,
+            h
+        );
+    };
+
+    drawHungerBar = (ctx) => {
+        let maxWidth = 40 + this.level;
+        let w = (this.hungerMeter / this.maxHungerMeter) * maxWidth;
+        let h = 4;
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#333";
+        ctx.fillStyle = "#e4ae4b";
+        ctx.strokeRect(
+            this.position.x - maxWidth / 2,
+            this.position.y - this.r - 10,
+            maxWidth,
+            h
+        );
+        ctx.fillRect(
+            this.position.x - maxWidth / 2,
+            this.position.y - this.r - 10,
+            w,
+            h
+        );
     };
 
     normalMovement = (deltaTime) => {
@@ -288,6 +332,8 @@ export default class Fish {
         this.level++;
         this.r = this.baseSize + this.level;
         this.levelMeter = 0;
+        clearInterval(this.levelUpInterval);
+        this.startLevelUpInterval();
     };
     startHungerIncreaseInterval = () =>
         (this.hungerIncreaseInterval = setInterval(
