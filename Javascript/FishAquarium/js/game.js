@@ -4,6 +4,7 @@ import Food from "./food.js";
 import InputHandler from "./inputHandler.js";
 import Junk from "./junk.js";
 import { fishTypes } from "./fishTypes.js";
+import FishInfo from "./fishInfo.js";
 
 export default class Game {
     /**
@@ -17,6 +18,7 @@ export default class Game {
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
         this.fishTypesArray = Object.keys(fishTypes);
+        this.showInfo = false;
         this.limit = {
             junk: 10,
             coin: 10,
@@ -55,20 +57,15 @@ export default class Game {
         // for (let index = 0; index < 10; index++) {
         this.fishes = [];
         this.coins = [];
+        this.foods = [];
+        this.junks = [];
+        this.inputHandler = new InputHandler(this);
+        this.fishInfo = [];
+
         this.fishes.push(new Fish(this, "blue"));
         this.fishes.push(new Fish(this, "black"));
         this.fishes.push(new Fish(this, "green"));
-        // this.fishes.push(new Fish(this));
-        // this.fish = new Fish(this);
-        // fish.draw(ctx);
-        // }
-        this.foods = [];
-        this.food = new Food(this, 400, 100);
-        this.junks = [];
-        // for (let index = 0; index < 5; index++) {
-        //     this.createJunk();
-        //     //this.junks.push(new Junk(this));
-        // }
+
         this.createJunkInterval = setInterval(
             this.createJunk,
             this.changeInterval.junk
@@ -77,9 +74,9 @@ export default class Game {
             this.createCoin,
             this.changeInterval.coin
         );
+
         this.gameObjects = []; // ...this.junks];
         this.updateGameObjects();
-        this.inputHandler = new InputHandler(this);
     };
 
     /**
@@ -100,6 +97,9 @@ export default class Game {
         this.gameObjects.forEach((object) => {
             object.draw(ctx);
         });
+        // if (this.showInfo) {
+        //     this.drawShowInfoBox(ctx);
+        // }
     };
     buyFish = () => {
         let color = getRandomFromArray(this.fishTypesArray);
@@ -110,7 +110,7 @@ export default class Game {
         //if (this.gameMode === 1 && this.mouse.click) {
         this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
         this.updateGameObjects();
-        this.mouse.click = false;
+        this.inputHandler.resetMouseClick();
         console.log("new food");
         //}
     };
@@ -174,6 +174,7 @@ export default class Game {
             ...this.coins,
             ...this.fishes,
             ...this.foods,
+            ...this.fishInfo,
         ];
     };
 
@@ -227,4 +228,21 @@ export default class Game {
             assets/cursors/${cursorName}.cur
         ),default`;
     };
+
+    toggleShowInfo = (fish) => {
+        if (this.showInfo) {
+            this.showInfo = false;
+            this.fishInfo.pop();
+        } else {
+            this.fishInfo.push(new FishInfo(fish));
+            this.showInfo = true;
+        }
+        this.updateGameObjects();
+    };
+
+    // drawShowInfoBox = (ctx1) => {
+    //     ctx1.rect(50, 50, 200, 200);
+    //     ctx1.fillStyle = "rgba(255, 100, 0, 0.8)";
+    //     ctx1.fill();
+    // };
 }

@@ -12,6 +12,7 @@ export default class Fish {
 
         // different for each fish type
         this.type = fishTypes[type];
+        this.name = "Fish" + this.game.fishes.length;
         this.color = this.type.color;
         this.speed = this.type.speed;
         this.maxHealthMeter = this.type.maxHealthMeter;
@@ -30,7 +31,7 @@ export default class Fish {
             x: getRandomDirection(),
             y: getRandomDirection(),
         };
-        this.gender = "M"; //!to be implemented
+        this.gender = getGender(); //!to be implemented
         this.healthMeter = 100;
         this.hungerMeter = 0;
 
@@ -65,6 +66,8 @@ export default class Fish {
         } else {
             this.normalMovement(deltaTime);
         }
+        if (this.game.gameMode === this.game.gameModes.SELECT)
+            this.checkForClick();
 
         // console.log(this.position.y, this.direction.y, deltaTime);
     };
@@ -73,57 +76,53 @@ export default class Fish {
      * draw fish object onto the game screen
      * @param {context} ctx context of canvas
      */
-    draw = (ctx) => {
+    draw = (ctx, x, y) => {
         // console.log("draw");
+        if (!x && !y) {
+            x = this.position.x;
+            y = this.position.y;
+        }
         ctx.beginPath();
         ctx.fillStyle = this.color;
-        ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
+        ctx.arc(x, y, this.r, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();
-        this.drawHealthBar(ctx);
-        this.drawHungerBar(ctx);
+        if (!this.game.showInfo) {
+            this.drawHealthBar(ctx);
+            this.drawHungerBar(ctx);
+        }
     };
 
-    drawHealthBar = (ctx) => {
-        let maxWidth = 40 + this.level;
+    drawHealthBar = (ctx, x, y, maxWidth) => {
+        if (!x && !y) {
+            maxWidth = 40 + this.level;
+            x = this.position.x - maxWidth / 2;
+            y = this.position.y - this.r - 17;
+        }
         let w = (this.healthMeter / this.maxHealthMeter) * maxWidth;
         let h = 4;
         ctx.lineWidth = 4;
+        ctx.lineCap = "round";
         ctx.strokeStyle = "#333";
         ctx.fillStyle = "#6aa06a";
-        ctx.strokeRect(
-            this.position.x - maxWidth / 2,
-            this.position.y - this.r - 17,
-            maxWidth,
-            h
-        );
-        ctx.fillRect(
-            this.position.x - maxWidth / 2,
-            this.position.y - this.r - 17,
-            w,
-            h
-        );
+        ctx.strokeRect(x, y, maxWidth, h);
+        ctx.fillRect(x, y, w, h);
     };
 
-    drawHungerBar = (ctx) => {
-        let maxWidth = 40 + this.level;
+    drawHungerBar = (ctx, x, y, maxWidth) => {
+        if (!x && !y) {
+            maxWidth = 40 + this.level;
+            x = this.position.x - maxWidth / 2;
+            y = this.position.y - this.r - 10;
+        }
         let w = (this.hungerMeter / this.maxHungerMeter) * maxWidth;
         let h = 4;
         ctx.lineWidth = 4;
+        ctx.lineCap = "round";
         ctx.strokeStyle = "#333";
+        ctx.strokeRect(x, y, maxWidth, h);
         ctx.fillStyle = "#e4ae4b";
-        ctx.strokeRect(
-            this.position.x - maxWidth / 2,
-            this.position.y - this.r - 10,
-            maxWidth,
-            h
-        );
-        ctx.fillRect(
-            this.position.x - maxWidth / 2,
-            this.position.y - this.r - 10,
-            w,
-            h
-        );
+        ctx.fillRect(x, y, w, h);
     };
 
     normalMovement = (deltaTime) => {
@@ -142,7 +141,7 @@ export default class Fish {
             this.position.y -= dy / (3 * deltaTime);
         }
         if (Math.abs(dx) < 1) {
-            this.mouse.click = false;
+            this.game.inputHandler.resetMouseClick();
         }
     };
 
@@ -193,6 +192,21 @@ export default class Fish {
         this.game.foods.splice(minimumFoodIndex, 1);
         this.game.updateGameObjects();
         console.log("Food Eaten");
+    };
+
+    checkForClick = () => {
+        if (
+            this.game.mouse.click &&
+            this.game.gameMode === this.game.gameModes.SELECT &&
+            !this.game.showInfo
+        ) {
+            const dx = this.position.x - this.game.mouse.x;
+            const dy = this.position.y - this.game.mouse.y;
+            if (Math.abs(getDistance(dx, dy)) < this.r) {
+                this.game.toggleShowInfo(this);
+                this.game.mouse.click = false;
+            }
+        }
     };
     /**
      *detect the edge of the fish tank
@@ -260,7 +274,7 @@ export default class Fish {
             this.healthMeter -= 10;
             if (this.healthMeter <= 0) {
                 this.healthMeter = 0;
-                console.log("fish has died");
+                // console.log("fish has died");
             }
         }
     };
@@ -284,7 +298,7 @@ export default class Fish {
                     this.changeInterval.healthTimeout
                 );
             }
-            console.log(this.healthMeter);
+            // console.log(this.healthMeter);
         }
     };
 
@@ -294,11 +308,11 @@ export default class Fish {
             this.hungerMeter = 100;
             this.healthDecrease();
         }
-        console.log(
-            "hungerIncrease",
-            "hunger:" + this.hungerMeter,
-            "health:" + this.healthMeter
-        );
+        // console.log(
+        //     "hungerIncrease",
+        //     "hunger:" + this.hungerMeter,
+        //     "health:" + this.healthMeter
+        // );
     };
     hungerDecrease = () => {
         this.hungerMeter -= 20;

@@ -10,6 +10,10 @@ function getRandomIndex() {
     return getRandomFromRange(0, 3);
 }
 
+function getGender() {
+    return Math.random() > 0.5 ? "Male" : "Female";
+}
+
 function getRandomDirection() {
     return Math.random() > 0.5 ? 1 : -1;
 }

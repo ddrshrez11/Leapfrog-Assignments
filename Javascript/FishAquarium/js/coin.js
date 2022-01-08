@@ -19,8 +19,6 @@ export default class Coin {
             y: 1,
         };
         this.collected = false;
-
-        setInterval(() => {}, 2000);
     }
 
     /**
@@ -65,7 +63,7 @@ export default class Coin {
                     );
                 }
                 this.game.updateCoins();
-                this.game.mouse.click = false;
+                this.game.inputHandler.resetMouseClick();
             }
         }
     };
