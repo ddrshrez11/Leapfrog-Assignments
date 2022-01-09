@@ -23,6 +23,9 @@ export default class FishInfo {
         this.font = "Arial";
         this.fontSize = 20;
         this.infoGapSize = 30;
+
+        this.panelImg = new Image();
+        this.panelImg.src = "./assets/otherObjects/panel.png";
     }
 
     /**
@@ -41,10 +44,18 @@ export default class FishInfo {
         let textPosition = {};
         textPosition.x = this.startPosition.x;
         textPosition.y = this.startPosition.y;
-        // ctx.rect(this.position.x, this.position.y, this.width, this.height);
-        // ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-        ctx.fillStyle = "#c2c26b";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+        // ctx.fillStyle = "#c2c26b";
+        // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+        ctx.drawImage(
+            this.panelImg,
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height
+        );
+
         ctx.fillStyle = "#000";
         ctx.font = "30px " + this.font;
         ctx.fillText(

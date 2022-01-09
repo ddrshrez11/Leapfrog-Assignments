@@ -19,10 +19,23 @@ export default class Fish {
         this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
         this.baseSize = this.type.baseSize;
+        this.angle = 0;
+
+        //image
+        this.leftImg = new Image();
+        this.leftImg.src = "./assets/fishes/" + this.type.image.leftSrc;
+        this.rightImg = new Image();
+        this.rightImg.src = "./assets/fishes/" + this.type.image.rightSrc;
+        this.spriteX = this.type.image.spriteX;
+        this.spriteY = this.type.image.spriteY;
+        this.spriteWidth = this.type.image.totalSpriteWidth / this.spriteX;
+        this.spriteHeight = this.type.image.totalSpriteHeight / this.spriteY;
+        this.frameX = 0;
+        this.frameY = 0;
 
         this.level = 1; //!to be implemented
         this.levelMeter = 0;
-        this.r = this.baseSize + this.level; //getRandomFromRange(10, 30);
+        this.r = this.spriteWidth / 34; //this.baseSize + this.level; //getRandomFromRange(10, 30);
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -59,6 +72,7 @@ export default class Fish {
      */
     update = (deltaTime) => {
         this.fishCollisionDetection();
+
         if (game.gameMode === this.game.gameModes.MOVE && this.mouse.click) {
             this.userInputMovement(deltaTime);
         } else if (this.game.foods.length != 0 && this.hungerMeter > 0) {
@@ -87,6 +101,38 @@ export default class Fish {
         ctx.arc(x, y, this.r, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(this.angle);
+        if (this.direction.x < 0) {
+            ctx.drawImage(
+                this.leftImg,
+                this.frameX * this.spriteWidth,
+                this.frameY * this.spriteHeight,
+                this.spriteWidth,
+                this.spriteHeight,
+                0 - this.r * 1.5,
+                0 - this.r,
+                3 * this.r,
+                2 * this.r
+            );
+        }
+        if (this.direction.x > 0) {
+            ctx.drawImage(
+                this.rightImg,
+                this.frameX * this.spriteWidth,
+                this.frameY * this.spriteHeight,
+                this.spriteWidth,
+                this.spriteHeight,
+                0 - this.r * 1.5,
+                0 - this.r,
+                3 * this.r,
+                2 * this.r
+            );
+        }
+        ctx.restore();
+
         if (!this.game.showInfo) {
             this.drawHealthBar(ctx);
             this.drawHungerBar(ctx);
@@ -126,13 +172,30 @@ export default class Fish {
     };
 
     normalMovement = (deltaTime) => {
-        this.position.x += (this.direction.x * this.speed) / deltaTime;
-        this.position.y += (this.direction.y * this.speed) / deltaTime;
+        let theta = 0;
+        if (this.direction.y === 0) {
+            theta = Math.atan2(this.direction.x, -this.direction.x);
+        } else {
+            theta = Math.atan2(this.direction.x, this.direction.y);
+        }
+
+        this.angle = theta;
+        this.position.x += this.direction.x; //* this.speed) / deltaTime;
+        this.position.y += this.direction.y; //* this.speed) / deltaTime;
     };
 
     userInputMovement = (deltaTime) => {
         const dx = this.position.x - this.mouse.x;
         const dy = this.position.y - this.mouse.y;
+        if (dx > 0) {
+            this.changeXDirection(-1);
+        }
+        if (dx < 0) {
+            this.changeXDirection(1);
+        }
+        let theta = Math.atan2(dx, dy);
+        this.angle = theta;
+
         if (this.mouse.x != this.position.x) {
             this.position.x -= dx / (3 * deltaTime);
             // this.mouse.click = false;
@@ -151,6 +214,15 @@ export default class Fish {
 
         const dx = this.position.x - minimumFood.position.x;
         const dy = this.position.y - minimumFood.position.y;
+        if (dx > 0) {
+            this.changeXDirection(-1);
+        }
+        if (dx < 0) {
+            this.changeXDirection(1);
+        }
+        let theta = Math.atan2(dx, dy);
+        this.angle = theta;
+
         if (minimumFood.position.x != this.position.x) {
             this.position.x -= dx / (3 * deltaTime);
             // this.mouse.click = false;
@@ -258,8 +330,12 @@ export default class Fish {
         setTimeout(this.resetYDirection, 500);
     };
 
-    changeXDirection = () => {
-        this.direction.x = getRandomDirection();
+    changeXDirection = (dir) => {
+        if (dir != undefined) {
+            this.direction.x = dir;
+        } else {
+            this.direction.x = getRandomDirection();
+        }
     };
 
     /**
@@ -344,7 +420,7 @@ export default class Fish {
     };
     levelUp = () => {
         this.level++;
-        this.r = this.baseSize + this.level;
+        this.r = this.r + 0.5;
         this.levelMeter = 0;
         clearInterval(this.levelUpInterval);
         this.startLevelUpInterval();

@@ -48,6 +48,9 @@ export default class Game {
         this.canvas.style.cursor = `url(
             http://www.rw-designer.com/cursor-extern.php?id=23450
         ),default`;
+
+        this.bgImg = new Image();
+        this.bgImg.src = "./assets/otherObjects/bg1.jpg";
     }
 
     /**
@@ -62,9 +65,9 @@ export default class Game {
         this.inputHandler = new InputHandler(this);
         this.fishInfo = [];
 
-        this.fishes.push(new Fish(this, "blue"));
+        // this.fishes.push(new Fish(this, "blue"));
         this.fishes.push(new Fish(this, "black"));
-        this.fishes.push(new Fish(this, "green"));
+        // this.fishes.push(new Fish(this, "green"));
 
         this.createJunkInterval = setInterval(
             this.createJunk,
@@ -94,12 +97,17 @@ export default class Game {
      * @param {context} ctx
      */
     draw = (ctx) => {
+        this.drawBg(ctx);
         this.gameObjects.forEach((object) => {
             object.draw(ctx);
         });
         // if (this.showInfo) {
         //     this.drawShowInfoBox(ctx);
         // }
+    };
+
+    drawBg = (ctx) => {
+        ctx.drawImage(this.bgImg, 0, 0, this.gameWidth, this.gameHeight);
     };
     buyFish = () => {
         let color = getRandomFromArray(this.fishTypesArray);

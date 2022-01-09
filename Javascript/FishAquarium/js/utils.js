@@ -6,8 +6,8 @@ function getRandomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function getRandomIndex() {
-    return getRandomFromRange(0, 3);
+function getRandomIndex(start, stop) {
+    return getRandomFromRange(start, stop);
 }
 
 function getGender() {

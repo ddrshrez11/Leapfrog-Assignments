@@ -6,13 +6,25 @@ export default class Junk {
     constructor(game) {
         this.game = game;
         this.gameWidth = game.gameWidth;
-        this.gameHeight = game.gameHeight;
+        this.gameHeight = game.gameHeight - 30;
         this.r = getRandomFromRange(20, 30);
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
         };
+        this.direction = {
+            y: 1,
+        };
+        this.speed = 2;
         this.cleaned = false;
+        this.changeInterval = {
+            junkImg: 200,
+        };
+
+        this.junkImgIndex = getRandomIndex(0, 2);
+        this.junkImg = new Image();
+        this.junkImg.src =
+            "./assets/otherObjects/junk" + this.junkImgIndex + ".png";
     }
 
     /**
@@ -21,11 +33,19 @@ export default class Junk {
      */
     draw = (ctx) => {
         // console.log("draw");
-        ctx.beginPath();
-        ctx.fillStyle = "red";
-        ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = "red";
+        // ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        ctx.drawImage(
+            this.junkImg,
+            this.position.x - this.r,
+            this.position.y - this.r,
+            this.r * 2,
+            this.r * 2
+        );
     };
 
     /**
@@ -33,9 +53,9 @@ export default class Junk {
      * @param {number} deltaTime change in time from previous frame
      */
     update = (deltaTime) => {
+        this.wallCollisionDetect();
         this.checkForClean();
-        // this.wallCollisionDetect();
-        // this.position.y += (this.direction.y * this.speed) / deltaTime;
+        this.position.y += (this.direction.y * this.speed) / deltaTime;
         // console.log(this.position.y, this.direction.y, deltaTime);
     };
 
@@ -55,8 +75,8 @@ export default class Junk {
                         this.game.changeInterval.junk
                     );
                 }
-                this.game.updateJunks();
                 this.game.createCoin(this.position.x, this.position.y);
+                this.game.updateJunks();
                 this.game.inputHandler.resetMouseClick();
             }
         }

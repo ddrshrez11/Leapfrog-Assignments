@@ -8,8 +8,8 @@ export default class Coin {
     constructor(game, x, y) {
         this.game = game;
         this.gameWidth = game.gameWidth;
-        this.gameHeight = game.gameHeight;
-        this.r = 10;
+        this.gameHeight = game.gameHeight - 30;
+        this.r = 15;
         this.position = {
             x: x ? x : getRandomFromRange(this.r, this.gameWidth - this.r),
             y: y ? y : getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -19,6 +19,20 @@ export default class Coin {
             y: 1,
         };
         this.collected = false;
+        this.changeInterval = {
+            coinImg: 200,
+        };
+
+        this.coinImgIndex = 0;
+        this.coinImg = new Image();
+        this.coinImg.src = "./assets/coins/coin-0.png";
+
+        setInterval(() => {
+            this.coinImg.src =
+                "./assets/coins/coin-" + this.coinImgIndex + ".png";
+            this.coinImgIndex += 1;
+            this.coinImgIndex %= 6;
+        }, this.changeInterval.coinImg);
     }
 
     /**
@@ -27,11 +41,19 @@ export default class Coin {
      */
     draw = (ctx) => {
         // console.log("draw");
-        ctx.beginPath();
-        ctx.fillStyle = "#cbc131";
-        ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = "#cbc131";
+        // ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        ctx.drawImage(
+            this.coinImg,
+            this.position.x - this.r,
+            this.position.y - this.r,
+            this.r * 2,
+            this.r * 2
+        );
     };
 
     /**

@@ -8,7 +8,7 @@ export default class Food {
     constructor(game, x, y) {
         this.game = game;
         this.gameWidth = game.gameWidth;
-        this.gameHeight = game.gameHeight;
+        this.gameHeight = game.gameHeight - 30;
         this.r = 10;
         this.position = {
             x: x,
@@ -19,6 +19,8 @@ export default class Food {
             y: 1,
         };
         this.eaten = false;
+        this.foodImg = new Image();
+        this.foodImg.src = "./assets/otherObjects/food.png";
     }
 
     /**
@@ -27,11 +29,19 @@ export default class Food {
      */
     draw = (ctx) => {
         // console.log("draw");
-        ctx.beginPath();
-        ctx.fillStyle = "brown";
-        ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = "brown";
+        // ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
+
+        ctx.drawImage(
+            this.foodImg,
+            this.position.x - this.r,
+            this.position.y - this.r,
+            this.r * 2,
+            this.r * 1.5
+        );
     };
 
     /**

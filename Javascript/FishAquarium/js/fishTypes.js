@@ -16,6 +16,14 @@ const fishTypes = {
             resetYDirection: 500,
             levelUp: 500,
         },
+        image: {
+            leftSrc: "blue_left.png",
+            rightSrc: "blue_right.png",
+            spriteWidth: 1992,
+            spriteHeight: 981,
+            spriteX: 4,
+            spriteY: 3,
+        },
     },
     black: {
         name: "black",
@@ -34,6 +42,14 @@ const fishTypes = {
             resetYDirection: 500,
             levelUp: 2000,
         },
+        image: {
+            leftSrc: "black_left.png",
+            rightSrc: "black_right.png",
+            totalSpriteWidth: 1992,
+            totalSpriteHeight: 981,
+            spriteX: 4,
+            spriteY: 3,
+        },
     },
     green: {
         name: "green",
@@ -51,6 +67,14 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 2000,
+        },
+        image: {
+            leftSrc: "green_left.png",
+            rightSrc: "green_right.png",
+            spriteWidth: 1992,
+            spriteHeight: 981,
+            spriteX: 4,
+            spriteY: 3,
         },
     },
 };
