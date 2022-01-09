@@ -491,4 +491,15 @@ export default class Fish {
             this.changeInterval.levelUp * this.level
         );
     };
+    save = () => {
+        let obj = {};
+        obj.name = this.name;
+        obj.type = this.type;
+        obj.level = this.level;
+        obj.levelMeter = this.levelMeter;
+        obj.gender = this.gender;
+        obj.healthMeter = this.healthMeter;
+        obj.hungerMeter = this.hungerMeter;
+        return obj;
+    };
 }

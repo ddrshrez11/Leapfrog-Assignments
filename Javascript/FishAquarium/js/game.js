@@ -5,6 +5,7 @@ import InputHandler from "./inputHandler.js";
 import Junk from "./junk.js";
 import { fishTypes } from "./fishTypes.js";
 import FishInfo from "./fishInfo.js";
+import Save from "./save.js";
 
 export default class Game {
     /**
@@ -18,6 +19,7 @@ export default class Game {
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
         this.fishTypesArray = Object.keys(fishTypes);
+        this.save = new Save(this);
         this.showInfo = false;
         this.limit = {
             junk: 10,
@@ -69,6 +71,22 @@ export default class Game {
         this.fishes.push(new Fish(this, "black"));
         this.fishes.push(new Fish(this, "green"));
 
+        let junkInfoArr = this.save.getJunks();
+        if (junkInfoArr) {
+            junkInfoArr.forEach((junkInfo) => {
+                this.junks.push(new Junk(this, junkInfo));
+            });
+        }
+
+        let coinInfoArr = this.save.getCoins();
+        if (coinInfoArr) {
+            coinInfoArr.forEach((coinInfo) => {
+                this.coins.push(
+                    new Coin(this, coinInfo.position.x, coinInfo.position.y)
+                );
+            });
+        }
+
         this.createJunkInterval = setInterval(
             this.createJunk,
             this.changeInterval.junk
@@ -80,6 +98,7 @@ export default class Game {
 
         this.gameObjects = []; // ...this.junks];
         this.updateGameObjects();
+        this.save.saveFishes(this);
     };
 
     /**
@@ -147,6 +166,7 @@ export default class Game {
             this.junks.push(newJunk);
             this.updateJunks();
         }
+        this.save.saveJunks(this); //!check
     };
 
     createCoin = (x, y) => {
@@ -171,6 +191,7 @@ export default class Game {
             this.coins.push(newCoin);
             this.updateCoins();
         }
+        this.save.saveCoins(this); //!check
     };
 
     updateGameObjects = () => {
@@ -201,7 +222,7 @@ export default class Game {
             });
             // clearInterval(this.fish.healthDecreaseInterval);
         }
-
+        this.save.saveJunks(this); //!check
         this.updateGameObjects();
     };
 
@@ -209,7 +230,7 @@ export default class Game {
         this.coins = this.coins.filter((coin) => {
             return !coin.collected;
         });
-
+        this.save.saveCoins(this); //!check
         this.updateGameObjects();
     };
 

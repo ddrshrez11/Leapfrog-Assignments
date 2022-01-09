@@ -98,4 +98,9 @@ export default class Coin {
             this.direction.y = 0;
         }
     };
+    save = () => {
+        let obj = {};
+        obj.position = this.position;
+        return obj;
+    };
 }

@@ -3,25 +3,28 @@ export default class Junk {
      * @constructor
      * @param {Game} game Game object
      */
-    constructor(game) {
+    constructor(game, junkInfo) {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight - 30;
-        this.r = getRandomFromRange(20, 30);
-        this.position = {
-            x: getRandomFromRange(this.r, this.gameWidth - this.r),
-            y: getRandomFromRange(this.r, this.gameHeight - this.r),
-        };
+        if (junkInfo) {
+            this.r = junkInfo.r;
+            this.position = junkInfo.position;
+            this.junkImgIndex = junkInfo.junkImgIndex;
+        } else {
+            this.r = getRandomFromRange(20, 30);
+            this.position = {
+                x: getRandomFromRange(this.r, this.gameWidth - this.r),
+                y: getRandomFromRange(this.r, this.gameHeight - this.r),
+            };
+            this.junkImgIndex = getRandomIndex(0, 2);
+        }
         this.direction = {
             y: 1,
         };
         this.speed = 2;
         this.cleaned = false;
-        this.changeInterval = {
-            junkImg: 200,
-        };
 
-        this.junkImgIndex = getRandomIndex(0, 2);
         this.junkImg = new Image();
         this.junkImg.src =
             "./assets/otherObjects/junk" + this.junkImgIndex + ".png";
@@ -88,5 +91,12 @@ export default class Junk {
         if (this.position.y > this.gameHeight - this.r) {
             this.direction.y = 0;
         }
+    };
+    save = () => {
+        let obj = {};
+        obj.r = this.r;
+        obj.position = this.position;
+        obj.junkImgIndex = this.junkImgIndex;
+        return obj;
     };
 }
