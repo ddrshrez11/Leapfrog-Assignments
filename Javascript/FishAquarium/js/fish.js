@@ -30,6 +30,7 @@ export default class Fish {
         this.spriteY = this.type.image.spriteY;
         this.spriteWidth = this.type.image.totalSpriteWidth / this.spriteX;
         this.spriteHeight = this.type.image.totalSpriteHeight / this.spriteY;
+        this.frame = 0;
         this.frameX = 0;
         this.frameY = 0;
 
@@ -56,6 +57,13 @@ export default class Fish {
             this.changeXDirection,
             this.changeInterval.changeXDirection
         );
+
+        setInterval(() => {
+            this.frame++;
+            this.frame %= 12;
+            this.frameX = this.frame % 4;
+            this.frameY = Math.floor((this.frame % 12) / 4);
+        }, 200);
         // this.healthIncreaseInterval = setInterval(
         //     this.healthIncrease,
         //     this.changeInterval.health
@@ -96,15 +104,15 @@ export default class Fish {
             x = this.position.x;
             y = this.position.y;
         }
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.arc(x, y, this.r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = this.color;
+        // ctx.arc(x, y, this.r, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
 
         ctx.save();
         ctx.translate(x, y);
-        ctx.rotate(this.angle);
+        // ctx.rotate(this.angle);
         if (this.direction.x < 0) {
             ctx.drawImage(
                 this.leftImg,
@@ -121,8 +129,8 @@ export default class Fish {
         if (this.direction.x > 0) {
             ctx.drawImage(
                 this.rightImg,
-                this.frameX * this.spriteWidth,
-                this.frameY * this.spriteHeight,
+                (3 - this.frameX) * this.spriteWidth,
+                (2 - this.frameY) * this.spriteHeight,
                 this.spriteWidth,
                 this.spriteHeight,
                 0 - this.r * 1.5,
