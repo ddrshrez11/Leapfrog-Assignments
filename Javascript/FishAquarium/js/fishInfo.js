@@ -25,7 +25,7 @@ export default class FishInfo {
         this.infoGapSize = 30;
 
         this.panelImg = new Image();
-        this.panelImg.src = "./assets/otherObjects/panel.png";
+        this.panelImg.src = "./assets/otherObjects/panel1.png";
     }
 
     /**
@@ -79,21 +79,21 @@ export default class FishInfo {
 
         let imgPosition = {
             x: this.gameWidth / 2 + this.width / 4,
-            y: this.gameHeight / 2 - this.fish.r,
+            y: this.gameHeight / 2 - this.height / 10,
         };
-        this.fish.draw(ctx, imgPosition.x, imgPosition.y);
-
+        this.fish.drawInfo(ctx, imgPosition.x, imgPosition.y);
+        let barWidth = 150;
         this.fish.drawHealthBar(
             ctx,
-            imgPosition.x - 100 / 2,
-            imgPosition.y + this.fish.r + 20,
-            100
+            imgPosition.x - barWidth / 2,
+            imgPosition.y + this.fish.r + 50,
+            barWidth
         );
         this.fish.drawHungerBar(
             ctx,
-            imgPosition.x - 100 / 2,
-            imgPosition.y + this.fish.r + 30,
-            100
+            imgPosition.x - barWidth / 2,
+            imgPosition.y + this.fish.r + 50 + 10,
+            barWidth
         );
     };
 

@@ -36,7 +36,7 @@ export default class Fish {
 
         this.level = 1; //!to be implemented
         this.levelMeter = 0;
-        this.r = this.spriteWidth / 34; //this.baseSize + this.level; //getRandomFromRange(10, 30);
+        this.r = this.spriteWidth / 20; //this.baseSize + this.level; //getRandomFromRange(10, 30);
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -60,9 +60,11 @@ export default class Fish {
 
         setInterval(() => {
             this.frame++;
-            this.frame %= 12;
-            this.frameX = this.frame % 4;
-            this.frameY = Math.floor((this.frame % 12) / 4);
+            this.frame %= this.spriteX * this.spriteY;
+            this.frameX = this.frame % this.spriteX;
+            this.frameY = Math.floor(
+                (this.frame % (this.spriteX * this.spriteY)) / this.spriteX
+            );
         }, 200);
         // this.healthIncreaseInterval = setInterval(
         //     this.healthIncrease,
@@ -98,12 +100,7 @@ export default class Fish {
      * draw fish object onto the game screen
      * @param {context} ctx context of canvas
      */
-    draw = (ctx, x, y) => {
-        // console.log("draw");
-        if (!x && !y) {
-            x = this.position.x;
-            y = this.position.y;
-        }
+    draw = (ctx) => {
         // ctx.beginPath();
         // ctx.fillStyle = this.color;
         // ctx.arc(x, y, this.r, 0, 2 * Math.PI);
@@ -111,7 +108,7 @@ export default class Fish {
         // ctx.fill();
 
         ctx.save();
-        ctx.translate(x, y);
+        ctx.translate(this.position.x, this.position.y);
         // ctx.rotate(this.angle);
         if (this.direction.x < 0) {
             ctx.drawImage(
@@ -137,6 +134,51 @@ export default class Fish {
                 0 - this.r,
                 3 * this.r,
                 2 * this.r
+            );
+        }
+        ctx.restore();
+
+        if (!this.game.showInfo) {
+            this.drawHealthBar(ctx);
+            this.drawHungerBar(ctx);
+        }
+    };
+    drawInfo = (ctx, x, y) => {
+        let hRatio = 6;
+        let wRatio = 4;
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.arc(x, y, this.r, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(x, y);
+        if (this.direction.x < 0) {
+            ctx.drawImage(
+                this.leftImg,
+                this.frameX * this.spriteWidth,
+                this.frameY * this.spriteHeight,
+                this.spriteWidth,
+                this.spriteHeight,
+                0 - this.r * (hRatio / 2),
+                0 - this.r * (wRatio / 2),
+                hRatio * this.r,
+                wRatio * this.r
+            );
+        }
+        if (this.direction.x > 0) {
+            ctx.rotate(1 * Math.PI);
+            ctx.drawImage(
+                this.rightImg,
+                (3 - this.frameX) * this.spriteWidth,
+                (2 - this.frameY) * this.spriteHeight,
+                this.spriteWidth,
+                this.spriteHeight,
+                0 - this.r * (hRatio / 2),
+                0 - this.r * (wRatio / 2),
+                hRatio * this.r,
+                wRatio * this.r
             );
         }
         ctx.restore();

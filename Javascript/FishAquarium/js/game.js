@@ -65,9 +65,9 @@ export default class Game {
         this.inputHandler = new InputHandler(this);
         this.fishInfo = [];
 
-        // this.fishes.push(new Fish(this, "blue"));
+        this.fishes.push(new Fish(this, "blue"));
         this.fishes.push(new Fish(this, "black"));
-        // this.fishes.push(new Fish(this, "green"));
+        this.fishes.push(new Fish(this, "green"));
 
         this.createJunkInterval = setInterval(
             this.createJunk,
@@ -97,7 +97,7 @@ export default class Game {
      * @param {context} ctx
      */
     draw = (ctx) => {
-        this.drawBg(ctx);
+        // this.drawBg(ctx);
         this.gameObjects.forEach((object) => {
             object.draw(ctx);
         });
