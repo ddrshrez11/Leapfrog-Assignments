@@ -6,6 +6,7 @@ import Junk from "./junk.js";
 import { fishTypes } from "./fishTypes.js";
 import FishInfo from "./fishInfo.js";
 import Save from "./save.js";
+import Shop from "./shop.js";
 
 export default class Game {
     /**
@@ -20,7 +21,12 @@ export default class Game {
         this.canvasPosition = this.canvas.getBoundingClientRect();
         this.fishTypesArray = Object.keys(fishTypes);
         this.save = new Save(this);
-        this.showInfo = false;
+
+        this.toggle = {
+            showInfo: false,
+            showShop: false,
+        };
+        // this.showInfo = false;
         this.limit = {
             junk: 10,
             coin: 10,
@@ -64,8 +70,11 @@ export default class Game {
         this.coins = [];
         this.foods = [];
         this.junks = [];
-        this.inputHandler = new InputHandler(this);
+        this.shop = [];
         this.fishInfo = [];
+        this.inputHandler = new InputHandler(this);
+
+        this.toggleShop(); //! remove
 
         this.fishes.push(new Fish(this, "blue"));
         this.fishes.push(new Fish(this, "black"));
@@ -116,11 +125,11 @@ export default class Game {
      * @param {context} ctx
      */
     draw = (ctx) => {
-        // this.drawBg(ctx);
+        this.drawBg(ctx);
         this.gameObjects.forEach((object) => {
             object.draw(ctx);
         });
-        // if (this.showInfo) {
+        // if (this.toggle.showInfo) {
         //     this.drawShowInfoBox(ctx);
         // }
     };
@@ -128,8 +137,8 @@ export default class Game {
     drawBg = (ctx) => {
         ctx.drawImage(this.bgImg, 0, 0, this.gameWidth, this.gameHeight);
     };
-    buyFish = () => {
-        let color = getRandomFromArray(this.fishTypesArray);
+    buyFish = (color) => {
+        if (!color) color = getRandomFromArray(this.fishTypesArray);
         this.fishes.push(new Fish(this, color));
         this.updateGameObjects();
     };
@@ -204,6 +213,7 @@ export default class Game {
             ...this.fishes,
             ...this.foods,
             ...this.fishInfo,
+            ...this.shop,
         ];
     };
 
@@ -259,12 +269,12 @@ export default class Game {
     };
 
     toggleShowInfo = (fish) => {
-        if (this.showInfo) {
-            this.showInfo = false;
+        if (this.toggle.showInfo) {
+            this.toggle.showInfo = false;
             this.fishInfo.pop();
         } else {
             this.fishInfo.push(new FishInfo(fish));
-            this.showInfo = true;
+            this.toggle.showInfo = true;
         }
         this.updateGameObjects();
     };
@@ -274,4 +284,15 @@ export default class Game {
     //     ctx1.fillStyle = "rgba(255, 100, 0, 0.8)";
     //     ctx1.fill();
     // };
+
+    toggleShop = () => {
+        if (this.toggle.showShop) {
+            this.toggle.showShop = false;
+            this.shop.pop();
+        } else {
+            this.shop.push(new Shop(this));
+            this.toggle.showShop = true;
+        }
+        this.updateGameObjects();
+    };
 }

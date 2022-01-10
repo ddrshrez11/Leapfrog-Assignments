@@ -56,6 +56,14 @@ export default class FishInfo {
             this.height
         );
 
+        ctx.textAlign = "start";
+        ctx.textBaseline = "middle";
+        ctx.lineWidth = 2;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowColor = "";
+        ctx.shadowBlur = 0;
+
         ctx.fillStyle = "#000";
         ctx.font = "30px " + this.font;
         ctx.fillText(
@@ -109,7 +117,7 @@ export default class FishInfo {
         if (
             this.game.mouse.click &&
             this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.showInfo
+            this.game.toggle.showInfo
         ) {
             if (
                 this.game.mouse.x < this.position.x ||
@@ -120,14 +128,6 @@ export default class FishInfo {
                 this.game.toggleShowInfo();
                 this.game.inputHandler.resetMouseClick();
             }
-        }
-    };
-    /**
-     * detect the bottom of the fish tank
-     */
-    wallCollisionDetect = () => {
-        if (this.position.y > this.gameHeight - this.r) {
-            this.direction.y = 0;
         }
     };
 }

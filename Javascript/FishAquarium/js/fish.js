@@ -18,7 +18,8 @@ export default class Fish {
         this.maxHealthMeter = this.type.maxHealthMeter;
         this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
-        this.baseSize = this.type.baseSize;
+        // this.baseSize = this.type.baseSize;
+
         this.angle = 0;
 
         //image
@@ -37,6 +38,7 @@ export default class Fish {
         this.level = 1; //!to be implemented
         this.levelMeter = 0;
         this.r = this.spriteWidth / 20; //this.baseSize + this.level; //getRandomFromRange(10, 30);
+        this.baseSize = this.spriteWidth / 20;
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -124,6 +126,7 @@ export default class Fish {
             );
         }
         if (this.direction.x > 0) {
+            ctx.rotate(1 * Math.PI);
             ctx.drawImage(
                 this.rightImg,
                 (3 - this.frameX) * this.spriteWidth,
@@ -138,7 +141,7 @@ export default class Fish {
         }
         ctx.restore();
 
-        if (!this.game.showInfo) {
+        if (!this.game.toggle.showInfo) {
             this.drawHealthBar(ctx);
             this.drawHungerBar(ctx);
         }
@@ -148,45 +151,40 @@ export default class Fish {
         let wRatio = 4;
         ctx.beginPath();
         ctx.fillStyle = this.color;
-        ctx.arc(x, y, this.r, 0, 2 * Math.PI);
+        ctx.arc(x, y, this.baseSize, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();
 
-        ctx.save();
-        ctx.translate(x, y);
-        if (this.direction.x < 0) {
-            ctx.drawImage(
-                this.leftImg,
-                this.frameX * this.spriteWidth,
-                this.frameY * this.spriteHeight,
-                this.spriteWidth,
-                this.spriteHeight,
-                0 - this.r * (hRatio / 2),
-                0 - this.r * (wRatio / 2),
-                hRatio * this.r,
-                wRatio * this.r
-            );
-        }
-        if (this.direction.x > 0) {
-            ctx.rotate(1 * Math.PI);
-            ctx.drawImage(
-                this.rightImg,
-                (3 - this.frameX) * this.spriteWidth,
-                (2 - this.frameY) * this.spriteHeight,
-                this.spriteWidth,
-                this.spriteHeight,
-                0 - this.r * (hRatio / 2),
-                0 - this.r * (wRatio / 2),
-                hRatio * this.r,
-                wRatio * this.r
-            );
-        }
+        // ctx.save();
+        // ctx.translate(x, y);
+        // if (this.direction.x < 0) {
+        ctx.drawImage(
+            this.leftImg,
+            this.frameX * this.spriteWidth,
+            this.frameY * this.spriteHeight,
+            this.spriteWidth,
+            this.spriteHeight,
+            x - this.baseSize * (hRatio / 2),
+            y - this.baseSize * (wRatio / 2),
+            hRatio * this.baseSize,
+            wRatio * this.baseSize
+        );
+        // }
+        // if (this.direction.x > 0) {
+        //     ctx.rotate(1 * Math.PI);
+        //     ctx.drawImage(
+        //         this.rightImg,
+        //         (3 - this.frameX) * this.spriteWidth,
+        //         (2 - this.frameY) * this.spriteHeight,
+        //         this.spriteWidth,
+        //         this.spriteHeight,
+        //         0 - this.baseSize * (hRatio / 2),
+        //         0 - this.baseSize * (wRatio / 2),
+        //         hRatio * this.baseSize,
+        //         wRatio * this.baseSize
+        //     );
+        // }
         ctx.restore();
-
-        if (!this.game.showInfo) {
-            this.drawHealthBar(ctx);
-            this.drawHungerBar(ctx);
-        }
     };
 
     drawHealthBar = (ctx, x, y, maxWidth) => {
@@ -320,7 +318,7 @@ export default class Fish {
         if (
             this.game.mouse.click &&
             this.game.gameMode === this.game.gameModes.SELECT &&
-            !this.game.showInfo
+            !this.game.toggle.showInfo
         ) {
             const dx = this.position.x - this.game.mouse.x;
             const dy = this.position.y - this.game.mouse.y;
