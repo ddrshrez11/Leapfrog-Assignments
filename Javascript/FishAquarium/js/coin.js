@@ -22,7 +22,7 @@ export default class Coin {
         this.changeInterval = {
             coinImg: 200,
         };
-
+        this.bottomCollision = false;
         this.coinImgIndex = 0;
         this.coinImg = new Image();
         this.coinImg.src = "./assets/coins/coin-0.png";
@@ -96,6 +96,10 @@ export default class Coin {
     wallCollisionDetect = () => {
         if (this.position.y > this.gameHeight - this.r) {
             this.direction.y = 0;
+            if (!this.bottomCollision) {
+                this.bottomCollision = true;
+                this.game.updateCoins();
+            }
         }
     };
     save = () => {

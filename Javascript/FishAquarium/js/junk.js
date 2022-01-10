@@ -24,6 +24,7 @@ export default class Junk {
         };
         this.speed = 2;
         this.cleaned = false;
+        this.bottomCollision = false;
 
         this.junkImg = new Image();
         this.junkImg.src =
@@ -90,6 +91,10 @@ export default class Junk {
     wallCollisionDetect = () => {
         if (this.position.y > this.gameHeight - this.r) {
             this.direction.y = 0;
+            if (!this.bottomCollision) {
+                this.bottomCollision = true;
+                this.game.updateJunks();
+            }
         }
     };
     save = () => {

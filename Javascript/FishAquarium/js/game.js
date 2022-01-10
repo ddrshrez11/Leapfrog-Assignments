@@ -166,7 +166,7 @@ export default class Game {
             this.junks.push(newJunk);
             this.updateJunks();
         }
-        this.save.saveJunks(this); //!check
+        // this.save.saveJunks(this); //!check
     };
 
     createCoin = (x, y) => {
@@ -191,7 +191,7 @@ export default class Game {
             this.coins.push(newCoin);
             this.updateCoins();
         }
-        this.save.saveCoins(this); //!check
+        // this.save.saveCoins(this); //!check
     };
 
     updateGameObjects = () => {

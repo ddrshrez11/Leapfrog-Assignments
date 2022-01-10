@@ -62,4 +62,10 @@ export default class Save {
             return value;
         };
     };
+
+    resetGame = () => {
+        localStorage.removeItem("junks");
+        localStorage.removeItem("coins");
+        localStorage.removeItem("fishes");
+    };
 }
