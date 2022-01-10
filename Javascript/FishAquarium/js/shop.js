@@ -94,7 +94,7 @@ export default class Shop {
     };
 
     drawShopFishes = (ctx) => {
-        let imgPosition = {
+        this.imgPosition = {
             x: this.position.x + this.startPosition.x + this.leftpadding,
             y:
                 this.startPosition.y -
@@ -102,18 +102,19 @@ export default class Shop {
                 this.itemGapSize.y / 2.5,
         };
         this.shopFishes.forEach((shopFish, index) => {
-            shopFish.drawInfo(ctx, imgPosition.x, imgPosition.y);
-            let btnPosition = {
-                x: imgPosition.x - this.btnWidth / 2,
-                y: imgPosition.y + shopFish.baseSize * 2 + 10,
+            shopFish.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
+            this.btnPosition = {
+                x: this.imgPosition.x - this.btnWidth / 2,
+                y: this.imgPosition.y + shopFish.baseSize * 2 + 10,
             };
-            this.drawButton(ctx, btnPosition.x, btnPosition.y, shopFish.color);
+            this.drawButton(ctx, this.btnPosition.x, this.btnPosition.y, shopFish.color);
             if (index == 2) {
-                imgPosition.x -=
+                this.imgPosition.x -=
                     index * (shopFish.baseSize + this.itemGapSize.x);
-                imgPosition.y = this.startPosition.y + this.itemGapSize.y * 0.5;
+                this.imgPosition.y =
+                    this.startPosition.y + this.itemGapSize.y * 0.5;
             } else {
-                imgPosition.x += shopFish.baseSize + this.itemGapSize.x;
+                this.imgPosition.x += shopFish.baseSize + this.itemGapSize.x;
             }
         });
     };

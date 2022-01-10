@@ -80,18 +80,23 @@ export default class Game {
         this.fishes.push(new Fish(this, "black"));
         this.fishes.push(new Fish(this, "green"));
 
-        let junkInfoArr = this.save.getJunks();
-        if (junkInfoArr) {
-            junkInfoArr.forEach((junkInfo) => {
+        this.junkInfoArr = this.save.getJunks();
+        if (this.junkInfoArr) {
+            this.junkInfoArr.forEach((junkInfo) => {
                 this.junks.push(new Junk(this, junkInfo));
             });
         }
 
-        let coinInfoArr = this.save.getCoins();
-        if (coinInfoArr) {
-            coinInfoArr.forEach((coinInfo) => {
+        this.coinInfoArr = this.save.getCoins();
+        if (this.coinInfoArr) {
+            this.coinInfoArr.forEach((coinInfo) => {
                 this.coins.push(
-                    new Coin(this, coinInfo.position.x, coinInfo.position.y)
+                    new Coin(
+                        this,
+                        coinInfo.position.x,
+                        coinInfo.position.y,
+                        coinInfo.bottomCollision
+                    )
                 );
             });
         }
@@ -137,6 +142,7 @@ export default class Game {
     drawBg = (ctx) => {
         ctx.drawImage(this.bgImg, 0, 0, this.gameWidth, this.gameHeight);
     };
+
     buyFish = (color) => {
         if (!color) color = getRandomFromArray(this.fishTypesArray);
         this.fishes.push(new Fish(this, color));
@@ -157,24 +163,25 @@ export default class Game {
             this.createJunkInterval = false;
             return;
         }
-        let newJunk = new Junk(this);
-        let overlapping = false;
+        this.newJunk = new Junk(this);
+        this.overlapping = false;
         this.junks.every((junk) => {
-            let dx = junk.position.x - newJunk.position.x;
-            let dy = junk.position.y - newJunk.position.y;
-            let distance = Math.abs(getDistance(dx, dy));
-            if (distance < junk.r + newJunk.r) {
-                overlapping = true;
+            this.dx = junk.position.x - this.newJunk.position.x;
+            this.dy = junk.position.y - this.newJunk.position.y;
+            this.distance = Math.abs(getDistance(this.dx, this.dy));
+            if (this.distance < junk.r + this.newJunk.r) {
+                this.overlapping = true;
                 return false;
             }
             return true;
         });
-        if (overlapping) {
+        if (this.overlapping) {
             this.createJunk();
         } else {
-            this.junks.push(newJunk);
+            this.junks.push(this.newJunk);
             this.updateJunks();
         }
+        this.newJunk = undefined;
         // this.save.saveJunks(this); //!check
     };
 
@@ -184,22 +191,23 @@ export default class Game {
             this.createCoinInterval = false;
             return;
         }
-        let newCoin = new Coin(this, x, y);
-        let overlapping = false;
+        this.newCoin = new Coin(this, x, y);
+        this.overlapping = false;
         this.coins.every((coin) => {
-            let dx = Math.abs(coin.position.x - newCoin.position.x);
-            if (dx < coin.r + newCoin.r) {
-                overlapping = true;
+            this.dx = Math.abs(coin.position.x - this.newCoin.position.x);
+            if (this.dx < coin.r + this.newCoin.r) {
+                this.overlapping = true;
                 return false;
             }
             return true;
         });
-        if (overlapping) {
+        if (this.overlapping) {
             this.createCoin();
         } else {
-            this.coins.push(newCoin);
+            this.coins.push(this.newCoin);
             this.updateCoins();
         }
+        this.newCoin = undefined;
         // this.save.saveCoins(this); //!check
     };
 
@@ -245,26 +253,26 @@ export default class Game {
     };
 
     updateCursor = () => {
-        let cursorName;
+        this.cursorName;
         switch (this.gameMode) {
             case this.gameModes.MOVE:
-                cursorName = "hand-cursor";
+                this.cursorName = "hand-cursor";
                 break;
             case this.gameModes.FEED:
-                cursorName = "pot-purple";
+                this.cursorName = "pot-purple";
                 break;
             case this.gameModes.CLEAN:
-                cursorName = "diamond-pick";
+                this.cursorName = "diamond-pick";
                 break;
             case this.gameModes.SELECT:
-                cursorName = "hand-cursor";
+                this.cursorName = "hand-cursor";
                 break;
             default:
-                cursorName = "hand-cursor";
+                this.cursorName = "hand-cursor";
                 break;
         }
         this.canvas.style.cursor = `url(
-            assets/cursors/${cursorName}.cur
+            assets/cursors/${this.cursorName}.cur
         ),default`;
     };
 
@@ -278,12 +286,6 @@ export default class Game {
         }
         this.updateGameObjects();
     };
-
-    // drawShowInfoBox = (ctx1) => {
-    //     ctx1.rect(50, 50, 200, 200);
-    //     ctx1.fillStyle = "rgba(255, 100, 0, 0.8)";
-    //     ctx1.fill();
-    // };
 
     toggleShop = () => {
         if (this.toggle.showShop) {

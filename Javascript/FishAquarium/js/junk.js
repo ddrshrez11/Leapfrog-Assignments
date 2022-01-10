@@ -98,10 +98,10 @@ export default class Junk {
         }
     };
     save = () => {
-        let obj = {};
-        obj.r = this.r;
-        obj.position = this.position;
-        obj.junkImgIndex = this.junkImgIndex;
-        return obj;
+        this.obj = {};
+        this.obj.r = this.r;
+        this.obj.position = this.position;
+        this.obj.junkImgIndex = this.junkImgIndex;
+        return this.obj;
     };
 }

@@ -12,6 +12,7 @@ export default class FishInfo {
 
         this.width = this.gameWidth - this.gameWidth / 2;
         this.height = this.gameHeight - this.gameHeight / 4;
+        this.barWidth = 150;
         this.position = {
             x: (this.gameWidth - this.width) / 2,
             y: (this.gameHeight - this.height) / 2,
@@ -26,6 +27,9 @@ export default class FishInfo {
 
         this.panelImg = new Image();
         this.panelImg.src = "./assets/otherObjects/panel1.png";
+
+        this.textPosition = {};
+        this.imgPosition = {};
     }
 
     /**
@@ -41,9 +45,9 @@ export default class FishInfo {
             "Health Meter: " + this.fish.healthMeter,
             "Hunger Meter: " + this.fish.hungerMeter,
         ];
-        let textPosition = {};
-        textPosition.x = this.startPosition.x;
-        textPosition.y = this.startPosition.y;
+
+        this.textPosition.x = this.startPosition.x;
+        this.textPosition.y = this.startPosition.y;
 
         // ctx.fillStyle = "#c2c26b";
         // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
@@ -68,40 +72,41 @@ export default class FishInfo {
         ctx.font = "30px " + this.font;
         ctx.fillText(
             this.fish.name,
-            this.position.x + textPosition.x,
-            this.position.y + textPosition.y
+            this.position.x + this.textPosition.x,
+            this.position.y + this.textPosition.y
         );
 
         // this.startPosition.x +=30
-        textPosition.y = 60;
+        this.textPosition.y = 60;
 
         ctx.font = this.fontSize + "px " + this.font;
         for (let i = 0; i < this.infoList.length; i++) {
-            let info = this.infoList[i];
             ctx.fillText(
-                info,
-                this.position.x + textPosition.x,
-                this.position.y + textPosition.y + this.infoGapSize * (i + 1)
+                this.infoList[i],
+                this.position.x + this.textPosition.x,
+                this.position.y +
+                    this.textPosition.y +
+                    this.infoGapSize * (i + 1)
             );
         }
 
-        let imgPosition = {
+        this.imgPosition = {
             x: this.gameWidth / 2 + this.width / 4,
             y: this.gameHeight / 2 - this.height / 10,
         };
-        this.fish.drawInfo(ctx, imgPosition.x, imgPosition.y);
-        let barWidth = 150;
+        this.fish.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
+
         this.fish.drawHealthBar(
             ctx,
-            imgPosition.x - barWidth / 2,
-            imgPosition.y + this.fish.r + 50,
-            barWidth
+            this.imgPosition.x - this.barWidth / 2,
+            this.imgPosition.y + this.fish.r + 50,
+            this.barWidth
         );
         this.fish.drawHungerBar(
             ctx,
-            imgPosition.x - barWidth / 2,
-            imgPosition.y + this.fish.r + 50 + 10,
-            barWidth
+            this.imgPosition.x - this.barWidth / 2,
+            this.imgPosition.y + this.fish.r + 50 + 10,
+            this.barWidth
         );
     };
 

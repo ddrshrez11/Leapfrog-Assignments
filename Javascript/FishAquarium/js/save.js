@@ -2,14 +2,17 @@ export default class Save {
     constructor(game) {
         this.game = game;
     }
-
+    saveMoney = () => {
+        this.saveInfo = this.game.money;
+        localStorage.setItem("money", this.saveInfo);
+    };
     saveFishes = () => {
-        let saveInfo = [];
+        this.saveInfoArr = [];
         this.game.fishes.forEach((fish) => {
-            saveInfo.push(fish.save());
+            this.saveInfoArr.push(fish.save());
         });
-        let fishJson = JSON.stringify(
-            saveInfo
+        this.fishJson = JSON.stringify(
+            this.saveInfoArr
             //this.getCircularReplacer()
         );
         localStorage.setItem("fishes", fishJson);
@@ -17,12 +20,12 @@ export default class Save {
     };
 
     saveCoins = () => {
-        let saveInfo = [];
+        this.saveInfoArr = [];
         this.game.coins.forEach((coin, index) => {
-            saveInfo.push(coin.save());
+            this.saveInfoArr.push(coin.save());
         });
-        let fishJson = JSON.stringify(
-            saveInfo
+        this.fishJson = JSON.stringify(
+            this.saveInfoArr
             //this.getCircularReplacer()
         );
         localStorage.setItem("coins", fishJson);
@@ -30,15 +33,15 @@ export default class Save {
     };
 
     saveJunks = () => {
-        let saveInfo = [];
+        this.saveInfoArr = [];
         this.game.junks.forEach((junk, index) => {
-            saveInfo.push(junk.save());
+            this.saveInfoArr.push(junk.save());
         });
-        let fishJson = JSON.stringify(
-            saveInfo
+        this.fishJson = JSON.stringify(
+            this.saveInfoArr
             //this.getCircularReplacer()
         );
-        localStorage.setItem("junks", fishJson);
+        localStorage.setItem("junks", this.fishJson);
         console.log(JSON.parse(localStorage.getItem("junks")));
     };
 
@@ -67,5 +70,6 @@ export default class Save {
         localStorage.removeItem("junks");
         localStorage.removeItem("coins");
         localStorage.removeItem("fishes");
+        localStorage.removeItem("money");
     };
 }

@@ -34,11 +34,17 @@ export default class Fish {
         this.frame = 0;
         this.frameX = 0;
         this.frameY = 0;
+        this.theta = 0;
 
         this.level = 1; //!to be implemented
         this.levelMeter = 0;
         this.r = this.spriteWidth / 20; //this.baseSize + this.level; //getRandomFromRange(10, 30);
         this.baseSize = this.spriteWidth / 20;
+        this.hRatio = 6;
+        this.wRatio = 4;
+        this.barWidth;
+        this.barHeight;
+
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -76,6 +82,8 @@ export default class Fish {
         this.startHungerIncreaseInterval();
         this.startLevelUpInterval();
         // this.startHealthDecreaseInterval();
+
+        this.obj = {};
     }
 
     /**
@@ -146,14 +154,13 @@ export default class Fish {
             this.drawHungerBar(ctx);
         }
     };
+
     drawInfo = (ctx, x, y) => {
-        let hRatio = 6;
-        let wRatio = 4;
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.arc(x, y, this.baseSize, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = this.color;
+        // ctx.arc(x, y, this.baseSize, 0, 2 * Math.PI);
+        // ctx.stroke();
+        // ctx.fill();
 
         // ctx.save();
         // ctx.translate(x, y);
@@ -164,10 +171,10 @@ export default class Fish {
             this.frameY * this.spriteHeight,
             this.spriteWidth,
             this.spriteHeight,
-            x - this.baseSize * (hRatio / 2),
-            y - this.baseSize * (wRatio / 2),
-            hRatio * this.baseSize,
-            wRatio * this.baseSize
+            x - this.baseSize * (this.hRatio / 2),
+            y - this.baseSize * (this.wRatio / 2),
+            this.hRatio * this.baseSize,
+            this.wRatio * this.baseSize
         );
         // }
         // if (this.direction.x > 0) {
@@ -178,13 +185,13 @@ export default class Fish {
         //         (2 - this.frameY) * this.spriteHeight,
         //         this.spriteWidth,
         //         this.spriteHeight,
-        //         0 - this.baseSize * (hRatio / 2),
-        //         0 - this.baseSize * (wRatio / 2),
-        //         hRatio * this.baseSize,
-        //         wRatio * this.baseSize
+        //         0 - this.baseSize * (this.hRatio / 2),
+        //         0 - this.baseSize * (this.wRatio / 2),
+        //         this.hRatio * this.baseSize,
+        //         this.wRatio * this.baseSize
         //     );
         // }
-        ctx.restore();
+        // ctx.restore();
     };
 
     drawHealthBar = (ctx, x, y, maxWidth) => {
@@ -193,14 +200,14 @@ export default class Fish {
             x = this.position.x - maxWidth / 2;
             y = this.position.y - this.r - 17;
         }
-        let w = (this.healthMeter / this.maxHealthMeter) * maxWidth;
-        let h = 4;
+        this.barWidth = (this.healthMeter / this.maxHealthMeter) * maxWidth;
+        this.barHeight = 4;
         ctx.lineWidth = 4;
         ctx.lineCap = "round";
         ctx.strokeStyle = "#333";
         ctx.fillStyle = "#6aa06a";
-        ctx.strokeRect(x, y, maxWidth, h);
-        ctx.fillRect(x, y, w, h);
+        ctx.strokeRect(x, y, maxWidth, this.barHeight);
+        ctx.fillRect(x, y, this.barWidth, this.barHeight);
     };
 
     drawHungerBar = (ctx, x, y, maxWidth) => {
@@ -209,87 +216,90 @@ export default class Fish {
             x = this.position.x - maxWidth / 2;
             y = this.position.y - this.r - 10;
         }
-        let w = (this.hungerMeter / this.maxHungerMeter) * maxWidth;
-        let h = 4;
+        this.barWidth = (this.hungerMeter / this.maxHungerMeter) * maxWidth;
+        this.barHeight = 4;
         ctx.lineWidth = 4;
         ctx.lineCap = "round";
         ctx.strokeStyle = "#333";
-        ctx.strokeRect(x, y, maxWidth, h);
+        ctx.strokeRect(x, y, maxWidth, this.barHeight);
         ctx.fillStyle = "#e4ae4b";
-        ctx.fillRect(x, y, w, h);
+        ctx.fillRect(x, y, this.barWidth, this.barHeight);
     };
 
     normalMovement = (deltaTime) => {
-        let theta = 0;
+        this.theta = 0;
         if (this.direction.y === 0) {
-            theta = Math.atan2(this.direction.x, -this.direction.x);
+            this.theta = Math.atan2(this.direction.x, -this.direction.x);
         } else {
-            theta = Math.atan2(this.direction.x, this.direction.y);
+            this.theta = Math.atan2(this.direction.x, this.direction.y);
         }
 
-        this.angle = theta;
+        this.angle = this.theta;
         this.position.x += this.direction.x; //* this.speed) / deltaTime;
         this.position.y += this.direction.y; //* this.speed) / deltaTime;
     };
 
     userInputMovement = (deltaTime) => {
-        const dx = this.position.x - this.mouse.x;
-        const dy = this.position.y - this.mouse.y;
-        if (dx > 0) {
+        this.dx = this.position.x - this.mouse.x;
+        this.dy = this.position.y - this.mouse.y;
+        if (this.dx > 0) {
             this.changeXDirection(-1);
         }
-        if (dx < 0) {
+        if (this.dx < 0) {
             this.changeXDirection(1);
         }
-        let theta = Math.atan2(dx, dy);
-        this.angle = theta;
+        this.theta = Math.atan2(this.dx, this.dy);
+        this.angle = this.theta;
 
         if (this.mouse.x != this.position.x) {
-            this.position.x -= dx / (3 * deltaTime);
+            this.position.x -= this.dx / (3 * deltaTime);
             // this.mouse.click = false;
         }
         if (this.mouse.y != this.position.y) {
-            this.position.y -= dy / (3 * deltaTime);
+            this.position.y -= this.dy / (3 * deltaTime);
         }
-        if (Math.abs(dx) < 1) {
+        if (Math.abs(this.dx) < 1) {
             this.game.inputHandler.resetMouseClick();
         }
     };
 
     movementToFood = (deltaTime) => {
-        let minimumFoodIndex = this.getMinimumFood();
-        let minimumFood = this.game.foods[minimumFoodIndex];
+        this.minimumFoodIndex = this.getMinimumFood();
+        this.minimumFood = this.game.foods[this.minimumFoodIndex];
 
-        const dx = this.position.x - minimumFood.position.x;
-        const dy = this.position.y - minimumFood.position.y;
-        if (dx > 0) {
+        this.dx = this.position.x - this.minimumFood.position.x;
+        this.dy = this.position.y - this.minimumFood.position.y;
+        if (this.dx > 0) {
             this.changeXDirection(-1);
         }
-        if (dx < 0) {
+        if (this.dx < 0) {
             this.changeXDirection(1);
         }
-        let theta = Math.atan2(dx, dy);
-        this.angle = theta;
+        this.theta = Math.atan2(this.dx, this.dy);
+        this.angle = this.theta;
 
-        if (minimumFood.position.x != this.position.x) {
-            this.position.x -= dx / (3 * deltaTime);
+        if (this.minimumFood.position.x != this.position.x) {
+            this.position.x -= this.dx / (3 * deltaTime);
             // this.mouse.click = false;
         }
-        if (minimumFood.position.y != this.position.y) {
-            this.position.y -= dy / (3 * deltaTime);
+        if (this.minimumFood.position.y != this.position.y) {
+            this.position.y -= this.dy / (3 * deltaTime);
         }
-        if (Math.abs(getDistance(dx, dy)) < this.r + minimumFood.r) {
-            if (!minimumFood.eaten) {
-                this.eatFood(minimumFoodIndex);
+        if (
+            Math.abs(getDistance(this.dx, this.dy)) <
+            this.r + this.minimumFood.r
+        ) {
+            if (!this.minimumFood.eaten) {
+                this.eatFood(this.minimumFoodIndex);
             }
         }
     };
 
     getMinimumFood = () => {
-        let minimumDistance = undefined;
-        let minimumFoodIndex = undefined;
+        this.minimumDistance = undefined;
+        this.minimumFoodIndex = undefined;
         this.game.foods.forEach((food, index) => {
-            let distance = Math.abs(
+            this.distance = Math.abs(
                 getDistance(
                     this.position.x,
                     this.position.y,
@@ -297,17 +307,20 @@ export default class Fish {
                     food.position.x
                 )
             );
-            if (minimumFoodIndex === undefined || minimumDistance > distance) {
-                minimumDistance = distance;
-                minimumFoodIndex = index;
+            if (
+                this.minimumFoodIndex === undefined ||
+                this.minimumDistance > this.distance
+            ) {
+                this.minimumDistance = this.distance;
+                this.minimumFoodIndex = index;
             }
         });
-        return minimumFoodIndex;
+        return this.minimumFoodIndex;
     };
 
     eatFood = (minimumFoodIndex) => {
-        let minimumFood = this.game.foods[minimumFoodIndex];
-        minimumFood.eaten = true;
+        this.minimumFood = this.game.foods[minimumFoodIndex];
+        this.minimumFood.eaten = true;
         this.hungerDecrease();
         this.game.foods.splice(minimumFoodIndex, 1);
         this.game.updateGameObjects();
@@ -320,9 +333,9 @@ export default class Fish {
             this.game.gameMode === this.game.gameModes.SELECT &&
             !this.game.toggle.showInfo
         ) {
-            const dx = this.position.x - this.game.mouse.x;
-            const dy = this.position.y - this.game.mouse.y;
-            if (Math.abs(getDistance(dx, dy)) < this.r) {
+            this.dx = this.position.x - this.game.mouse.x;
+            this.dy = this.position.y - this.game.mouse.y;
+            if (Math.abs(getDistance(this.dx, this.dy)) < this.r) {
                 this.game.toggleShowInfo(this);
                 this.game.mouse.click = false;
             }
@@ -350,10 +363,10 @@ export default class Fish {
 
     junkCollisionDetection = () => {
         this.game.junks.forEach((junk) => {
-            let dx = this.position.x - junk.position.x;
-            let dy = this.position.y - junk.position.y;
+            this.dx = this.position.x - junk.position.x;
+            this.dy = this.position.y - junk.position.y;
 
-            if (Math.abs(getDistance(dx, dy)) < this.r + junk.r) {
+            if (Math.abs(getDistance(this.dx, this.dy)) < this.r + junk.r) {
                 this.direction.x = -this.direction.x;
                 this.changeYDirection(-this.direction.y);
             }
@@ -490,14 +503,13 @@ export default class Fish {
         );
     };
     save = () => {
-        let obj = {};
-        obj.name = this.name;
-        obj.type = this.type;
-        obj.level = this.level;
-        obj.levelMeter = this.levelMeter;
-        obj.gender = this.gender;
-        obj.healthMeter = this.healthMeter;
-        obj.hungerMeter = this.hungerMeter;
-        return obj;
+        this.obj.name = this.name;
+        this.obj.type = this.type;
+        this.obj.level = this.level;
+        this.obj.levelMeter = this.levelMeter;
+        this.obj.gender = this.gender;
+        this.obj.healthMeter = this.healthMeter;
+        this.obj.hungerMeter = this.hungerMeter;
+        return this.obj;
     };
 }

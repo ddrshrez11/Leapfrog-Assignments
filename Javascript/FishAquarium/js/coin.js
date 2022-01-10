@@ -5,15 +5,18 @@ export default class Coin {
      * @param {number} x X coordinate to spawn food
      * @param {number} y Y coordinate to spawn food
      */
-    constructor(game, x, y) {
+    constructor(game, x, y, bottomCollision) {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight - 30;
         this.r = 15;
+
         this.position = {
             x: x ? x : getRandomFromRange(this.r, this.gameWidth - this.r),
             y: y ? y : getRandomFromRange(this.r, this.gameHeight - this.r),
         };
+        this.bottomCollision = bottomCollision ? bottomCollision : false;
+
         this.speed = 25;
         this.direction = {
             y: 1,
@@ -22,7 +25,6 @@ export default class Coin {
         this.changeInterval = {
             coinImg: 200,
         };
-        this.bottomCollision = false;
         this.coinImgIndex = 0;
         this.coinImg = new Image();
         this.coinImg.src = "./assets/coins/coin-0.png";
@@ -62,12 +64,12 @@ export default class Coin {
      */
     update = (deltaTime) => {
         this.wallCollisionDetect();
-        this.checkForClean();
+        this.checkForCollection();
         this.position.y += (this.direction.y * this.speed) / deltaTime;
         // console.log(this.position.y, this.direction.y, deltaTime);
     };
 
-    checkForClean = () => {
+    checkForCollection = () => {
         if (
             this.game.mouse.click &&
             this.game.gameMode === this.game.gameModes.SELECT
@@ -84,6 +86,7 @@ export default class Coin {
                         this.game.changeInterval.coin
                     );
                 }
+                this.game.save.saveMoney();
                 this.game.updateCoins();
                 this.game.inputHandler.resetMouseClick();
             }
@@ -103,8 +106,9 @@ export default class Coin {
         }
     };
     save = () => {
-        let obj = {};
-        obj.position = this.position;
-        return obj;
+        this.obj = {};
+        this.obj.position = this.position;
+        this.obj.bottomCollision = this.bottomCollision;
+        return this.obj;
     };
 }
