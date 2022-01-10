@@ -86,7 +86,7 @@ export default class Coin {
                         this.game.changeInterval.coin
                     );
                 }
-                this.game.save.saveMoney();
+                // this.game.save.saveMoney();
                 this.game.updateCoins();
                 this.game.inputHandler.resetMouseClick();
             }

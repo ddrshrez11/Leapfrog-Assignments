@@ -7,42 +7,46 @@ export default class Save {
         localStorage.setItem("money", this.saveInfo);
     };
     saveFishes = () => {
-        this.saveInfoArr = [];
+        this.saveFishesInfoArr = [];
         this.game.fishes.forEach((fish) => {
-            this.saveInfoArr.push(fish.save());
+            this.saveFishesInfoArr.push(fish.save());
         });
         this.fishJson = JSON.stringify(
-            this.saveInfoArr
+            this.saveFishesInfoArr
             //this.getCircularReplacer()
         );
-        localStorage.setItem("fishes", fishJson);
+        localStorage.setItem("fishes", this.fishJson);
         console.log(JSON.parse(localStorage.getItem("fishes")));
     };
 
     saveCoins = () => {
-        this.saveInfoArr = [];
+        this.saveCoinInfoArr = [];
         this.game.coins.forEach((coin, index) => {
-            this.saveInfoArr.push(coin.save());
+            this.saveCoinInfoArr.push(coin.save());
         });
-        this.fishJson = JSON.stringify(
-            this.saveInfoArr
+        this.coinJson = JSON.stringify(
+            this.saveCoinInfoArr
             //this.getCircularReplacer()
         );
-        localStorage.setItem("coins", fishJson);
+        localStorage.setItem("coins", this.coinJson);
         console.log(JSON.parse(localStorage.getItem("coins")));
     };
 
     saveJunks = () => {
-        this.saveInfoArr = [];
+        this.saveJunkInfoArr = [];
         this.game.junks.forEach((junk, index) => {
-            this.saveInfoArr.push(junk.save());
+            this.saveJunkInfoArr.push(junk.save());
         });
-        this.fishJson = JSON.stringify(
-            this.saveInfoArr
+        this.junkJson = JSON.stringify(
+            this.saveJunkInfoArr
             //this.getCircularReplacer()
         );
-        localStorage.setItem("junks", this.fishJson);
+        localStorage.setItem("junks", this.junkJson);
         console.log(JSON.parse(localStorage.getItem("junks")));
+    };
+
+    getFishes = () => {
+        return JSON.parse(localStorage.getItem("fishes"));
     };
 
     getJunks = () => {
@@ -64,12 +68,5 @@ export default class Save {
             }
             return value;
         };
-    };
-
-    resetGame = () => {
-        localStorage.removeItem("junks");
-        localStorage.removeItem("coins");
-        localStorage.removeItem("fishes");
-        localStorage.removeItem("money");
     };
 }

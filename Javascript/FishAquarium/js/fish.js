@@ -4,7 +4,7 @@ export default class Fish {
      * @constructor
      * @param {Game} game Game object
      */
-    constructor(game, type) {
+    constructor(game, type, fishInfo) {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
@@ -19,6 +19,21 @@ export default class Fish {
         this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
         // this.baseSize = this.type.baseSize;
+
+        if (fishInfo) {
+            this.name = fishInfo.name;
+            this.level = fishInfo.level;
+            this.levelMeter = fishInfo.levelMeter;
+            this.gender = fishInfo.gender;
+            this.healthMeter = fishInfo.healthMeter;
+            this.hungerMeter = fishInfo.hungerMeter;
+        } else {
+            this.level = 1;
+            this.levelMeter = 0;
+            this.gender = getGender(); //!to be implemented
+            this.healthMeter = 100;
+            this.hungerMeter = 0;
+        }
 
         this.angle = 0;
 
@@ -36,8 +51,6 @@ export default class Fish {
         this.frameY = 0;
         this.theta = 0;
 
-        this.level = 1; //!to be implemented
-        this.levelMeter = 0;
         this.r = this.spriteWidth / 20; //this.baseSize + this.level; //getRandomFromRange(10, 30);
         this.baseSize = this.spriteWidth / 20;
         this.hRatio = 6;
@@ -53,9 +66,6 @@ export default class Fish {
             x: getRandomDirection(),
             y: getRandomDirection(),
         };
-        this.gender = getGender(); //!to be implemented
-        this.healthMeter = 100;
-        this.hungerMeter = 0;
 
         this.changeYDirectionInterval = setInterval(
             this.changeYDirection,
@@ -413,6 +423,7 @@ export default class Fish {
                 this.healthMeter = 0;
                 // console.log("fish has died");
             }
+            // this.game.save.saveFishes();
         }
     };
     healthIncrease = () => {
@@ -425,13 +436,9 @@ export default class Fish {
             if (this.healthMeter > 100) {
                 this.healthMeter = 100;
                 clearInterval(this.healthDecreaseInterval);
+                this.healthDecreaseInterval = false;
                 setTimeout(
                     this.startHealthDecreaseInterval,
-                    // () =>
-                    //     (this.healthDecreaseInterval = setInterval(
-                    //         this.healthDecrease,
-                    //         this.changeInterval.health
-                    //     )),
                     this.changeInterval.healthTimeout
                 );
             }
@@ -443,8 +450,11 @@ export default class Fish {
         this.hungerMeter += 10;
         if (this.hungerMeter > 100) {
             this.hungerMeter = 100;
-            this.healthDecrease();
+            if (!this.healthDecreaseInterval) {
+                this.startHealthDecreaseInterval();
+            }
         }
+        // this.game.save.saveFishes();
         // console.log(
         //     "hungerIncrease",
         //     "hunger:" + this.hungerMeter,
@@ -478,6 +488,7 @@ export default class Fish {
         if (this.levelMeter > 100) {
             this.levelUp();
         }
+        // this.game.save.saveFishes();
     };
     levelUp = () => {
         this.level++;
@@ -504,7 +515,7 @@ export default class Fish {
     };
     save = () => {
         this.obj.name = this.name;
-        this.obj.type = this.type;
+        this.obj.color = this.color;
         this.obj.level = this.level;
         this.obj.levelMeter = this.levelMeter;
         this.obj.gender = this.gender;

@@ -74,11 +74,19 @@ export default class Game {
         this.fishInfo = [];
         this.inputHandler = new InputHandler(this);
 
-        this.toggleShop(); //! remove
+        // this.toggleShop(); //! remove
 
-        this.fishes.push(new Fish(this, "blue"));
-        this.fishes.push(new Fish(this, "black"));
-        this.fishes.push(new Fish(this, "green"));
+        // this.fishes.push(new Fish(this, "black"));
+        // this.fishes.push(new Fish(this, "green"));
+
+        this.fishesInfoArr = this.save.getFishes();
+        if (this.fishesInfoArr) {
+            this.fishesInfoArr.forEach((fishInfo) => {
+                this.fishes.push(new Fish(this, fishInfo.color, fishInfo));
+            });
+        } else {
+            this.fishes.push(new Fish(this, "blue"));
+        }
 
         this.junkInfoArr = this.save.getJunks();
         if (this.junkInfoArr) {
@@ -112,7 +120,7 @@ export default class Game {
 
         this.gameObjects = []; // ...this.junks];
         this.updateGameObjects();
-        this.save.saveFishes(this);
+        // this.save.saveFishes(this);
     };
 
     /**
@@ -182,7 +190,6 @@ export default class Game {
             this.updateJunks();
         }
         this.newJunk = undefined;
-        // this.save.saveJunks(this); //!check
     };
 
     createCoin = (x, y) => {
@@ -208,7 +215,6 @@ export default class Game {
             this.updateCoins();
         }
         this.newCoin = undefined;
-        // this.save.saveCoins(this); //!check
     };
 
     updateGameObjects = () => {
@@ -240,7 +246,7 @@ export default class Game {
             });
             // clearInterval(this.fish.healthDecreaseInterval);
         }
-        this.save.saveJunks(this); //!check
+        // this.save.saveJunks(this); //!check
         this.updateGameObjects();
     };
 
@@ -248,7 +254,7 @@ export default class Game {
         this.coins = this.coins.filter((coin) => {
             return !coin.collected;
         });
-        this.save.saveCoins(this); //!check
+        // this.save.saveCoins(this); //!check
         this.updateGameObjects();
     };
 

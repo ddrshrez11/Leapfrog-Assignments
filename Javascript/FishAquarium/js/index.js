@@ -12,6 +12,20 @@ const startGame = () => {
     game = new Game(GAME_WIDTH, GAME_HEIGHT, canvas);
     game.start();
 
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = "Are you sure you want to leave the game?";
+
+        localStorage.setItem("restart", "yes");
+
+        game.save.saveFishes();
+        game.save.saveCoins();
+        game.save.saveJunks();
+        game.save.saveMoney();
+
+        e.returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+
     let lastTime = 0;
     let deltaTime;
     let gameLoop = (timestamp) => {
@@ -37,7 +51,9 @@ const resetGame = () => {
     localStorage.removeItem("junks");
     localStorage.removeItem("coins");
     localStorage.removeItem("fishes");
+    localStorage.removeItem("money");
     game = undefined;
     startGame();
 };
+
 window.resetGame = resetGame;
