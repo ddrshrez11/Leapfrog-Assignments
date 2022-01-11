@@ -27,13 +27,15 @@ export default class Coin {
             clearCoinTimeout: 5000,
         };
         this.coinImgIndex = 0;
-        this.coinImg = new Image();
-        this.coinImg.src = "./assets/coins/coin-0.png";
+        this.coinImg = this.game.loadedAssets[`coin${this.coinImgIndex}`];
+        // this.coinImg = new Image();
+        // this.coinImg.src = "./assets/coins/coin-0.png";
 
         setInterval(() => {
-            this.coinImg.src =
-                "./assets/coins/coin-" + this.coinImgIndex + ".png";
-            this.coinImgIndex += 1;
+            this.coinImg = this.game.loadedAssets[`coin${this.coinImgIndex}`];
+            // this.coinImg.src =
+            //     "./assets/coins/coin-" + this.coinImgIndex + ".png";
+            this.coinImgIndex++;
             this.coinImgIndex %= 6;
         }, this.changeInterval.coinImg);
     }

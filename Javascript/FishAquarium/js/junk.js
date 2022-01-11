@@ -26,9 +26,11 @@ export default class Junk {
         this.cleaned = false;
         this.bottomCollision = false;
 
-        this.junkImg = new Image();
-        this.junkImg.src =
-            "./assets/otherObjects/junk" + this.junkImgIndex + ".png";
+        this.junkImg = this.game.loadedAssets[`junk${this.junkImgIndex}`];
+
+        // this.junkImg = new Image();
+        // this.junkImg.src =
+        //     "./assets/otherObjects/junk" + this.junkImgIndex + ".png";
     }
 
     /**

@@ -38,17 +38,22 @@ export default class Shop {
         };
         this.leftpadding = 100;
 
-        this.panelImg = new Image();
-        this.panelImg.src = "./assets/otherObjects/shopPanel.png";
+        this.panelImg = this.game.loadedAssets[`shopPanel`];
+        this.panelHeaderImg = this.game.loadedAssets[`shopPanelHeader`];
+        this.btnImg = this.game.loadedAssets[`shopBtn`];
+        this.coinImg = this.game.loadedAssets[`coin1`];
 
-        this.panelHeaderImg = new Image();
-        this.panelHeaderImg.src = "./assets/otherObjects/shopPanelHeader.png";
+        // this.panelImg = new Image();
+        // this.panelImg.src = "./assets/otherObjects/shopPanel.png";
 
-        this.btnImg = new Image();
-        this.btnImg.src = "./assets/otherObjects/buyBtn.png";
+        // this.panelHeaderImg = new Image();
+        // this.panelHeaderImg.src = "./assets/otherObjects/shopPanelHeader.png";
 
-        this.coinImg = new Image();
-        this.coinImg.src = "./assets/coins/coin-1.png";
+        // this.btnImg = new Image();
+        // this.btnImg.src = "./assets/otherObjects/buyBtn.png";
+
+        // this.coinImg = new Image();
+        // this.coinImg.src = "./assets/coins/coin-1.png";
     }
 
     /**
@@ -107,7 +112,12 @@ export default class Shop {
                 x: this.imgPosition.x - this.btnWidth / 2,
                 y: this.imgPosition.y + shopFish.baseSize * 2 + 10,
             };
-            this.drawButton(ctx, this.btnPosition.x, this.btnPosition.y, shopFish.color);
+            this.drawButton(
+                ctx,
+                this.btnPosition.x,
+                this.btnPosition.y,
+                shopFish.color
+            );
             if (index == 2) {
                 this.imgPosition.x -=
                     index * (shopFish.baseSize + this.itemGapSize.x);

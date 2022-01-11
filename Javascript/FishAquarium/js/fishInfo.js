@@ -25,8 +25,9 @@ export default class FishInfo {
         this.fontSize = 20;
         this.infoGapSize = 30;
 
-        this.panelImg = new Image();
-        this.panelImg.src = "./assets/otherObjects/panel1.png";
+        this.panelImg = this.game.loadedAssets["infoPanel"];
+        // this.panelImg = new Image();
+        // this.panelImg.src = "./assets/otherObjects/panel1.png";
 
         this.textPosition = {};
         this.imgPosition = {};

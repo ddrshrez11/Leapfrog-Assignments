@@ -48,19 +48,42 @@ const startGame = () => {
 };
 
 const assets = [
+    //background
     "./assets/otherObjects/bg1.jpg",
+
+    //fishes
     "./assets/fishes/blue_left.png",
     "./assets/fishes/blue_right.png",
     "./assets/fishes/black_left.png",
     "./assets/fishes/black_right.png",
     "./assets/fishes/green_left.png",
     "./assets/fishes/green_right.png",
-    "./assets/fishes/green_left.png",
-    "./assets/fishes/green_right.png",
+    "./assets/fishes/purple_left.png",
+    "./assets/fishes/purple_right.png",
     "./assets/fishes/red_left.png",
     "./assets/fishes/red_right.png",
     "./assets/fishes/yellow_left.png",
     "./assets/fishes/yellow_right.png",
+
+    //coins
+    "./assets/coins/coin-0.png",
+    "./assets/coins/coin-1.png",
+    "./assets/coins/coin-2.png",
+    "./assets/coins/coin-3.png",
+    "./assets/coins/coin-4.png",
+    "./assets/coins/coin-5.png",
+
+    //junk
+    "./assets/otherObjects/junk0.png",
+    "./assets/otherObjects/junk1.png",
+    //food
+    "./assets/otherObjects/food.png",
+    //Fish Info
+    "./assets/otherObjects/panel1.png",
+    //Shop
+    "./assets/otherObjects/shopPanel.png",
+    "./assets/otherObjects/shopPanelHeader.png",
+    "./assets/otherObjects/buyBtn.png",
 ];
 const assetsLoaded = assets.map(
     (url) =>
@@ -82,14 +105,27 @@ Promise.all(assetsLoaded)
         loadedAssets.black_right = images[4];
         loadedAssets.green_left = images[5];
         loadedAssets.green_right = images[6];
-        loadedAssets.green_left = images[7];
-        loadedAssets.green_right = images[8];
+        loadedAssets.purple_left = images[7];
+        loadedAssets.purple_right = images[8];
         loadedAssets.red_left = images[9];
         loadedAssets.red_right = images[10];
         loadedAssets.yellow_left = images[11];
         loadedAssets.yellow_right = images[12];
-        // loadedAssets.background = images[13];
-        // loadedAssets.background = images[14];
+        loadedAssets.coin0 = images[13];
+        loadedAssets.coin1 = images[14];
+        loadedAssets.coin2 = images[15];
+        loadedAssets.coin3 = images[16];
+        loadedAssets.coin4 = images[17];
+        loadedAssets.coin5 = images[18];
+        loadedAssets.junk0 = images[19];
+        loadedAssets.junk1 = images[20];
+        loadedAssets.food = images[21];
+        loadedAssets.infoPanel = images[22];
+        loadedAssets.shopPanel = images[23];
+        loadedAssets.shopPanelHeader = images[24];
+        loadedAssets.shopBtn = images[25];
+        // loadedAssets. = images[25];
+
         console.log(loadedAssets);
         startGame();
     })

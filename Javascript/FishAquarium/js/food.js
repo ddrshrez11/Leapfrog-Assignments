@@ -21,8 +21,9 @@ export default class Food {
             y: 1,
         };
         this.eaten = false;
-        this.foodImg = new Image();
-        this.foodImg.src = "./assets/otherObjects/food.png";
+        this.foodImg = this.game.loadedAssets[`food`];
+        // this.foodImg = new Image();
+        // this.foodImg.src = "./assets/otherObjects/food.png";
         this.bottomCollision = false;
         this.changeInterval = {
             clearFoodTimeout: 5000,
