@@ -38,10 +38,12 @@ export default class Fish {
         this.angle = 0;
 
         //image
-        this.leftImg = new Image();
-        this.leftImg.src = "./assets/fishes/" + this.type.image.leftSrc;
-        this.rightImg = new Image();
-        this.rightImg.src = "./assets/fishes/" + this.type.image.rightSrc;
+        this.leftImg = this.game.loadedAssets[`${this.color}_left`];
+        this.rightImg = this.game.loadedAssets[`${this.color}_right`];
+        // this.leftImg = new Image();
+        // this.leftImg.src = "./assets/fishes/" + this.type.image.leftSrc;
+        // this.rightImg = new Image();
+        // this.rightImg.src = "./assets/fishes/" + this.type.image.rightSrc;
         this.spriteX = this.type.image.spriteX;
         this.spriteY = this.type.image.spriteY;
         this.spriteWidth = this.type.image.totalSpriteWidth / this.spriteX;
