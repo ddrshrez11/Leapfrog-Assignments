@@ -1,4 +1,4 @@
-import { fishTypes } from "./fishTypes.js";
+import { fishTypes } from "./data.js";
 export default class Fish {
     /**
      * @constructor
@@ -18,6 +18,7 @@ export default class Fish {
         this.maxHealthMeter = this.type.maxHealthMeter;
         this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
+        this.price = this.type.price;
         // this.baseSize = this.type.baseSize;
 
         if (fishInfo) {
@@ -422,7 +423,9 @@ export default class Fish {
         if (
             this.game.mouse.click &&
             this.game.gameMode === this.game.gameModes.SELECT &&
-            !this.game.toggle.showInfo
+            !this.game.toggle.showInfo &&
+            !this.game.toggle.showShop &&
+            !this.game.toggle.showFishShop
         ) {
             this.dx = this.position.x - this.game.mouse.x;
             this.dy = this.position.y - this.game.mouse.y;
@@ -577,7 +580,7 @@ export default class Fish {
     };
     levelUp = () => {
         this.level++;
-        this.r = this.r + 0.5;
+        this.r = this.r + 2;
         this.levelMeter = 0;
         clearInterval(this.levelUpInterval);
         this.startLevelUpInterval();

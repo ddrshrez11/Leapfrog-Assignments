@@ -4,10 +4,10 @@ import Food from "./food.js";
 import Pill from "./pill.js";
 import InputHandler from "./inputHandler.js";
 import Junk from "./junk.js";
-import { fishTypes } from "./fishTypes.js";
+import { fishTypes } from "./data.js";
 import FishInfo from "./fishInfo.js";
 import Save from "./save.js";
-import Shop from "./shop.js";
+import { FishShop, Shop } from "./shop.js";
 import Menu from "./menu.js";
 
 export default class Game {
@@ -28,6 +28,7 @@ export default class Game {
 
         this.toggle = {
             showInfo: false,
+            showFishShop: false,
             showShop: false,
         };
         // this.showInfo = false;
@@ -78,11 +79,13 @@ export default class Game {
         this.foods = [];
         this.pills = [];
         this.junks = [];
+        this.fishShop = [];
         this.shop = [];
         this.fishInfo = [];
         this.menu = new Menu(this);
         this.inputHandler = new InputHandler(this);
 
+        // this.toggleFishShop(); //! remove
         // this.toggleShop(); //! remove
 
         // this.fishes.push(new Fish(this, "black"));
@@ -248,6 +251,7 @@ export default class Game {
             ...this.pills,
             this.menu,
             ...this.fishInfo,
+            ...this.fishShop,
             ...this.shop,
         ];
     };
@@ -330,6 +334,16 @@ export default class Game {
         this.updateGameObjects();
     };
 
+    toggleFishShop = () => {
+        if (this.toggle.showFishShop) {
+            this.toggle.showFishShop = false;
+            this.fishShop.pop();
+        } else {
+            this.fishShop.push(new FishShop(this));
+            this.toggle.showFishShop = true;
+        }
+        this.updateGameObjects();
+    };
     toggleShop = () => {
         if (this.toggle.showShop) {
             this.toggle.showShop = false;

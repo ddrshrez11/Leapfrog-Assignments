@@ -49,7 +49,8 @@ const startGame = () => {
 
 const assets = [
     //background
-    "./assets/otherObjects/bg1.jpg",
+    "./assets/otherObjects/bg.jpg",
+    // "./assets/otherObjects/bg2.png",
 
     //fishes
     "./assets/fishes/blue_left.png",
@@ -99,6 +100,12 @@ const assets = [
 
     //pill
     "./assets/otherObjects/pill.png",
+
+    //additional backgrounds
+    "./assets/otherObjects/bg1.png",
+    "./assets/otherObjects/bg2.png",
+    "./assets/otherObjects/bg3.png",
+    "./assets/otherObjects/bg4.png",
 ];
 const assetsLoaded = assets.map(
     (url) =>
@@ -165,6 +172,12 @@ Promise.all(assetsLoaded)
 
         //pill
         loadedAssets.pill = images[33];
+
+        //additional Backgrounds
+        loadedAssets.background1 = images[33];
+        loadedAssets.background2 = images[34];
+        loadedAssets.background3 = images[35];
+        loadedAssets.background4 = images[36];
 
         console.log(loadedAssets);
         startGame();

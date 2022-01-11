@@ -12,9 +12,6 @@ export default class Menu {
         this.screenMargin = 100;
         this.menuOptions = Object.keys(menuData);
         console.log(this.menuOptions);
-        // this.game.fishTypesArray.forEach((fishType) => {
-        //     this.shopFishes.push(new Fish(this.game, fishType));
-        // });
 
         this.width = this.gameWidth / 20;
         this.height = this.width;
@@ -43,18 +40,6 @@ export default class Menu {
         this.btnImg = this.game.loadedAssets[`shopBtn`];
         this.bubbleImg = this.game.loadedAssets[`menuBubble`];
         this.menuCoinImg = this.game.loadedAssets[`coin1`];
-
-        // this.panelImg = new Image();
-        // this.panelImg.src = "./assets/otherObjects/shopPanel.png";
-
-        // this.panelHeaderImg = new Image();
-        // this.panelHeaderImg.src = "./assets/otherObjects/shopPanelHeader.png";
-
-        // this.btnImg = new Image();
-        // this.btnImg.src = "./assets/otherObjects/buyBtn.png";
-
-        // this.coinImg = new Image();
-        // this.coinImg.src = "./assets/coins/coin-1.png";
     }
 
     /**
@@ -78,7 +63,6 @@ export default class Menu {
         this.menuOptions.forEach((option, index) => {
             this.drawMenuIcons(ctx, option, index);
         });
-        // this.drawShopFishes(ctx);
     };
 
     drawMenuIcons = (ctx, option, index) => {
@@ -179,12 +163,15 @@ export default class Menu {
                     this.game.gameMode = index;
                     this.game.updateCursor();
                     if (this.game.toggle.showInfo) this.game.toggleShowInfo();
+                    if (this.game.toggle.showFishShop)
+                        this.game.toggleFishShop();
                     if (this.game.toggle.showShop) this.game.toggleShop();
                 } else if (index === 4) {
+                    this.game.toggleFishShop();
+                } else if (index === 5) {
                     this.game.toggleShop();
                 }
-                // this.game.toggleShop();
-                // this.game.buyFish(fishColor);
+
                 this.game.inputHandler.resetMouseClick();
             }
         }
