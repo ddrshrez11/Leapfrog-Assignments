@@ -189,4 +189,22 @@ const menuData = {
         imgRatio: 12,
     },
 };
-export { fishTypes, menuData };
+
+const decorationData = {
+    background0: {
+        price: 0,
+    },
+    background1: {
+        price: 10,
+    },
+    background2: {
+        price: 20,
+    },
+    background3: {
+        price: 30,
+    },
+    background4: {
+        price: 40,
+    },
+};
+export { fishTypes, menuData, decorationData };

@@ -6,15 +6,16 @@ export default class Save {
         this.saveInfo = this.game.money;
         localStorage.setItem("money", this.saveInfo);
     };
+    saveBgIndex = () => {
+        this.saveInfo = this.game.bgIndex;
+        localStorage.setItem("bgIndex", this.saveInfo);
+    };
     saveFishes = () => {
         this.saveFishesInfoArr = [];
         this.game.fishes.forEach((fish) => {
             this.saveFishesInfoArr.push(fish.save());
         });
-        this.fishJson = JSON.stringify(
-            this.saveFishesInfoArr
-            //this.getCircularReplacer()
-        );
+        this.fishJson = JSON.stringify(this.saveFishesInfoArr);
         localStorage.setItem("fishes", this.fishJson);
         console.log(JSON.parse(localStorage.getItem("fishes")));
     };
@@ -24,10 +25,7 @@ export default class Save {
         this.game.coins.forEach((coin, index) => {
             this.saveCoinInfoArr.push(coin.save());
         });
-        this.coinJson = JSON.stringify(
-            this.saveCoinInfoArr
-            //this.getCircularReplacer()
-        );
+        this.coinJson = JSON.stringify(this.saveCoinInfoArr);
         localStorage.setItem("coins", this.coinJson);
         console.log(JSON.parse(localStorage.getItem("coins")));
     };
@@ -37,10 +35,7 @@ export default class Save {
         this.game.junks.forEach((junk, index) => {
             this.saveJunkInfoArr.push(junk.save());
         });
-        this.junkJson = JSON.stringify(
-            this.saveJunkInfoArr
-            //this.getCircularReplacer()
-        );
+        this.junkJson = JSON.stringify(this.saveJunkInfoArr);
         localStorage.setItem("junks", this.junkJson);
         console.log(JSON.parse(localStorage.getItem("junks")));
     };
@@ -56,17 +51,10 @@ export default class Save {
     getCoins = () => {
         return JSON.parse(localStorage.getItem("coins"));
     };
-
-    getCircularReplacer = () => {
-        const seen = new WeakSet();
-        return (key, value) => {
-            if (typeof value === "object" && value !== null) {
-                if (seen.has(value)) {
-                    return;
-                }
-                seen.add(value);
-            }
-            return value;
-        };
+    getMoney = () => {
+        return localStorage.getItem("money");
+    };
+    getBgIndex = () => {
+        return localStorage.getItem("bgIndex");
     };
 }

@@ -1,4 +1,5 @@
 import Fish from "./fish.js";
+import { decorationData } from "./data.js";
 
 export class FishShop {
     /**
@@ -36,7 +37,7 @@ export class FishShop {
             x: 200,
             y: 150,
         };
-        this.leftpadding = 100;
+        this.leftPadding = 100;
 
         this.panelImg = this.game.loadedAssets[`shopPanel`];
         this.panelHeaderImg = this.game.loadedAssets[`shopPanelHeader`];
@@ -88,7 +89,7 @@ export class FishShop {
 
     drawShopFishes = (ctx) => {
         this.imgPosition = {
-            x: this.position.x + this.startPosition.x + this.leftpadding,
+            x: this.position.x + this.startPosition.x + this.leftPadding,
             y:
                 this.startPosition.y -
                 this.shopFishes[0].baseSize -
@@ -141,7 +142,7 @@ export class FishShop {
             y + this.btnHeight / 2
         );
         // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
-        this.checkForBtnClick(x, y, fishColor);
+        this.checkForBtnClick(x, y, fishColor, price);
     };
 
     /**
@@ -173,7 +174,7 @@ export class FishShop {
         }
     };
 
-    checkForBtnClick = (x, y, fishColor) => {
+    checkForBtnClick = (x, y, fishColor, price) => {
         if (
             this.game.mouse.click &&
             //this.game.gameMode === this.game.gameModes.SELECT &&
@@ -185,9 +186,11 @@ export class FishShop {
                 this.game.mouse.y > y &&
                 this.game.mouse.y < y + this.btnHeight
             ) {
-                console.log("buy");
-                this.game.toggleFishShop();
-                this.game.buyFish(fishColor);
+                console.log("buy", price);
+                if (this.game.handleBuy(price)) {
+                    this.game.toggleFishShop();
+                    this.game.buyFish(fishColor);
+                }
                 this.game.inputHandler.resetMouseClick();
             }
         }
@@ -204,10 +207,8 @@ export class Shop {
         this.gameWidth = this.game.gameWidth;
         this.gameHeight = this.game.gameHeight;
         this.screenMargin = 100;
-        this.shopFishes = [];
-        this.game.fishTypesArray.forEach((fishType) => {
-            this.shopFishes.push(new Fish(this.game, fishType));
-        });
+        this.decorationData = decorationData;
+        this.decorations = Object.keys(decorationData);
 
         this.width = this.gameWidth - this.gameWidth / 2;
         this.height = this.gameHeight; // - this.gameHeight / 4;
@@ -216,21 +217,23 @@ export class Shop {
         this.btnWidth = 150;
         this.btnHeight = 40;
 
+        this.baseSize = {};
+        this.baseSize.x = 230;
+        this.baseSize.y = this.baseSize.x * (9 / 16);
+
         this.position = {
             x: (this.gameWidth - this.width) / 2,
             y: (this.gameHeight - this.height) / 2,
         };
-        this.startPosition = {
-            x: 50,
-            y: this.height / 2,
-        };
+        this.startPosition = {};
+
         this.font = "Arial";
         this.fontSize = 20;
         this.itemGapSize = {
-            x: 200,
-            y: 150,
+            x: 100,
+            y: 20,
         };
-        this.leftpadding = 100;
+        this.padding = 20;
 
         this.panelImg = this.game.loadedAssets[`shopPanel`];
         this.panelHeaderImg = this.game.loadedAssets[`shopPanelHeader`];
@@ -244,10 +247,12 @@ export class Shop {
      */
     draw = (ctx) => {
         this.drawPanel(ctx);
-        this.drawShopFishes(ctx);
+        this.drawDecorations(ctx);
     };
 
     drawPanel = (ctx) => {
+        // this.position.x = (this.gameWidth - this.width) / 2;
+        // this.position.y = (this.gameHeight - this.height) / 2;
         ctx.drawImage(
             this.panelImg,
             this.position.x,
@@ -280,38 +285,72 @@ export class Shop {
         );
     };
 
-    drawShopFishes = (ctx) => {
+    drawDecorations = (ctx) => {
+        this.startPosition.x = this.gameWidth / 2;
+        this.startPosition.y = this.gameHeight / 2;
         this.imgPosition = {
-            x: this.position.x + this.startPosition.x + this.leftpadding,
+            x: this.startPosition.x - this.baseSize.x - this.itemGapSize.x / 2,
             y:
                 this.startPosition.y -
-                this.shopFishes[0].baseSize -
-                this.itemGapSize.y / 2.5,
+                this.baseSize.y -
+                this.itemGapSize.y +
+                this.padding,
         };
-        this.shopFishes.forEach((shopFish, index) => {
-            shopFish.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
-            this.btnPosition = {
-                x: this.imgPosition.x - this.btnWidth / 2,
-                y: this.imgPosition.y + shopFish.baseSize * 2 + 10,
-            };
-            this.drawButton(
-                ctx,
-                this.btnPosition.x,
-                this.btnPosition.y,
-                shopFish.color,
-                shopFish.price
-            );
-            if (index == 2) {
-                this.imgPosition.x -=
-                    index * (shopFish.baseSize + this.itemGapSize.x);
-                this.imgPosition.y =
-                    this.startPosition.y + this.itemGapSize.y * 0.5;
-            } else {
-                this.imgPosition.x += shopFish.baseSize + this.itemGapSize.x;
+        this.count = 0;
+        this.decorations.forEach((decoration, index) => {
+            if (index !== this.game.bgIndex) {
+                this.count++;
+                this.drawPreview(ctx, decoration);
+                // decoration.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
+                this.btnPosition = {
+                    x:
+                        this.imgPosition.x +
+                        this.baseSize.x / 2 -
+                        this.btnWidth / 2,
+                    y: this.imgPosition.y + this.baseSize.y - 10,
+                };
+                this.drawButton(
+                    ctx,
+                    this.btnPosition.x,
+                    this.btnPosition.y,
+                    index,
+                    this.decorationData[decoration].price
+                );
+                if (this.count == 2) {
+                    this.imgPosition.x =
+                        this.startPosition.x -
+                        this.baseSize.x -
+                        this.itemGapSize.x / 2;
+                    this.imgPosition.y =
+                        this.startPosition.y +
+                        this.itemGapSize.y +
+                        this.padding;
+                } else {
+                    this.imgPosition.x =
+                        this.startPosition.x + this.itemGapSize.x / 2;
+                }
             }
         });
     };
-    drawButton = (ctx, x, y, fishColor, price) => {
+
+    drawPreview = (ctx, decoration) => {
+        // ctx.fillStyle = "#c2c26b";
+        // ctx.fillRect(
+        //     this.imgPosition.x,
+        //     this.imgPosition.y,
+        //     this.baseSize.x,
+        //     this.baseSize.y
+        // );
+        this.previewImg = this.game.loadedAssets[decoration];
+        ctx.drawImage(
+            this.previewImg,
+            this.imgPosition.x,
+            this.imgPosition.y,
+            this.baseSize.x,
+            this.baseSize.y
+        );
+    };
+    drawButton = (ctx, x, y, index, price) => {
         ctx.drawImage(this.btnImg, x, y, this.btnWidth, this.btnHeight);
         ctx.font = `bold ${this.fontSize}px ${this.font}`;
         ctx.textAlign = "center";
@@ -335,7 +374,7 @@ export class Shop {
             y + this.btnHeight / 2
         );
         // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
-        this.checkForBtnClick(x, y, fishColor);
+        this.checkForBtnClick(x, y, index, price);
     };
 
     /**
@@ -344,9 +383,6 @@ export class Shop {
      */
     update = (deltaTime) => {
         this.checkForOutsideClick();
-        this.shopFishes.forEach((shopFish) => {
-            shopFish.update(deltaTime);
-        });
     };
 
     checkForOutsideClick = () => {
@@ -367,7 +403,7 @@ export class Shop {
         }
     };
 
-    checkForBtnClick = (x, y, fishColor) => {
+    checkForBtnClick = (x, y, index, price) => {
         if (
             this.game.mouse.click &&
             //this.game.gameMode === this.game.gameModes.SELECT &&
@@ -379,9 +415,11 @@ export class Shop {
                 this.game.mouse.y > y &&
                 this.game.mouse.y < y + this.btnHeight
             ) {
-                console.log("buy");
-                this.game.toggleShop();
-                this.game.buyFish(fishColor);
+                console.log("buy", price);
+                if (this.game.handleBuy(price)) {
+                    this.game.toggleShop();
+                    this.game.updateBg(index);
+                }
                 this.game.inputHandler.resetMouseClick();
             }
         }

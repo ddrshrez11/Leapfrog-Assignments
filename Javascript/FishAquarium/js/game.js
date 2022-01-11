@@ -36,7 +36,8 @@ export default class Game {
             junk: 10,
             coin: 10,
         };
-        this.money = 0;
+        this.money = this.save.getMoney() ? this.save.getMoney() : 0;
+        this.bgIndex = this.save.getBgIndex() ? this.save.getBgIndex() : 0;
 
         this.gameModes = {
             SELECT: 0,
@@ -50,21 +51,17 @@ export default class Game {
             junk: 10000,
             coin: 10000,
         };
+        this.price = {
+            food: 1,
+            pill: 1,
+        };
         this.mouse = {
             x: 0,
             y: 0,
             click: false,
         };
 
-        this.updateCursor();
-        // this.canvas.style.cursor = `url(
-        //     http://www.rw-designer.com/cursor-extern.php?id=45618
-        // ),default`;
-        // this.canvas.style.cursor = `url(
-        //     http://www.rw-designer.com/cursor-extern.php?id=23450
-        // ),default`;
-
-        this.bgImg = loadedAssets.background;
+        // this.bgImg = loadedAssets[`background${this.bgIndex}`];
         // this.bgImg = new Image();
         // this.bgImg.src = "./assets/otherObjects/bg1.jpg";
     }
@@ -86,7 +83,7 @@ export default class Game {
         this.inputHandler = new InputHandler(this);
 
         // this.toggleFishShop(); //! remove
-        // this.toggleShop(); //! remove
+        this.toggleShop(); //! remove
 
         // this.fishes.push(new Fish(this, "black"));
         // this.fishes.push(new Fish(this, "green"));
@@ -131,6 +128,9 @@ export default class Game {
         );
 
         this.gameObjects = [];
+
+        this.updateCursor();
+        this.updateBg();
         this.updateGameObjects();
 
         this.clearFoodCount = 0;
@@ -171,20 +171,20 @@ export default class Game {
         this.updateGameObjects();
     };
     createFood = () => {
-        //if (this.gameMode === 1 && this.mouse.click) {
-        this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
-        this.updateGameObjects();
-        this.inputHandler.resetMouseClick();
-        console.log("new food");
-        //}
+        if (this.handleBuy(this.price.food)) {
+            this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
+            this.updateGameObjects();
+            this.inputHandler.resetMouseClick();
+            console.log("new food");
+        }
     };
     createPill = () => {
-        //if (this.gameMode === 1 && this.mouse.click) {
-        this.pills.push(new Pill(this, this.mouse.x, this.mouse.y));
-        this.updateGameObjects();
-        this.inputHandler.resetMouseClick();
-        console.log("new pill");
-        //}
+        if (this.handleBuy(this.price.food)) {
+            this.pills.push(new Pill(this, this.mouse.x, this.mouse.y));
+            this.updateGameObjects();
+            this.inputHandler.resetMouseClick();
+            console.log("new pill");
+        }
     };
 
     createJunk = () => {
@@ -256,6 +256,12 @@ export default class Game {
         ];
     };
 
+    updateBg = (index) => {
+        if (index !== undefined) this.bgIndex = index;
+        this.save.saveBgIndex();
+        this.bgImg = this.loadedAssets[`background${this.bgIndex}`];
+    };
+
     updateFoods = () => {
         this.foods = this.foods.filter((food) => {
             return !food.eaten;
@@ -321,6 +327,17 @@ export default class Game {
         this.canvas.style.cursor = `url(
             assets/cursors/${this.cursorName}.cur
         ),default`;
+    };
+
+    handleBuy = (price) => {
+        if (this.money >= price) {
+            this.money -= price;
+            this.save.saveMoney();
+            console.log("item Bought for ", price, " Money: ", this.money);
+            return true;
+        }
+        console.log("No Money");
+        return false;
     };
 
     toggleShowInfo = (fish) => {

@@ -16,12 +16,13 @@ const startGame = () => {
     window.addEventListener("beforeunload", function (e) {
         var confirmationMessage = "Are you sure you want to leave the game?";
 
-        localStorage.setItem("restart", "yes");
+        // localStorage.setItem("restart", "yes");
 
         game.save.saveFishes();
         game.save.saveCoins();
         game.save.saveJunks();
         game.save.saveMoney();
+        game.save.saveBgIndex();
 
         e.returnValue = confirmationMessage; //Gecko + IE
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
@@ -122,7 +123,7 @@ Promise.all(assetsLoaded)
         loading.style.display = "none";
 
         //background
-        loadedAssets.background = images[0];
+        loadedAssets.background0 = images[0];
 
         //fishes
         loadedAssets.blue_left = images[1];
@@ -174,10 +175,10 @@ Promise.all(assetsLoaded)
         loadedAssets.pill = images[33];
 
         //additional Backgrounds
-        loadedAssets.background1 = images[33];
-        loadedAssets.background2 = images[34];
-        loadedAssets.background3 = images[35];
-        loadedAssets.background4 = images[36];
+        loadedAssets.background1 = images[34];
+        loadedAssets.background2 = images[35];
+        loadedAssets.background3 = images[36];
+        loadedAssets.background4 = images[37];
 
         console.log(loadedAssets);
         startGame();
