@@ -36,7 +36,8 @@ export default class Game {
             junk: 10,
             coin: 10,
         };
-        this.money = this.save.getMoney() ? this.save.getMoney() : 0;
+        this.money = this.save.getMoney() ? Number(this.save.getMoney()) : 0;
+        console.log(typeof this.money);
         this.bgIndex = this.save.getBgIndex() ? this.save.getBgIndex() : 0;
 
         this.gameModes = {
@@ -261,7 +262,12 @@ export default class Game {
         this.save.saveBgIndex();
         this.bgImg = this.loadedAssets[`background${this.bgIndex}`];
     };
-
+    updateFishes = () => {
+        this.fishes = this.fishes.filter((fish) => {
+            return !fish.sold;
+        });
+        this.updateGameObjects();
+    };
     updateFoods = () => {
         this.foods = this.foods.filter((food) => {
             return !food.eaten;
@@ -338,6 +344,11 @@ export default class Game {
         }
         console.log("No Money");
         return false;
+    };
+    handleSell = (price) => {
+        this.money += price;
+        this.save.saveMoney();
+        console.log("item sold for ", price, " Money: ", this.money);
     };
 
     toggleShowInfo = (fish) => {

@@ -198,6 +198,7 @@ const resetGame = () => {
     localStorage.removeItem("coins");
     localStorage.removeItem("fishes");
     localStorage.removeItem("money");
+    localStorage.removeItem("bgIndex");
     game = undefined;
     startGame();
 };

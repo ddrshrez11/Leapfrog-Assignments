@@ -19,6 +19,9 @@ export default class Fish {
         this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
         this.price = this.type.price;
+
+        this.value = 31;
+        this.sold = false;
         // this.baseSize = this.type.baseSize;
 
         if (fishInfo) {

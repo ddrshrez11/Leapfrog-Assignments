@@ -9,23 +9,32 @@ export default class FishInfo {
         this.gameWidth = fish.gameWidth;
         this.gameHeight = fish.gameHeight;
         this.screenMargin = 100;
+        this.price = this.fish.value;
 
         this.width = this.gameWidth - this.gameWidth / 2;
-        this.height = this.gameHeight - this.gameHeight / 4;
+        // this.height = this.gameHeight - this.gameHeight / 4;
+        this.height = this.gameHeight;
         this.barWidth = 150;
         this.position = {
             x: (this.gameWidth - this.width) / 2,
             y: (this.gameHeight - this.height) / 2,
         };
         this.startPosition = {
-            x: 50,
-            y: 50,
+            x: (this.gameWidth - this.width) / 2 - 200,
+            y: this.gameHeight / 2 - 100,
         };
+        this.btnWidth = 150;
+        this.btnHeight = 40;
+
         this.font = "Arial";
         this.fontSize = 20;
         this.infoGapSize = 30;
 
-        this.panelImg = this.game.loadedAssets["infoPanel"];
+        this.panelImg = this.game.loadedAssets[`shopPanel`];
+        this.btnImg = this.game.loadedAssets[`shopBtn`];
+        this.coinImg = this.game.loadedAssets[`coin1`];
+
+        // this.panelImg = this.game.loadedAssets["infoPanel"];
         // this.panelImg = new Image();
         // this.panelImg.src = "./assets/otherObjects/panel1.png";
 
@@ -78,7 +87,7 @@ export default class FishInfo {
         );
 
         // this.startPosition.x +=30
-        this.textPosition.y = 60;
+        this.textPosition.y = this.startPosition.y + 20;
 
         ctx.font = this.fontSize + "px " + this.font;
         for (let i = 0; i < this.infoList.length; i++) {
@@ -92,7 +101,7 @@ export default class FishInfo {
         }
 
         this.imgPosition = {
-            x: this.gameWidth / 2 + this.width / 4,
+            x: this.gameWidth / 2 + 100,
             y: this.gameHeight / 2 - this.height / 10,
         };
         this.fish.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
@@ -109,6 +118,42 @@ export default class FishInfo {
             this.imgPosition.y + this.fish.r + 50 + 10,
             this.barWidth
         );
+        this.drawButton(ctx);
+    };
+
+    drawButton = (ctx) => {
+        this.btnX = this.position.x + this.width / 2 - this.btnWidth / 2;
+        this.btnY = this.position.y + this.height / 2 + 150;
+        ctx.drawImage(
+            this.btnImg,
+            this.btnX,
+            this.btnY,
+            this.btnWidth,
+            this.btnHeight
+        );
+        ctx.font = `bold ${this.fontSize}px ${this.font}`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowColor = "black";
+        ctx.shadowBlur = 1;
+        ctx.drawImage(
+            this.coinImg,
+            this.btnX + 6 + this.btnWidth / 2,
+            this.btnY - 1 + this.btnHeight / 4,
+            20,
+            20
+        );
+        ctx.fillText(
+            `Sell       ${this.price}`,
+            this.btnX + this.btnWidth / 2,
+            this.btnY + this.btnHeight / 2
+        );
+        // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
+        this.checkForBtnClick(this.btnX, this.btnY);
     };
 
     /**
@@ -116,10 +161,10 @@ export default class FishInfo {
      * @param {number} deltaTime change in time from previous frame
      */
     update = (deltaTime) => {
-        this.checkForClick();
+        this.checkForOutsideClick();
     };
 
-    checkForClick = () => {
+    checkForOutsideClick = () => {
         if (
             this.game.mouse.click &&
             this.game.gameMode === this.game.gameModes.SELECT &&
@@ -133,6 +178,28 @@ export default class FishInfo {
             ) {
                 this.game.toggleShowInfo();
                 this.game.inputHandler.resetMouseClick();
+            }
+        }
+    };
+
+    checkForBtnClick = (x, y) => {
+        if (
+            this.game.mouse.click &&
+            //this.game.gameMode === this.game.gameModes.SELECT &&
+            this.game.toggle.showInfo
+        ) {
+            if (
+                this.game.mouse.x > x &&
+                this.game.mouse.x < x + this.btnWidth &&
+                this.game.mouse.y > y &&
+                this.game.mouse.y < y + this.btnHeight
+            ) {
+                console.log("buy", this.price);
+                this.game.handleSell(this.price);
+                this.fish.sold = true;
+                this.game.toggleShowInfo();
+                this.game.inputHandler.resetMouseClick();
+                this.game.updateFishes();
             }
         }
     };
