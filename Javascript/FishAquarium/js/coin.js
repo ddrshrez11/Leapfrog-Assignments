@@ -2,8 +2,8 @@ export default class Coin {
     /**
      * @constructor
      * @param {Game} game Game object
-     * @param {number} x X coordinate to spawn food
-     * @param {number} y Y coordinate to spawn food
+     * @param {number} x X coordinate to spawn coin
+     * @param {number} y Y coordinate to spawn coin
      */
     constructor(game, x, y, bottomCollision) {
         this.game = game;
@@ -41,7 +41,7 @@ export default class Coin {
     }
 
     /**
-     * draw fish food on game screen
+     * draw fish coin on game screen
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
@@ -62,7 +62,7 @@ export default class Coin {
     };
 
     /**
-     * update position of fish food
+     * update position of fish coin
      * @param {number} deltaTime change in time from previous frame
      */
     update = (deltaTime) => {

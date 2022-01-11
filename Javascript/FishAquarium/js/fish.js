@@ -104,16 +104,27 @@ export default class Fish {
      */
     update = (deltaTime) => {
         this.fishCollisionDetection();
-
-        if (game.gameMode === this.game.gameModes.MOVE && this.mouse.click) {
+        if (
+            game.gameMode === this.game.gameModes.SELECT &&
+            this.mouse.click &&
+            (this.game.mouse.x < this.game.menu.menuX ||
+                this.game.mouse.x >
+                    this.game.menu.menuX + this.game.menu.menuWidth ||
+                this.game.mouse.y < this.game.menu.menuY ||
+                this.game.mouse.y >
+                    this.game.menu.menuY + this.game.menu.menuHeight)
+        ) {
             this.userInputMovement(deltaTime);
+            this.checkForClick();
         } else if (this.game.foods.length != 0 && this.hungerMeter > 0) {
             this.movementToFood(deltaTime);
+        } else if (this.game.pills.length != 0 && this.healthMeter < 100) {
+            this.movementToPill(deltaTime);
         } else {
             this.normalMovement(deltaTime);
         }
-        if (this.game.gameMode === this.game.gameModes.SELECT)
-            this.checkForClick();
+        // if (this.game.gameMode === this.game.gameModes.SELECT)
+        //     this.checkForClick();
 
         // console.log(this.position.y, this.direction.y, deltaTime);
     };
@@ -341,6 +352,72 @@ export default class Fish {
         console.log("Food Eaten");
     };
 
+    movementToPill = (deltaTime) => {
+        this.minimumPillIndex = this.getMinimumPill();
+        this.minimumPill = this.game.pills[this.minimumPillIndex];
+
+        this.dx = this.position.x - this.minimumPill.position.x;
+        this.dy = this.position.y - this.minimumPill.position.y;
+        if (this.dx > 0) {
+            this.changeXDirection(-1);
+        }
+        if (this.dx < 0) {
+            this.changeXDirection(1);
+        }
+        this.theta = Math.atan2(this.dx, this.dy);
+        this.angle = this.theta;
+
+        if (this.minimumPill.position.x != this.position.x) {
+            this.position.x -= this.dx / (3 * deltaTime);
+            // this.mouse.click = false;
+        }
+        if (this.minimumPill.position.y != this.position.y) {
+            this.position.y -= this.dy / (3 * deltaTime);
+        }
+        if (
+            Math.abs(getDistance(this.dx, this.dy)) <
+            this.r + this.minimumPill.r
+        ) {
+            if (!this.minimumPill.eaten) {
+                this.eatPill(this.minimumPillIndex);
+            }
+        }
+    };
+
+    getMinimumPill = () => {
+        this.minimumDistance = undefined;
+        this.minimumPillIndex = undefined;
+        this.game.pills.forEach((pill, index) => {
+            this.distance = Math.abs(
+                getDistance(
+                    this.position.x,
+                    this.position.y,
+                    pill.position.x,
+                    pill.position.x
+                )
+            );
+            if (
+                this.minimumPillIndex === undefined ||
+                this.minimumDistance > this.distance
+            ) {
+                this.minimumDistance = this.distance;
+                this.minimumPillIndex = index;
+            }
+        });
+        return this.minimumPillIndex;
+    };
+
+    eatPill = (minimumPillIndex) => {
+        this.minimumPill = this.game.pills[minimumPillIndex];
+        this.healthIncrease();
+        this.minimumPill.eaten = true;
+
+        this.game.updatePills();
+        // this.game.pills.splice(minimumPillIndex, 1);
+        // this.game.updateGameObjects();
+        console.log("Pill Eaten");
+    };
+
     checkForClick = () => {
         if (
             this.game.mouse.click &&
@@ -432,8 +509,8 @@ export default class Fish {
     };
     healthIncrease = () => {
         if (
-            this.game.junks.length === 0 &&
-            this.hungerMeter === 0 &&
+            // this.game.junks.length === 0 &&
+            // this.hungerMeter === 0 &&
             this.healthMeter < 100
         ) {
             this.healthMeter += 10;
@@ -441,10 +518,12 @@ export default class Fish {
                 this.healthMeter = 100;
                 clearInterval(this.healthDecreaseInterval);
                 this.healthDecreaseInterval = false;
-                setTimeout(
-                    this.startHealthDecreaseInterval,
-                    this.changeInterval.healthTimeout
-                );
+                if (!this.healthDecreaseInterval) {
+                    setTimeout(
+                        this.startHealthDecreaseInterval,
+                        this.changeInterval.healthTimeout
+                    );
+                }
             }
             // console.log(this.healthMeter);
         }
@@ -454,9 +533,11 @@ export default class Fish {
         this.hungerMeter += 10;
         if (this.hungerMeter > 100) {
             this.hungerMeter = 100;
-            if (!this.healthDecreaseInterval) {
-                this.startHealthDecreaseInterval();
-            }
+            setTimeout(() => {
+                if (!this.healthDecreaseInterval) {
+                    this.startHealthDecreaseInterval();
+                }
+            }, this.changeInterval.healthTimeout);
         }
         // this.game.save.saveFishes();
         // console.log(
@@ -509,7 +590,7 @@ export default class Fish {
     startHealthDecreaseInterval = () =>
         (this.healthDecreaseInterval = setInterval(
             this.healthDecrease,
-            this.changeInterval.health
+            this.changeInterval.healthTimeout
         ));
     startLevelUpInterval = () => {
         this.levelUpInterval = setInterval(

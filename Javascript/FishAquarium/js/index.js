@@ -76,14 +76,29 @@ const assets = [
     //junk
     "./assets/otherObjects/junk0.png",
     "./assets/otherObjects/junk1.png",
+
     //food
     "./assets/otherObjects/food.png",
+
     //Fish Info
     "./assets/otherObjects/panel1.png",
+
     //Shop
     "./assets/otherObjects/shopPanel.png",
     "./assets/otherObjects/shopPanelHeader.png",
     "./assets/otherObjects/buyBtn.png",
+
+    //Menu
+    "./assets/menu/menu-bubble.png",
+    "./assets/menu/menu-food.png",
+    "./assets/menu/menu-select.png",
+    "./assets/menu/menu-clean.png",
+    "./assets/menu/menu-fishShop.png",
+    "./assets/menu/menu-shop.png",
+    "./assets/menu/menu-pill.png",
+
+    //pill
+    "./assets/otherObjects/pill.png",
 ];
 const assetsLoaded = assets.map(
     (url) =>
@@ -98,7 +113,11 @@ const assetsLoaded = assets.map(
 Promise.all(assetsLoaded)
     .then((images) => {
         loading.style.display = "none";
+
+        //background
         loadedAssets.background = images[0];
+
+        //fishes
         loadedAssets.blue_left = images[1];
         loadedAssets.blue_right = images[2];
         loadedAssets.black_left = images[3];
@@ -111,20 +130,41 @@ Promise.all(assetsLoaded)
         loadedAssets.red_right = images[10];
         loadedAssets.yellow_left = images[11];
         loadedAssets.yellow_right = images[12];
+
+        //coins
         loadedAssets.coin0 = images[13];
         loadedAssets.coin1 = images[14];
         loadedAssets.coin2 = images[15];
         loadedAssets.coin3 = images[16];
         loadedAssets.coin4 = images[17];
         loadedAssets.coin5 = images[18];
+
+        //junk
         loadedAssets.junk0 = images[19];
         loadedAssets.junk1 = images[20];
+
+        //food
         loadedAssets.food = images[21];
+
+        //Fish Info
         loadedAssets.infoPanel = images[22];
+
+        //Shop
         loadedAssets.shopPanel = images[23];
         loadedAssets.shopPanelHeader = images[24];
         loadedAssets.shopBtn = images[25];
-        // loadedAssets. = images[25];
+
+        //Menu
+        loadedAssets.menuBubble = images[26];
+        loadedAssets.menu_food = images[27];
+        loadedAssets.menu_select = images[28];
+        loadedAssets.menu_clean = images[29];
+        loadedAssets.menu_fishShop = images[30];
+        loadedAssets.menu_shop = images[31];
+        loadedAssets.menu_pill = images[32];
+
+        //pill
+        loadedAssets.pill = images[33];
 
         console.log(loadedAssets);
         startGame();

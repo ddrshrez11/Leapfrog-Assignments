@@ -34,7 +34,7 @@ export default class FishInfo {
     }
 
     /**
-     * draw fish food on game screen
+     * draw fish on info screen
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
@@ -112,7 +112,7 @@ export default class FishInfo {
     };
 
     /**
-     * update position of fish food
+     * check for click on each update
      * @param {number} deltaTime change in time from previous frame
      */
     update = (deltaTime) => {
@@ -127,9 +127,9 @@ export default class FishInfo {
         ) {
             if (
                 this.game.mouse.x < this.position.x ||
-                this.game.x > this.position.x + this.width ||
+                this.game.mouse.x > this.position.x + this.width ||
                 this.game.mouse.y < this.position.y ||
-                this.game.y > this.position.y + this.height
+                this.game.mouse.y > this.position.y + this.height
             ) {
                 this.game.toggleShowInfo();
                 this.game.inputHandler.resetMouseClick();

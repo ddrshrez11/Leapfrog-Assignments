@@ -5,6 +5,7 @@ export default class InputHandler {
      */
     constructor(game) {
         this.game = game;
+        this.menu = game.menu;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
         this.canvas = game.canvas;
@@ -20,8 +21,18 @@ export default class InputHandler {
         this.mouse.x = event.x - this.canvasPostion.left;
         this.mouse.y = event.y - this.canvasPostion.top;
         // console.log(this.mouse);
-        if (this.game.gameMode === this.game.gameModes.FEED) {
-            this.game.createFood();
+        if (
+            this.game.mouse.x < this.menu.menuX ||
+            this.game.mouse.x > this.menu.menuX + this.menu.menuWidth ||
+            this.game.mouse.y < this.menu.menuY ||
+            this.game.mouse.y > this.menu.menuY + this.menu.menuHeight
+        ) {
+            if (this.game.gameMode === this.game.gameModes.FEED) {
+                this.game.createFood();
+            }
+            if (this.game.gameMode === this.game.gameModes.PILL) {
+                this.game.createPill();
+            }
         }
     };
 
