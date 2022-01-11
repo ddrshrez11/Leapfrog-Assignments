@@ -9,7 +9,7 @@ export default class Coin {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight - 30;
-        this.r = 15;
+        this.r = 20;
 
         this.position = {
             x: x ? x : getRandomFromRange(this.r, this.gameWidth - this.r),
@@ -24,6 +24,7 @@ export default class Coin {
         this.collected = false;
         this.changeInterval = {
             coinImg: 200,
+            clearCoinTimeout: 5000,
         };
         this.coinImgIndex = 0;
         this.coinImg = new Image();
@@ -101,7 +102,10 @@ export default class Coin {
             this.direction.y = 0;
             if (!this.bottomCollision) {
                 this.bottomCollision = true;
-                this.game.updateCoins();
+                this.clearCoinTimeout = setTimeout(() => {
+                    this.collected = true;
+                    this.game.updateCoins();
+                }, this.changeInterval.clearCoinTimeout);
             }
         }
     };

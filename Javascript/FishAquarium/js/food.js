@@ -21,6 +21,8 @@ export default class Food {
         this.eaten = false;
         this.foodImg = new Image();
         this.foodImg.src = "./assets/otherObjects/food.png";
+        this.bottomCollision =
+            this.position.y < this.gameHeight - this.r ? true : false;
     }
 
     /**
@@ -60,6 +62,13 @@ export default class Food {
     wallCollisionDetect = () => {
         if (this.position.y > this.gameHeight - this.r) {
             this.direction.y = 0;
+            if (!this.bottomCollision) {
+                this.bottomCollision = true;
+                this.clearCoinTimeout = setTimeout(() => {
+                    this.collected = true;
+                    this.game.updateCoins();
+                }, this.changeInterval.clearCoinTimeout);
+            }
         }
     };
 }
