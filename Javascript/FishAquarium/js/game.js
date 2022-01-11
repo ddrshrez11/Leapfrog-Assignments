@@ -1,12 +1,14 @@
 import Coin from "./coin.js";
 import Fish from "./fish.js";
 import Food from "./food.js";
+import Pill from "./pill.js";
 import InputHandler from "./inputHandler.js";
 import Junk from "./junk.js";
 import { fishTypes } from "./fishTypes.js";
 import FishInfo from "./fishInfo.js";
 import Save from "./save.js";
 import Shop from "./shop.js";
+import Menu from "./menu.js";
 
 export default class Game {
     /**
@@ -36,12 +38,13 @@ export default class Game {
         this.money = 0;
 
         this.gameModes = {
-            MOVE: 0,
+            SELECT: 0,
             FEED: 1,
-            CLEAN: 2,
-            SELECT: 3,
+            PILL: 2,
+            CLEAN: 3,
+            // SELECT: 3,
         };
-        this.gameMode = this.gameModes.MOVE;
+        this.gameMode = this.gameModes.SELECT;
         this.changeInterval = {
             junk: 10000,
             coin: 10000,
@@ -52,12 +55,13 @@ export default class Game {
             click: false,
         };
 
+        this.updateCursor();
         // this.canvas.style.cursor = `url(
         //     http://www.rw-designer.com/cursor-extern.php?id=45618
         // ),default`;
-        this.canvas.style.cursor = `url(
-            http://www.rw-designer.com/cursor-extern.php?id=23450
-        ),default`;
+        // this.canvas.style.cursor = `url(
+        //     http://www.rw-designer.com/cursor-extern.php?id=23450
+        // ),default`;
 
         this.bgImg = loadedAssets.background;
         // this.bgImg = new Image();
@@ -72,9 +76,11 @@ export default class Game {
         this.fishes = [];
         this.coins = [];
         this.foods = [];
+        this.pills = [];
         this.junks = [];
         this.shop = [];
         this.fishInfo = [];
+        this.menu = new Menu(this);
         this.inputHandler = new InputHandler(this);
 
         // this.toggleShop(); //! remove
@@ -121,7 +127,7 @@ export default class Game {
             this.changeInterval.coin
         );
 
-        this.gameObjects = []; // ...this.junks];
+        this.gameObjects = [];
         this.updateGameObjects();
 
         this.clearFoodCount = 0;
@@ -167,6 +173,14 @@ export default class Game {
         this.updateGameObjects();
         this.inputHandler.resetMouseClick();
         console.log("new food");
+        //}
+    };
+    createPill = () => {
+        //if (this.gameMode === 1 && this.mouse.click) {
+        this.pills.push(new Pill(this, this.mouse.x, this.mouse.y));
+        this.updateGameObjects();
+        this.inputHandler.resetMouseClick();
+        console.log("new pill");
         //}
     };
 
@@ -231,6 +245,8 @@ export default class Game {
             ...this.coins,
             ...this.fishes,
             ...this.foods,
+            ...this.pills,
+            this.menu,
             ...this.fishInfo,
             ...this.shop,
         ];
@@ -243,6 +259,13 @@ export default class Game {
         this.updateGameObjects();
     };
 
+    updatePills = () => {
+        this.pills = this.pills.filter((pill) => {
+            return !pill.eaten;
+        });
+        this.updateGameObjects();
+    };
+
     updateJunks = () => {
         this.junks = this.junks.filter((junk) => {
             return !junk.cleaned;
@@ -250,11 +273,14 @@ export default class Game {
         if (this.junks.length === 0) {
             this.fishes.forEach((fish) => {
                 clearInterval(fish.healthDecreaseInterval);
+                fish.healthDecreaseInterval = false;
             });
             // this.fish.startHealthDecreaseInterval();
         } else {
             this.fishes.forEach((fish) => {
-                fish.startHealthDecreaseInterval();
+                if (!fish.healthDecreaseInterval) {
+                    fish.startHealthDecreaseInterval();
+                }
             });
             // clearInterval(this.fish.healthDecreaseInterval);
         }
@@ -271,16 +297,15 @@ export default class Game {
     };
 
     updateCursor = () => {
-        this.cursorName;
         switch (this.gameMode) {
-            case this.gameModes.MOVE:
-                this.cursorName = "hand-cursor";
-                break;
             case this.gameModes.FEED:
                 this.cursorName = "pot-purple";
                 break;
+            case this.gameModes.PILL:
+                this.cursorName = "pill";
+                break;
             case this.gameModes.CLEAN:
-                this.cursorName = "diamond-pick";
+                this.cursorName = "clean";
                 break;
             case this.gameModes.SELECT:
                 this.cursorName = "hand-cursor";

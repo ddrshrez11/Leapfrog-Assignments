@@ -13,10 +13,10 @@
         <div id="loading">
             <h1>LOADING...</h1>
         </div>
-        <button onClick="handleClick(0)">control fish</button>
+        <button onClick="handleClick(0)">Select</button>
         <button onClick="handleClick(1)">feed fish</button>
         <button onClick="handleClick(2)">clean tank</button>
-        <button onClick="handleClick(3)">Select Coin</button>
+        <button onClick="handleClick(3)">Pill</button>
         <button onClick="window.game.buyFish()">Buy Fish</button>
         <button onClick="window.game.toggleShop()">Open Shop</button>
         <button onClick="window.resetGame()">Reset Game</button>
@@ -31,11 +31,8 @@
                 window.game.gameMode = gameMode;
                 window.game.updateCursor();
                 if (window.game.toggle.showInfo) window.game.toggleShowInfo();
+                if (window.game.toggle.showShop) window.game.toggleShop();
             };
         </script>
-        <!-- <script src="js/fish.js"></script>
-        <script src="js/food.js"></script>
-        <script src="js/game.js"></script> -->
-        <!-- <script src="js/index.js"></script> -->
     </body>
 </html>
