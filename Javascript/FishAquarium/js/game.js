@@ -83,7 +83,7 @@ export default class Game {
         this.inputHandler = new InputHandler(this);
 
         // this.toggleFishShop(); //! remove
-        this.toggleShop(); //! remove
+        // this.toggleShop(); //! remove
 
         // this.fishes.push(new Fish(this, "black"));
         // this.fishes.push(new Fish(this, "green"));

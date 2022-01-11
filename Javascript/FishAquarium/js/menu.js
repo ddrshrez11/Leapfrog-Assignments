@@ -1,3 +1,4 @@
+import Coin from "./coin.js";
 import { menuData } from "./data.js";
 
 export default class Menu {
@@ -16,15 +17,18 @@ export default class Menu {
         this.width = this.gameWidth / 20;
         this.height = this.width;
         this.imgHeight = this.height - 20;
+        this.btnWidth = 100;
+        this.btnHeight = 40;
+        this.coinRadius = 30;
 
         this.position = {
             x: 0,
             y: 0,
         };
-        // this.startPosition = {
-        //     x: 50,
-        //     y: this.height / 2,
-        // };
+        this.startPosition = {
+            x: 0,
+            y: 0,
+        };
         this.font = "Arial";
         this.fontSize = 20;
         this.itemGapSize = {
@@ -37,7 +41,7 @@ export default class Menu {
             y: 5,
         };
 
-        this.btnImg = this.game.loadedAssets[`shopBtn`];
+        this.btnImg = this.game.loadedAssets[`btn2`];
         this.bubbleImg = this.game.loadedAssets[`menuBubble`];
         this.menuCoinImg = this.game.loadedAssets[`coin1`];
     }
@@ -47,8 +51,8 @@ export default class Menu {
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
-        this.position.x = this.padding.x;
-        this.position.y = this.padding.y;
+        this.startPosition.x = this.padding.x;
+        this.startPosition.y = this.padding.y;
 
         this.menuX = this.padding.x;
         this.menuY = this.padding.y;
@@ -63,6 +67,8 @@ export default class Menu {
         this.menuOptions.forEach((option, index) => {
             this.drawMenuIcons(ctx, option, index);
         });
+
+        this.drawMoneyCounter(ctx);
     };
 
     drawMenuIcons = (ctx, option, index) => {
@@ -73,15 +79,15 @@ export default class Menu {
 
         ctx.drawImage(
             this.bubbleImg,
-            this.position.x, // + this.padding.x,
-            this.position.y,
+            this.startPosition.x, // + this.padding.x,
+            this.startPosition.y,
             this.width,
             this.height
         );
         ctx.drawImage(
             this.menuIconImg,
-            this.position.x + (this.width - this.imgWidth) / 2,
-            this.position.y + this.padding.y * 1.5,
+            this.startPosition.x + (this.width - this.imgWidth) / 2,
+            this.startPosition.y + this.padding.y * 1.5,
             this.imgWidth,
             this.imgHeight
         );
@@ -97,17 +103,57 @@ export default class Menu {
         ctx.shadowBlur = 1;
         ctx.strokeText(
             this.option.name,
-            this.position.x + this.width / 2,
-            this.position.y + this.padding.y * 2.5 + this.imgHeight
+            this.startPosition.x + this.width / 2,
+            this.startPosition.y + this.padding.y * 2.5 + this.imgHeight
         );
         ctx.fillText(
             this.option.name,
-            this.position.x + this.width / 2,
-            this.position.y + this.padding.y * 2.5 + this.imgHeight
+            this.startPosition.x + this.width / 2,
+            this.startPosition.y + this.padding.y * 2.5 + this.imgHeight
         );
 
         this.checkForBtnClick(index);
-        this.position.x += this.width + this.padding.x;
+        this.startPosition.x += this.width + this.padding.x;
+    };
+
+    drawMoneyCounter = (ctx) => {
+        this.startPosition.x = this.gameWidth - this.btnWidth - this.padding.x;
+        this.startPosition.y =
+            this.padding.y + (this.coinRadius - this.btnHeight / 2);
+
+        ctx.drawImage(
+            this.btnImg,
+            this.startPosition.x,
+            this.startPosition.y,
+            this.btnWidth,
+            this.btnHeight
+        );
+        ctx.drawImage(
+            this.menuCoinImg,
+            this.startPosition.x - this.coinRadius - 5,
+            this.padding.y,
+            2 * this.coinRadius,
+            2 * this.coinRadius
+        );
+        ctx.font = `bold ${this.fontSize}px ${this.font}`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#fff";
+        ctx.lineWidth = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowColor = "black";
+        ctx.shadowBlur = 1;
+        ctx.strokeText(
+            this.game.money,
+            this.startPosition.x + this.btnWidth / 2,
+            this.startPosition.y + this.btnHeight / 2
+        );
+        ctx.fillText(
+            this.game.money,
+            this.startPosition.x + this.btnWidth / 2,
+            this.startPosition.y + this.btnHeight / 2
+        );
     };
 
     drawButton = (ctx, x, y, fishColor) => {
@@ -152,11 +198,11 @@ export default class Menu {
             // this.game.toggle.showShop
         ) {
             if (
-                this.game.mouse.x > this.position.x &&
-                this.game.mouse.x < this.position.x + this.width &&
-                this.game.mouse.y > this.position.y &&
+                this.game.mouse.x > this.startPosition.x &&
+                this.game.mouse.x < this.startPosition.x + this.width &&
+                this.game.mouse.y > this.startPosition.y &&
                 this.game.mouse.y <
-                    this.position.y + this.height + this.fontSize
+                    this.startPosition.y + this.height + this.fontSize
             ) {
                 console.log("Menu Click", index);
                 if (index < 4) {
