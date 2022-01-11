@@ -14,13 +14,15 @@ export default class Game {
      * @param {number} gameWidth Width of game screen
      * @param {number} gameHeight Height of game screen
      */
-    constructor(gameWidth, gameHeight, canvas) {
+    constructor(gameWidth, gameHeight, canvas, loadedAssets) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.canvas = canvas;
         this.canvasPosition = this.canvas.getBoundingClientRect();
         this.fishTypesArray = Object.keys(fishTypes);
         this.save = new Save(this);
+
+        this.loadedAssets = loadedAssets;
 
         this.toggle = {
             showInfo: false,
@@ -57,8 +59,9 @@ export default class Game {
             http://www.rw-designer.com/cursor-extern.php?id=23450
         ),default`;
 
-        this.bgImg = new Image();
-        this.bgImg.src = "./assets/otherObjects/bg1.jpg";
+        this.bgImg = loadedAssets.background;
+        // this.bgImg = new Image();
+        // this.bgImg.src = "./assets/otherObjects/bg1.jpg";
     }
 
     /**
