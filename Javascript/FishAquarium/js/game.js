@@ -123,6 +123,8 @@ export default class Game {
 
         this.gameObjects = []; // ...this.junks];
         this.updateGameObjects();
+
+        this.clearFoodCount = 0;
         // this.save.saveFishes(this);
     };
 
@@ -232,6 +234,13 @@ export default class Game {
             ...this.fishInfo,
             ...this.shop,
         ];
+    };
+
+    updateFoods = () => {
+        this.foods = this.foods.filter((food) => {
+            return !food.eaten;
+        });
+        this.updateGameObjects();
     };
 
     updateJunks = () => {

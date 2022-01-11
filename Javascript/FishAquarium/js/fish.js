@@ -332,10 +332,12 @@ export default class Fish {
 
     eatFood = (minimumFoodIndex) => {
         this.minimumFood = this.game.foods[minimumFoodIndex];
-        this.minimumFood.eaten = true;
         this.hungerDecrease();
-        this.game.foods.splice(minimumFoodIndex, 1);
-        this.game.updateGameObjects();
+        this.minimumFood.eaten = true;
+
+        this.game.updateFoods();
+        // this.game.foods.splice(minimumFoodIndex, 1);
+        // this.game.updateGameObjects();
         console.log("Food Eaten");
     };
 

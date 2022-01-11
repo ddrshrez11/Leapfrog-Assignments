@@ -1,3 +1,5 @@
+import Junk from "./junk.js";
+
 export default class Food {
     /**
      * @constructor
@@ -21,8 +23,10 @@ export default class Food {
         this.eaten = false;
         this.foodImg = new Image();
         this.foodImg.src = "./assets/otherObjects/food.png";
-        this.bottomCollision =
-            this.position.y < this.gameHeight - this.r ? true : false;
+        this.bottomCollision = false;
+        this.changeInterval = {
+            clearFoodTimeout: 5000,
+        };
     }
 
     /**
@@ -64,10 +68,26 @@ export default class Food {
             this.direction.y = 0;
             if (!this.bottomCollision) {
                 this.bottomCollision = true;
-                this.clearCoinTimeout = setTimeout(() => {
-                    this.collected = true;
-                    this.game.updateCoins();
-                }, this.changeInterval.clearCoinTimeout);
+
+                this.clearFoodTimeout = setTimeout(() => {
+                    this.eaten = true;
+                    this.game.clearFoodCount++;
+                    if (this.game.clearFoodCount % 5 === 0) {
+                        this.game.clearFoodCount %= 5;
+                        this.game.junks.push(
+                            new Junk(this.game, {
+                                r: getRandomFromRange(20, 30),
+                                position: {
+                                    x: this.position.x,
+                                    y: this.position.y,
+                                },
+                                junkImgIndex: getRandomIndex(0, 2),
+                            })
+                        );
+                    }
+                    this.game.updateJunks();
+                    this.game.updateFoods();
+                }, this.changeInterval.clearFoodTimeout);
             }
         }
     };
