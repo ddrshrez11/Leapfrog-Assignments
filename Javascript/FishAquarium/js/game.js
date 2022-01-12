@@ -31,6 +31,7 @@ export default class Game {
         this.sellFishSound = this.sounds.sellFish;
         this.foodSound = this.sounds.food;
         this.pillSound = this.sounds.pill;
+        this.errorSound = this.sounds.error;
 
         this.toggle = {
             showInfo: false,
@@ -356,6 +357,8 @@ export default class Game {
             // console.log("item Bought for ", price, " Money: ", this.money);
             return true;
         }
+        if (!this.toggle.isMute) this.errorSound.play();
+        if (this.toggle.isMute) this.errorSound.stop();
         this.menu.setMoneyInfo(`No Money`, -1);
         // console.log("No Money");
         return false;

@@ -146,6 +146,7 @@ Promise.all(assetsLoaded)
         sounds.close = new Sound("./assets/sounds/close.wav");
         sounds.coin = new Sound("./assets/sounds/coin.wav");
         sounds.controlFish = new Sound("./assets/sounds/controlFish.wav");
+        sounds.error = new Sound("./assets/sounds/error.wav");
         sounds.food = new Sound("./assets/sounds/food.wav");
         sounds.levelUp = new Sound("./assets/sounds/levelUp.wav");
         sounds.pill = new Sound("./assets/sounds/pill1.wav");
