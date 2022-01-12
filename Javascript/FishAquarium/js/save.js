@@ -10,6 +10,11 @@ export default class Save {
         this.saveInfo = this.game.bgIndex;
         localStorage.setItem("bgIndex", this.saveInfo);
     };
+    saveBg = (decoration) => {
+        this.saveBgInfoArr = this.getBg();
+        this.saveBgInfoArr.push(decoration);
+        localStorage.setItem("bg", JSON.stringify(this.saveBgInfoArr));
+    };
     saveFishes = () => {
         this.saveFishesInfoArr = [];
         this.game.fishes.forEach((fish) => {
@@ -56,5 +61,10 @@ export default class Save {
     };
     getBgIndex = () => {
         return localStorage.getItem("bgIndex");
+    };
+    getBg = () => {
+        return localStorage.getItem("bg")
+            ? JSON.parse(localStorage.getItem("bg"))
+            : [0];
     };
 }

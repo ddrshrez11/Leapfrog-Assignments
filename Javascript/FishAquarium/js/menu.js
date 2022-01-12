@@ -41,9 +41,18 @@ export default class Menu {
             y: 5,
         };
 
+        this.menuBtnIcon = {
+            width: 60,
+            height: 60,
+        };
         this.btnImg = this.game.loadedAssets[`btn2`];
         this.bubbleImg = this.game.loadedAssets[`menuBubble`];
         this.menuCoinImg = this.game.loadedAssets[`coin1`];
+        this.replayBtnImg = this.game.loadedAssets[`replayBtn`];
+        this.infoBtnImg = this.game.loadedAssets[`infoBtn`];
+        this.soundOn = this.game.loadedAssets[`soundOnBtn`];
+        this.soundOff = this.game.loadedAssets[`soundOffBtn`];
+        this.soundBtnImg = this.soundOn;
     }
 
     /**
@@ -69,6 +78,7 @@ export default class Menu {
         });
 
         this.drawMoneyCounter(ctx);
+        this.drawMenuBtn(ctx);
     };
 
     drawMenuIcons = (ctx, option, index) => {
@@ -116,10 +126,52 @@ export default class Menu {
         this.startPosition.x += this.width + this.padding.x;
     };
 
+    drawMenuBtn = (ctx) => {
+        this.startPosition.x =
+            this.gameWidth - this.menuBtnIcon.width - this.padding.x;
+        this.startPosition.y = this.padding.y + 5; //+ this.settingIcon.height / 2;
+
+        ctx.drawImage(
+            this.replayBtnImg,
+            this.startPosition.x,
+            this.startPosition.y,
+            this.menuBtnIcon.width,
+            this.menuBtnIcon.height
+        );
+
+        this.checkForMenuBtnClick(8);
+
+        this.startPosition.x -= this.menuBtnIcon.width + this.padding.x / 2;
+
+        ctx.drawImage(
+            this.infoBtnImg,
+            this.startPosition.x,
+            this.startPosition.y,
+            this.menuBtnIcon.width,
+            this.menuBtnIcon.height
+        );
+        this.checkForMenuBtnClick(7);
+
+        this.startPosition.x -= this.menuBtnIcon.width + this.padding.x / 2;
+
+        ctx.drawImage(
+            this.soundBtnImg,
+            this.startPosition.x,
+            this.startPosition.y,
+            this.menuBtnIcon.width,
+            this.menuBtnIcon.height
+        );
+        this.checkForMenuBtnClick(6);
+    };
+
     drawMoneyCounter = (ctx) => {
-        this.startPosition.x = this.gameWidth - this.btnWidth - this.padding.x;
+        this.startPosition.x =
+            this.gameWidth -
+            this.btnWidth -
+            this.padding.x * 2.5 -
+            this.menuBtnIcon.width * 3;
         this.startPosition.y =
-            this.padding.y + (this.coinRadius - this.btnHeight / 2);
+            this.padding.y + 5 + (this.coinRadius - this.btnHeight / 2);
 
         ctx.drawImage(
             this.btnImg,
@@ -131,7 +183,7 @@ export default class Menu {
         ctx.drawImage(
             this.menuCoinImg,
             this.startPosition.x - this.coinRadius - 5,
-            this.padding.y,
+            this.padding.y + 5,
             2 * this.coinRadius,
             2 * this.coinRadius
         );
@@ -156,33 +208,6 @@ export default class Menu {
         );
     };
 
-    drawButton = (ctx, x, y, fishColor) => {
-        ctx.drawImage(this.btnImg, x, y, this.btnWidth, this.btnHeight);
-        ctx.font = `bold ${this.fontSize}px ${this.font}`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "#fff";
-        ctx.lineWidth = 2;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.shadowColor = "black";
-        ctx.shadowBlur = 1;
-        ctx.drawImage(
-            this.coinImg,
-            x + 6 + this.btnWidth / 2,
-            y - 1 + this.btnHeight / 4,
-            20,
-            20
-        );
-        ctx.fillText(
-            "BUY       13",
-            x + this.btnWidth / 2,
-            y + this.btnHeight / 2
-        );
-        // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
-        this.checkForBtnClick(x, y, fishColor);
-    };
-
     /**
      * update position of junk
      * @param {number} deltaTime change in time from previous frame
@@ -192,11 +217,7 @@ export default class Menu {
     };
 
     checkForBtnClick = (index) => {
-        if (
-            this.game.mouse.click //&&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            // this.game.toggle.showShop
-        ) {
+        if (this.game.mouse.click) {
             if (
                 this.game.mouse.x > this.startPosition.x &&
                 this.game.mouse.x < this.startPosition.x + this.width &&
@@ -219,6 +240,37 @@ export default class Menu {
                         this.game.updateCursor();
                     } else if (index === 4) this.game.toggleFishShop();
                     else if (index === 5) this.game.toggleShop();
+                }
+
+                this.game.inputHandler.resetMouseClick();
+            }
+        }
+    };
+    checkForMenuBtnClick = (index) => {
+        if (this.game.mouse.click) {
+            if (
+                this.game.mouse.x > this.startPosition.x &&
+                this.game.mouse.x <
+                    this.startPosition.x + this.menuBtnIcon.width &&
+                this.game.mouse.y > this.startPosition.y &&
+                this.game.mouse.y <
+                    this.startPosition.y + this.menuBtnIcon.height
+            ) {
+                console.log("Menu BTN Click", index);
+                if (
+                    !this.game.toggle.showInfo &&
+                    !this.game.toggle.showFishShop &&
+                    !this.game.toggle.showFishShop
+                ) {
+                    if (this.game.toggle.showInfo) this.game.toggleShowInfo();
+                    if (this.game.toggle.showFishShop)
+                        this.game.toggleFishShop();
+                    if (this.game.toggle.showShop) this.game.toggleShop();
+                    if (index === 8) {
+                        this.game.resetGame();
+                    } else if (index === 7) console.log("info");
+                    //! info page
+                    else if (index === 6) console.log("sound"); //!mute game
                 }
 
                 this.game.inputHandler.resetMouseClick();

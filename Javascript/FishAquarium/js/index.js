@@ -11,6 +11,7 @@ let game;
 const loadedAssets = {};
 const startGame = () => {
     game = new Game(GAME_WIDTH, GAME_HEIGHT, canvas, loadedAssets);
+    game.resetGame = resetGame;
     game.start();
 
     window.addEventListener("beforeunload", function (e) {
@@ -113,6 +114,10 @@ const assets = [
 
     //buttons
     "./assets/otherObjects/closeBtn.png",
+    "./assets/menu/menu-replay.png",
+    "./assets/menu/menu-info.png",
+    "./assets/menu/menu-soundOn.png",
+    "./assets/menu/menu-soundOff.png",
 ];
 const assetsLoaded = assets.map(
     (url) =>
@@ -191,6 +196,10 @@ Promise.all(assetsLoaded)
 
         //buttons
         loadedAssets.closeBtn = images[39];
+        loadedAssets.replayBtn = images[40];
+        loadedAssets.infoBtn = images[41];
+        loadedAssets.soundOnBtn = images[42];
+        loadedAssets.soundOffBtn = images[43];
 
         console.log(loadedAssets);
         startGame();
@@ -205,6 +214,7 @@ const resetGame = () => {
     localStorage.removeItem("fishes");
     localStorage.removeItem("money");
     localStorage.removeItem("bgIndex");
+    localStorage.removeItem("bg");
     game = undefined;
     startGame();
 };
