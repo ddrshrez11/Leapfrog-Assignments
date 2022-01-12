@@ -19,6 +19,14 @@ export default class FishInfo {
             x: (this.gameWidth - this.width) / 2,
             y: (this.gameHeight - this.height) / 2,
         };
+
+        this.closeBtn = {
+            x: this.position.x + this.width - 50 - 1.22 * 50,
+            y: this.position.y + 90,
+            w: 1.22 * 50,
+            h: 50,
+        };
+
         this.startPosition = {
             x: (this.gameWidth - this.width) / 2 - 200,
             y: this.gameHeight / 2 - 150,
@@ -32,11 +40,8 @@ export default class FishInfo {
 
         this.panelImg = this.game.loadedAssets[`shopPanel`];
         this.btnImg = this.game.loadedAssets[`shopBtn`];
+        this.closeBtnImg = this.game.loadedAssets[`closeBtn`];
         this.coinImg = this.game.loadedAssets[`coin1`];
-
-        // this.panelImg = this.game.loadedAssets["infoPanel"];
-        // this.panelImg = new Image();
-        // this.panelImg.src = "./assets/otherObjects/panel1.png";
 
         this.textPosition = {};
         this.imgPosition = {};
@@ -70,6 +75,14 @@ export default class FishInfo {
             this.position.y,
             this.width,
             this.height
+        );
+
+        ctx.drawImage(
+            this.closeBtnImg,
+            this.closeBtn.x,
+            this.closeBtn.y,
+            this.closeBtn.w,
+            this.closeBtn.h
         );
 
         ctx.textAlign = "start";
@@ -164,6 +177,7 @@ export default class FishInfo {
      */
     update = (deltaTime) => {
         this.checkForOutsideClick();
+        this.checkForCloseBtnClick();
     };
 
     checkForOutsideClick = () => {
@@ -202,6 +216,24 @@ export default class FishInfo {
                 this.game.toggleShowInfo();
                 this.game.inputHandler.resetMouseClick();
                 this.game.updateFishes();
+            }
+        }
+    };
+
+    checkForCloseBtnClick = () => {
+        if (
+            this.game.mouse.click &&
+            //this.game.gameMode === this.game.gameModes.SELECT &&
+            this.game.toggle.showInfo
+        ) {
+            if (
+                this.game.mouse.x > this.closeBtn.x &&
+                this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&
+                this.game.mouse.y > this.closeBtn.y &&
+                this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
+            ) {
+                this.game.toggleShowInfo();
+                this.game.inputHandler.resetMouseClick();
             }
         }
     };

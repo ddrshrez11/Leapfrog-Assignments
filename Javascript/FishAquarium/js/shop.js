@@ -27,6 +27,14 @@ export class FishShop {
             x: (this.gameWidth - this.width) / 2,
             y: (this.gameHeight - this.height) / 2,
         };
+
+        this.closeBtn = {
+            x: this.position.x + this.width - 50 - 1.22 * 50,
+            y: this.position.y + 90,
+            w: 1.22 * 50,
+            h: 50,
+        };
+
         this.startPosition = {
             x: 50,
             y: this.height / 2,
@@ -43,6 +51,7 @@ export class FishShop {
         this.panelHeaderImg = this.game.loadedAssets[`shopPanelHeader`];
         this.btnImg = this.game.loadedAssets[`shopBtn`];
         this.coinImg = this.game.loadedAssets[`coin1`];
+        this.closeBtnImg = this.game.loadedAssets[`closeBtn`];
     }
 
     /**
@@ -70,6 +79,15 @@ export class FishShop {
             this.headerWidth,
             this.headerHeight
         );
+
+        ctx.drawImage(
+            this.closeBtnImg,
+            this.closeBtn.x,
+            this.closeBtn.y,
+            this.closeBtn.w,
+            this.closeBtn.h
+        );
+
         ctx.font = `bold ${this.fontSize + 20}px ${this.font}`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -151,6 +169,7 @@ export class FishShop {
      */
     update = (deltaTime) => {
         this.checkForOutsideClick();
+        this.checkForCloseBtnClick();
         this.shopFishes.forEach((shopFish) => {
             shopFish.update(deltaTime);
         });
@@ -195,6 +214,23 @@ export class FishShop {
             }
         }
     };
+    checkForCloseBtnClick = () => {
+        if (
+            this.game.mouse.click &&
+            //this.game.gameMode === this.game.gameModes.SELECT &&
+            this.game.toggle.showFishShop
+        ) {
+            if (
+                this.game.mouse.x > this.closeBtn.x &&
+                this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&
+                this.game.mouse.y > this.closeBtn.y &&
+                this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
+            ) {
+                this.game.toggleFishShop();
+                this.game.inputHandler.resetMouseClick();
+            }
+        }
+    };
 }
 
 export class Shop {
@@ -225,6 +261,14 @@ export class Shop {
             x: (this.gameWidth - this.width) / 2,
             y: (this.gameHeight - this.height) / 2,
         };
+
+        this.closeBtn = {
+            x: this.position.x + this.width - 50 - 1.22 * 50,
+            y: this.position.y + 90,
+            w: 1.22 * 50,
+            h: 50,
+        };
+
         this.startPosition = {};
 
         this.font = "Arial";
@@ -239,6 +283,7 @@ export class Shop {
         this.panelHeaderImg = this.game.loadedAssets[`shopPanelHeader`];
         this.btnImg = this.game.loadedAssets[`shopBtn`];
         this.coinImg = this.game.loadedAssets[`coin1`];
+        this.closeBtnImg = this.game.loadedAssets[`closeBtn`];
     }
 
     /**
@@ -268,6 +313,15 @@ export class Shop {
             this.headerWidth,
             this.headerHeight
         );
+
+        ctx.drawImage(
+            this.closeBtnImg,
+            this.closeBtn.x,
+            this.closeBtn.y,
+            this.closeBtn.w,
+            this.closeBtn.h
+        );
+
         ctx.font = `bold ${this.fontSize + 20}px ${this.font}`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -383,6 +437,7 @@ export class Shop {
      */
     update = (deltaTime) => {
         this.checkForOutsideClick();
+        this.checkForCloseBtnClick();
     };
 
     checkForOutsideClick = () => {
@@ -420,6 +475,24 @@ export class Shop {
                     this.game.toggleShop();
                     this.game.updateBg(index);
                 }
+                this.game.inputHandler.resetMouseClick();
+            }
+        }
+    };
+
+    checkForCloseBtnClick = () => {
+        if (
+            this.game.mouse.click &&
+            //this.game.gameMode === this.game.gameModes.SELECT &&
+            this.game.toggle.showShop
+        ) {
+            if (
+                this.game.mouse.x > this.closeBtn.x &&
+                this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&
+                this.game.mouse.y > this.closeBtn.y &&
+                this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
+            ) {
+                this.game.toggleShop();
                 this.game.inputHandler.resetMouseClick();
             }
         }

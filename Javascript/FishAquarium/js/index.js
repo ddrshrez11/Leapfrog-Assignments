@@ -110,6 +110,9 @@ const assets = [
 
     //money bg
     "./assets/otherObjects/btn2.png",
+
+    //buttons
+    "./assets/otherObjects/closeBtn.png",
 ];
 const assetsLoaded = assets.map(
     (url) =>
@@ -185,6 +188,9 @@ Promise.all(assetsLoaded)
 
         //money bg
         loadedAssets.btn2 = images[38];
+
+        //buttons
+        loadedAssets.closeBtn = images[39];
 
         console.log(loadedAssets);
         startGame();
