@@ -21,7 +21,7 @@ export default class FishInfo {
         };
         this.startPosition = {
             x: (this.gameWidth - this.width) / 2 - 200,
-            y: this.gameHeight / 2 - 100,
+            y: this.gameHeight / 2 - 150,
         };
         this.btnWidth = 150;
         this.btnHeight = 40;
