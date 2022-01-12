@@ -245,6 +245,7 @@ export class Shop {
         this.screenMargin = 100;
         this.decorationData = decorationData;
         this.decorations = Object.keys(decorationData);
+        this.savedDecorationData = this.game.save.getBg();
 
         this.width = this.gameWidth - this.gameWidth / 2;
         this.height = this.gameHeight; // - this.gameHeight / 4;
@@ -352,7 +353,7 @@ export class Shop {
         };
         this.count = 0;
         this.decorations.forEach((decoration, index) => {
-            if (index !== this.game.bgIndex) {
+            if (index != this.game.bgIndex) {
                 this.count++;
                 this.drawPreview(ctx, decoration);
                 // decoration.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
@@ -368,7 +369,9 @@ export class Shop {
                     this.btnPosition.x,
                     this.btnPosition.y,
                     index,
-                    this.decorationData[decoration].price
+                    this.savedDecorationData.includes(index)
+                        ? 0
+                        : this.decorationData[decoration].price
                 );
                 if (this.count == 2) {
                     this.imgPosition.x =
@@ -474,6 +477,7 @@ export class Shop {
                 if (this.game.handleBuy(price)) {
                     this.game.toggleShop();
                     this.game.updateBg(index);
+                    if (price) this.game.save.saveBg(index);
                 }
                 this.game.inputHandler.resetMouseClick();
             }
