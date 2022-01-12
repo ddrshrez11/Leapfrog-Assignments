@@ -281,8 +281,10 @@ export default class Fish {
             !this.game.toggle.showInfo &&
             !this.game.toggle.showFishShop &&
             !this.game.toggle.showShop
-        )
-            this.controlFishSound.play();
+        ) {
+            if (!this.game.toggle.isMute) this.controlFishSound.play();
+            if (this.game.toggle.isMute) this.controlFishSound.stop();
+        }
         this.dx = this.position.x - this.mouse.x;
         this.dy = this.position.y - this.mouse.y;
         if (this.dx > 0) {
@@ -594,7 +596,8 @@ export default class Fish {
         this.r = this.r + 2;
         this.value = 2 * this.level;
         this.levelMeter = 0;
-        this.levelUpSound.play();
+        if (!this.game.toggle.isMute) this.levelUpSound.play();
+        if (this.game.toggle.isMute) this.levelUpSound.stop();
         clearInterval(this.levelUpInterval);
         this.startLevelUpInterval();
         if (

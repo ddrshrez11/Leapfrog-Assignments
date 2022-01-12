@@ -210,7 +210,8 @@ export class FishShop {
             ) {
                 console.log("buy", price);
                 if (this.game.handleBuy(price)) {
-                    this.buySound.play();
+                    if (!this.game.toggle.isMute) this.buySound.play();
+                    if (this.game.toggle.isMute) this.buySound.stop();
                     this.game.toggleFishShop();
                     this.game.buyFish(fishColor);
                 }
@@ -230,7 +231,8 @@ export class FishShop {
                 this.game.mouse.y > this.closeBtn.y &&
                 this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
             ) {
-                this.closeSound.play();
+                if (!this.game.toggle.isMute) this.closeSound.play();
+                if (this.game.toggle.isMute) this.closeSound.stop();
                 this.game.toggleFishShop();
                 this.game.inputHandler.resetMouseClick();
             }
@@ -483,7 +485,8 @@ export class Shop {
             ) {
                 console.log("buy", price);
                 if (this.game.handleBuy(price)) {
-                    this.buyBgSound.play();
+                    if (!this.game.toggle.isMute) this.buyBgSound.play();
+                    if (this.game.toggle.isMute) this.buyBgSound.stop();
                     this.game.toggleShop();
                     this.game.updateBg(index);
                     if (price) this.game.save.saveBg(index);
@@ -505,7 +508,8 @@ export class Shop {
                 this.game.mouse.y > this.closeBtn.y &&
                 this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
             ) {
-                this.closeSound.play();
+                if (!this.game.toggle.isMute) this.closeSound.play();
+                if (this.game.toggle.isMute) this.closeSound.stop();
                 this.game.toggleShop();
                 this.game.inputHandler.resetMouseClick();
             }

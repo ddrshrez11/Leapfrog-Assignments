@@ -85,7 +85,8 @@ export default class Coin {
                 this.game.money++;
                 this.game.menu.setMoneyInfo(`+  $ 1`, 1);
 
-                this.coinSound.play();
+                if (!this.game.toggle.isMute) this.coinSound.play();
+                if (this.game.toggle.isMute) this.coinSound.stop();
 
                 // console.log("Coin Collected", "Coins:", this.game.money);
                 this.collected = true;

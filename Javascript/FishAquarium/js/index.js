@@ -4,6 +4,7 @@ const canvas = document.getElementById("gameScreen");
 const ctx = canvas.getContext("2d");
 const GAME_WIDTH = window.innerWidth - 7;
 const GAME_HEIGHT = window.innerHeight - 7;
+const GAME_VERSION = 0.1;
 canvas.width = GAME_WIDTH;
 canvas.height = GAME_HEIGHT;
 canvas.style.border = "2px solid #000";
@@ -11,6 +12,10 @@ let game;
 const loadedAssets = {};
 const sounds = {};
 const startGame = () => {
+    if (localStorage.getItem("version") != GAME_VERSION) {
+        localStorage.setItem("version", GAME_VERSION);
+        resetGame();
+    }
     game = new Game(GAME_WIDTH, GAME_HEIGHT, canvas, loadedAssets, sounds);
     game.resetGame = resetGame;
     game.start();
@@ -223,7 +228,6 @@ Promise.all(assetsLoaded)
 // startGame();
 
 const resetGame = () => {
-    sounds.reset.play();
     localStorage.removeItem("junks");
     localStorage.removeItem("coins");
     localStorage.removeItem("fishes");

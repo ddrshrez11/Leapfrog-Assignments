@@ -52,9 +52,11 @@ export default class Menu {
         this.menuCoinImg = this.game.loadedAssets[`coin1`];
         this.replayBtnImg = this.game.loadedAssets[`replayBtn`];
         this.infoBtnImg = this.game.loadedAssets[`infoBtn`];
-        this.soundOn = this.game.loadedAssets[`soundOnBtn`];
-        this.soundOff = this.game.loadedAssets[`soundOffBtn`];
-        this.soundBtnImg = this.soundOn;
+        this.soundOnImg = this.game.loadedAssets[`soundOnBtn`];
+        this.soundOffImg = this.game.loadedAssets[`soundOffBtn`];
+        this.soundBtnImg = this.soundOnImg;
+
+        this.resetSound = this.game.sounds.reset;
     }
 
     /**
@@ -163,8 +165,8 @@ export default class Menu {
         this.checkForMenuBtnClick(7);
 
         this.startPosition.x -= this.menuBtnIcon.width + this.padding.x / 2;
-        if (!this.game.toggle.isMute) this.soundBtnImg = this.soundOn;
-        else if (this.game.toggle.isMute) this.soundBtnImg = this.soundOff;
+        if (!this.game.toggle.isMute) this.soundBtnImg = this.soundOnImg;
+        else if (this.game.toggle.isMute) this.soundBtnImg = this.soundOffImg;
         ctx.drawImage(
             this.soundBtnImg,
             this.startPosition.x,
@@ -278,6 +280,8 @@ export default class Menu {
                         this.game.toggleFishShop();
                     if (this.game.toggle.showShop) this.game.toggleShop();
                     if (index === 8) {
+                        if (!this.game.toggle.isMute) this.resetSound.play();
+                        if (this.game.toggle.isMute) this.resetSound.stop();
                         this.game.resetGame();
                     } else if (index === 7) console.log("info");
                     //! info page

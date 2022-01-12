@@ -234,7 +234,8 @@ export default class FishInfo {
                 this.game.mouse.y > this.closeBtn.y &&
                 this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
             ) {
-                this.closeSound.play();
+                if (!this.game.toggle.isMute) this.closeSound.play();
+                if (this.game.toggle.isMute) this.closeSound.stop();
                 this.game.toggleShowInfo();
                 this.game.inputHandler.resetMouseClick();
             }

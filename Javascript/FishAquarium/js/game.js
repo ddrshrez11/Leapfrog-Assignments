@@ -150,7 +150,8 @@ export default class Game {
      * @param {number} deltaTime
      */
     update = (deltaTime) => {
-        this.bgMusicSound.play();
+        if (!this.toggle.isMute) this.bgMusicSound.play();
+        if (this.toggle.isMute) this.bgMusicSound.stop();
         this.gameObjects.forEach((object) => {
             object.update(deltaTime);
         });
@@ -181,7 +182,8 @@ export default class Game {
     };
     createFood = () => {
         if (this.handleBuy(this.price.food)) {
-            this.foodSound.play();
+            if (!this.toggle.isMute) this.foodSound.play();
+            if (this.toggle.isMute) this.foodSound.stop();
             this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
             this.updateGameObjects();
             this.inputHandler.resetMouseClick();
@@ -190,7 +192,7 @@ export default class Game {
     };
     createPill = () => {
         if (this.handleBuy(this.price.food)) {
-            this.pillSound.play();
+            if (!this.toggle.isMute) this.pillSound.play();
             this.pills.push(new Pill(this, this.mouse.x, this.mouse.y));
             this.updateGameObjects();
             this.inputHandler.resetMouseClick();
@@ -360,7 +362,8 @@ export default class Game {
     };
     handleSell = (price) => {
         this.money += price;
-        this.sellFishSound.play();
+        if (!this.toggle.isMute) this.sellFishSound.play();
+        if (this.toggle.isMute) this.sellFishSound.stop();
         this.menu.setMoneyInfo(`+  $ ${price}`, 1);
 
         this.save.saveMoney();
