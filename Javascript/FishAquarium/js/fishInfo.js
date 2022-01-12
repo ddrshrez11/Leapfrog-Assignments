@@ -43,6 +43,8 @@ export default class FishInfo {
         this.closeBtnImg = this.game.loadedAssets[`closeBtn`];
         this.coinImg = this.game.loadedAssets[`coin1`];
 
+        this.closeSound = this.game.sounds.close;
+
         this.textPosition = {};
         this.imgPosition = {};
     }
@@ -232,6 +234,7 @@ export default class FishInfo {
                 this.game.mouse.y > this.closeBtn.y &&
                 this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
             ) {
+                this.closeSound.play();
                 this.game.toggleShowInfo();
                 this.game.inputHandler.resetMouseClick();
             }

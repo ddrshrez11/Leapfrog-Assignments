@@ -70,6 +70,9 @@ export default class Fish {
         this.barWidth;
         this.barHeight;
 
+        this.levelUpSound = this.game.sounds.levelUp;
+        this.controlFishSound = this.game.sounds.controlFish;
+
         this.position = {
             x: getRandomFromRange(this.r, this.gameWidth - this.r),
             y: getRandomFromRange(this.r, this.gameHeight - this.r),
@@ -127,7 +130,7 @@ export default class Fish {
         ) {
             this.userInputMovement(deltaTime);
             this.checkForClick();
-        } else if (this.game.foods.length != 0 && this.hungerMeter <100) {
+        } else if (this.game.foods.length != 0 && this.hungerMeter < 100) {
             this.movementToFood(deltaTime);
         } else if (this.game.pills.length != 0 && this.healthMeter < 100) {
             this.movementToPill(deltaTime);
@@ -274,6 +277,12 @@ export default class Fish {
     };
 
     userInputMovement = (deltaTime) => {
+        if (
+            !this.game.toggle.showInfo &&
+            !this.game.toggle.showFishShop &&
+            !this.game.toggle.showShop
+        )
+            this.controlFishSound.play();
         this.dx = this.position.x - this.mouse.x;
         this.dy = this.position.y - this.mouse.y;
         if (this.dx > 0) {
@@ -521,9 +530,7 @@ export default class Fish {
         }
     };
     healthIncrease = () => {
-        if (
-            this.healthMeter < 100
-        ) {
+        if (this.healthMeter < 100) {
             this.healthMeter += 10;
             if (this.healthMeter > 100) {
                 this.healthMeter = 100;
@@ -542,7 +549,7 @@ export default class Fish {
 
     hungerIncrease = () => {
         this.hungerMeter -= 10;
-        if (this.hungerMeter <0) {
+        if (this.hungerMeter < 0) {
             this.hungerMeter = 0;
             setTimeout(() => {
                 if (!this.healthDecreaseInterval) {
@@ -559,7 +566,7 @@ export default class Fish {
     };
     hungerDecrease = () => {
         this.hungerMeter += 20;
-        if (this.hungerMeter >100) {
+        if (this.hungerMeter > 100) {
             this.hungerMeter = 100;
             clearInterval(this.hungerIncreaseInterval);
             setTimeout(
@@ -574,18 +581,20 @@ export default class Fish {
         );
     };
     levelMeterUp = () => {
-        this.levelMeter += 50;
-        // console.log(this.levelMeter);
+        this.levelMeter += 10;
+        console.log(this.levelMeter);
         if (this.levelMeter > 100) {
             this.levelUp();
         }
         // this.game.save.saveFishes();
     };
     levelUp = () => {
+        console.log("levelUp");
         this.level++;
         this.r = this.r + 2;
         this.value = 2 * this.level;
         this.levelMeter = 0;
+        this.levelUpSound.play();
         clearInterval(this.levelUpInterval);
         this.startLevelUpInterval();
         if (

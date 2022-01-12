@@ -183,7 +183,7 @@ const menuData = {
         imgRatio: 12,
     },
     fishShop: {
-        name: "FISH SHOP",
+        name: "BUY FISH",
         width: 128,
         height: 128,
         imgRatio: 12,

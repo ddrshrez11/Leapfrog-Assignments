@@ -52,6 +52,9 @@ export class FishShop {
         this.btnImg = this.game.loadedAssets[`shopBtn`];
         this.coinImg = this.game.loadedAssets[`coin1`];
         this.closeBtnImg = this.game.loadedAssets[`closeBtn`];
+
+        this.buySound = this.game.sounds.buy;
+        this.closeSound = this.game.sounds.close;
     }
 
     /**
@@ -207,6 +210,7 @@ export class FishShop {
             ) {
                 console.log("buy", price);
                 if (this.game.handleBuy(price)) {
+                    this.buySound.play();
                     this.game.toggleFishShop();
                     this.game.buyFish(fishColor);
                 }
@@ -226,6 +230,7 @@ export class FishShop {
                 this.game.mouse.y > this.closeBtn.y &&
                 this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
             ) {
+                this.closeSound.play();
                 this.game.toggleFishShop();
                 this.game.inputHandler.resetMouseClick();
             }
@@ -285,6 +290,9 @@ export class Shop {
         this.btnImg = this.game.loadedAssets[`shopBtn`];
         this.coinImg = this.game.loadedAssets[`coin1`];
         this.closeBtnImg = this.game.loadedAssets[`closeBtn`];
+
+        this.buyBgSound = this.game.sounds.buyBg;
+        this.closeSound = this.game.sounds.close;
     }
 
     /**
@@ -475,6 +483,7 @@ export class Shop {
             ) {
                 console.log("buy", price);
                 if (this.game.handleBuy(price)) {
+                    this.buyBgSound.play();
                     this.game.toggleShop();
                     this.game.updateBg(index);
                     if (price) this.game.save.saveBg(index);
@@ -496,6 +505,7 @@ export class Shop {
                 this.game.mouse.y > this.closeBtn.y &&
                 this.game.mouse.y < this.closeBtn.y + this.closeBtn.h
             ) {
+                this.closeSound.play();
                 this.game.toggleShop();
                 this.game.inputHandler.resetMouseClick();
             }

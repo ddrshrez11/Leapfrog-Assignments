@@ -28,6 +28,8 @@ export default class Junk {
 
         this.junkImg = this.game.loadedAssets[`junk${this.junkImgIndex}`];
 
+        this.cleanSound = this.game.sounds.clean;
+
         // this.junkImg = new Image();
         // this.junkImg.src =
         //     "./assets/otherObjects/junk" + this.junkImgIndex + ".png";

@@ -37,7 +37,7 @@ function Sound(src) {
     this.sound.style.display = "none";
     document.body.appendChild(this.sound);
     this.play = function () {
-        this.sound.play();
+        if (!window.game.toggle.isMute) this.sound.play();
     };
     this.stop = function () {
         this.sound.pause();

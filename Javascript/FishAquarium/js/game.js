@@ -16,7 +16,7 @@ export default class Game {
      * @param {number} gameWidth Width of game screen
      * @param {number} gameHeight Height of game screen
      */
-    constructor(gameWidth, gameHeight, canvas, loadedAssets) {
+    constructor(gameWidth, gameHeight, canvas, loadedAssets, sounds) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.canvas = canvas;
@@ -25,11 +25,18 @@ export default class Game {
         this.save = new Save(this);
 
         this.loadedAssets = loadedAssets;
+        this.sounds = sounds;
+
+        this.bgMusicSound = this.sounds.bgMusic;
+        this.sellFishSound = this.sounds.sellFish;
+        this.foodSound = this.sounds.food;
+        this.pillSound = this.sounds.pill;
 
         this.toggle = {
             showInfo: false,
             showFishShop: false,
             showShop: false,
+            isMute: false,
         };
         // this.showInfo = false;
         this.limit = {
@@ -143,6 +150,7 @@ export default class Game {
      * @param {number} deltaTime
      */
     update = (deltaTime) => {
+        this.bgMusicSound.play();
         this.gameObjects.forEach((object) => {
             object.update(deltaTime);
         });
@@ -173,6 +181,7 @@ export default class Game {
     };
     createFood = () => {
         if (this.handleBuy(this.price.food)) {
+            this.foodSound.play();
             this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
             this.updateGameObjects();
             this.inputHandler.resetMouseClick();
@@ -181,6 +190,7 @@ export default class Game {
     };
     createPill = () => {
         if (this.handleBuy(this.price.food)) {
+            this.pillSound.play();
             this.pills.push(new Pill(this, this.mouse.x, this.mouse.y));
             this.updateGameObjects();
             this.inputHandler.resetMouseClick();
@@ -338,17 +348,23 @@ export default class Game {
     handleBuy = (price) => {
         if (this.money >= price) {
             this.money -= price;
+            this.menu.setMoneyInfo(`-  $ ${price}`, -1);
+
             this.save.saveMoney();
-            console.log("item Bought for ", price, " Money: ", this.money);
+            // console.log("item Bought for ", price, " Money: ", this.money);
             return true;
         }
-        console.log("No Money");
+        this.menu.setMoneyInfo(`No Money`, -1);
+        // console.log("No Money");
         return false;
     };
     handleSell = (price) => {
         this.money += price;
+        this.sellFishSound.play();
+        this.menu.setMoneyInfo(`+  $ ${price}`, 1);
+
         this.save.saveMoney();
-        console.log("item sold for ", price, " Money: ", this.money);
+        // console.log("item sold for ", price, " Money: ", this.money);
     };
 
     toggleShowInfo = (fish) => {
@@ -381,5 +397,8 @@ export default class Game {
             this.toggle.showShop = true;
         }
         this.updateGameObjects();
+    };
+    toggleMute = () => {
+        this.toggle.isMute = !this.toggle.isMute;
     };
 }

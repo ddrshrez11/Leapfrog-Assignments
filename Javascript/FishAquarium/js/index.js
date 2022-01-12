@@ -9,8 +9,9 @@ canvas.height = GAME_HEIGHT;
 canvas.style.border = "2px solid #000";
 let game;
 const loadedAssets = {};
+const sounds = {};
 const startGame = () => {
-    game = new Game(GAME_WIDTH, GAME_HEIGHT, canvas, loadedAssets);
+    game = new Game(GAME_WIDTH, GAME_HEIGHT, canvas, loadedAssets, sounds);
     game.resetGame = resetGame;
     game.start();
 
@@ -133,6 +134,19 @@ Promise.all(assetsLoaded)
     .then((images) => {
         loading.style.display = "none";
 
+        sounds.bgMusic = new Sound("./assets/sounds/bgMusic.wav");
+        sounds.buy = new Sound("./assets/sounds/buy.wav");
+        sounds.buyBg = new Sound("./assets/sounds/buyBg.wav");
+        sounds.clean = new Sound("./assets/sounds/clean.wav");
+        sounds.close = new Sound("./assets/sounds/close.wav");
+        sounds.coin = new Sound("./assets/sounds/coin.wav");
+        sounds.controlFish = new Sound("./assets/sounds/controlFish.wav");
+        sounds.food = new Sound("./assets/sounds/food.wav");
+        sounds.levelUp = new Sound("./assets/sounds/levelUp.wav");
+        sounds.pill = new Sound("./assets/sounds/pill1.wav");
+        sounds.reset = new Sound("./assets/sounds/reset.wav");
+        sounds.sellFish = new Sound("./assets/sounds/sellFish.wav");
+
         //background
         loadedAssets.background0 = images[0];
 
@@ -209,6 +223,7 @@ Promise.all(assetsLoaded)
 // startGame();
 
 const resetGame = () => {
+    sounds.reset.play();
     localStorage.removeItem("junks");
     localStorage.removeItem("coins");
     localStorage.removeItem("fishes");

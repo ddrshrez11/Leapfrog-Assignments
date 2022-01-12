@@ -28,8 +28,10 @@ export default class Coin {
         };
         this.coinImgIndex = 0;
         this.coinImg = this.game.loadedAssets[`coin${this.coinImgIndex}`];
-        // this.coinImg = new Image();
-        // this.coinImg.src = "./assets/coins/coin-0.png";
+
+        //sound
+        // this.coinSound = new Sound("./assets/sounds/coin.wav");
+        this.coinSound = this.game.sounds.coin;
 
         setInterval(() => {
             this.coinImg = this.game.loadedAssets[`coin${this.coinImgIndex}`];
@@ -81,7 +83,11 @@ export default class Coin {
             const dy = this.position.y - this.game.mouse.y;
             if (Math.abs(getDistance(dx, dy)) < this.r) {
                 this.game.money++;
-                console.log("Coin Collected", "Coins:", this.game.money);
+                this.game.menu.setMoneyInfo(`+  $ 1`, 1);
+
+                this.coinSound.play();
+
+                // console.log("Coin Collected", "Coins:", this.game.money);
                 this.collected = true;
                 if (!this.game.createCoinInterval) {
                     this.game.createCoinInterval = setInterval(

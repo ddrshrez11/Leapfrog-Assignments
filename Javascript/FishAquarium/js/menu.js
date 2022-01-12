@@ -13,6 +13,8 @@ export default class Menu {
         this.screenMargin = 100;
         this.menuOptions = Object.keys(menuData);
         console.log(this.menuOptions);
+        this.moneyInfo = "";
+        this.moneyInfoType = 0;
 
         this.width = this.gameWidth / 20;
         this.height = this.width;
@@ -37,7 +39,7 @@ export default class Menu {
         };
 
         this.padding = {
-            x: 25,
+            x: 30,
             y: 5,
         };
 
@@ -79,6 +81,14 @@ export default class Menu {
 
         this.drawMoneyCounter(ctx);
         this.drawMenuBtn(ctx);
+        if (!!this.moneyInfoType) {
+            if (this.moneyInfoType > 0) {
+                console.log("money added");
+                this.displayMoneyGainInfo(ctx, this.moneyInfo);
+            } else if (this.moneyInfoType < 0) {
+                this.displayMoneySpentInfo(ctx, this.moneyInfo);
+            }
+        }
     };
 
     drawMenuIcons = (ctx, option, index) => {
@@ -153,7 +163,8 @@ export default class Menu {
         this.checkForMenuBtnClick(7);
 
         this.startPosition.x -= this.menuBtnIcon.width + this.padding.x / 2;
-
+        if (!this.game.toggle.isMute) this.soundBtnImg = this.soundOn;
+        else if (this.game.toggle.isMute) this.soundBtnImg = this.soundOff;
         ctx.drawImage(
             this.soundBtnImg,
             this.startPosition.x,
@@ -270,11 +281,84 @@ export default class Menu {
                         this.game.resetGame();
                     } else if (index === 7) console.log("info");
                     //! info page
-                    else if (index === 6) console.log("sound"); //!mute game
+                    else if (index === 6) this.game.toggleMute(); //!mute game
                 }
 
                 this.game.inputHandler.resetMouseClick();
             }
         }
+    };
+
+    displayMoneySpentInfo = (ctx, msg) => {
+        this.startPosition.x =
+            this.gameWidth - (this.menuBtnIcon.width + this.padding.x) * 1;
+        this.startPosition.y = this.padding.y + 35;
+
+        ctx.font = `bold ${this.fontSize + 5}px ${this.font}`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowColor = "black";
+        ctx.shadowBlur = 3;
+        ctx.strokeText(
+            msg,
+            this.startPosition.x,
+            this.startPosition.y + this.menuBtnIcon.width
+        );
+        ctx.fillText(
+            // "-  $ 4",
+            // "No Money",
+            msg,
+            this.startPosition.x,
+            this.startPosition.y + this.menuBtnIcon.width
+        );
+        // clearTimeout(this.displayMoneyInfoTimeout);
+        if (!this.displayMoneyInfoTimeout)
+            this.displayMoneyInfoTimeout = setTimeout(() => {
+                this.moneyInfoType = 0;
+                this.displayMoneyInfoTimeout = false;
+            }, 2000);
+    };
+    displayMoneyGainInfo = (ctx, msg) => {
+        this.startPosition.x =
+            this.gameWidth - (this.menuBtnIcon.width + this.padding.x) * 1;
+        this.startPosition.y = this.padding.y + 35;
+
+        ctx.font = `bold ${this.fontSize + 5}px ${this.font}`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgb(69 174 0)";
+        ctx.lineWidth = 2;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowColor = "black";
+        ctx.shadowBlur = 3;
+        ctx.strokeText(
+            msg,
+            this.startPosition.x,
+            this.startPosition.y + this.menuBtnIcon.width
+        );
+        ctx.fillText(
+            // "-  $ 4",
+            msg,
+            this.startPosition.x,
+            this.startPosition.y + this.menuBtnIcon.width
+        );
+        // clearTimeout(this.displayMoneyInfoTimeout);
+        if (!this.displayMoneyInfoTimeout)
+            this.displayMoneyInfoTimeout = setTimeout(() => {
+                this.moneyInfoType = 0;
+                this.displayMoneyInfoTimeout = false;
+            }, 2000);
+    };
+
+    setMoneyInfo = (msg, type) => {
+        this.game.menu.moneyInfo = msg;
+        this.game.menu.moneyInfoType = type;
+        clearTimeout(this.displayMoneyInfoTimeout);
+        this.displayMoneyInfoTimeout = false;
     };
 }
