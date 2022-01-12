@@ -205,17 +205,20 @@ export default class Menu {
                     this.startPosition.y + this.height + this.fontSize
             ) {
                 console.log("Menu Click", index);
-                if (index < 4) {
-                    this.game.gameMode = index;
-                    this.game.updateCursor();
+                if (
+                    !this.game.toggle.showInfo &&
+                    !this.game.toggle.showFishShop &&
+                    !this.game.toggle.showFishShop
+                ) {
                     if (this.game.toggle.showInfo) this.game.toggleShowInfo();
                     if (this.game.toggle.showFishShop)
                         this.game.toggleFishShop();
                     if (this.game.toggle.showShop) this.game.toggleShop();
-                } else if (index === 4) {
-                    this.game.toggleFishShop();
-                } else if (index === 5) {
-                    this.game.toggleShop();
+                    if (index < 4) {
+                        this.game.gameMode = index;
+                        this.game.updateCursor();
+                    } else if (index === 4) this.game.toggleFishShop();
+                    else if (index === 5) this.game.toggleShop();
                 }
 
                 this.game.inputHandler.resetMouseClick();

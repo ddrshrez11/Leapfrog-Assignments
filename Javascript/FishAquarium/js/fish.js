@@ -20,7 +20,6 @@ export default class Fish {
         this.changeInterval = this.type.changeInterval;
         this.price = this.type.price;
 
-        this.value = 31;
         this.sold = false;
         // this.baseSize = this.type.baseSize;
 
@@ -39,6 +38,7 @@ export default class Fish {
             this.hungerMeter = 0;
         }
 
+        this.value = 2 * this.level;
         this.angle = 0;
 
         //image
@@ -57,8 +57,8 @@ export default class Fish {
         this.frameY = 0;
         this.theta = 0;
 
-        this.r = this.spriteWidth / 20; //this.baseSize + this.level; //getRandomFromRange(10, 30);
         this.baseSize = this.spriteWidth / 20;
+        this.r = this.baseSize + 2 * this.level; //this.spriteWidth / 20; //getRandomFromRange(10, 30);
         this.hRatio = 6;
         this.wRatio = 4;
         this.barWidth;

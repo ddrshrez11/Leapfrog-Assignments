@@ -49,8 +49,8 @@ export default class Game {
         };
         this.gameMode = this.gameModes.SELECT;
         this.changeInterval = {
-            junk: 10000,
-            coin: 10000,
+            junk: 20000,
+            coin: 30000,
         };
         this.price = {
             food: 1,

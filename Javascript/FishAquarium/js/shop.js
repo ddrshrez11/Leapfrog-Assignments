@@ -16,7 +16,7 @@ export class FishShop {
             this.shopFishes.push(new Fish(this.game, fishType));
         });
 
-        this.width = this.gameWidth - this.gameWidth / 2;
+        this.width = this.gameWidth - this.gameWidth / 2.5;
         this.height = this.gameHeight; // - this.gameHeight / 4;
         this.headerWidth = 500;
         this.headerHeight = 70;
