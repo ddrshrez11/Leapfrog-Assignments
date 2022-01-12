@@ -16,6 +16,7 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 500,
+            reproductionCounter: 1000,
         },
         image: {
             totalSpriteWidth: 1992,
@@ -41,6 +42,7 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 2000,
+            reproductionCounter: 1000,
         },
         image: {
             totalSpriteWidth: 1992,
@@ -66,6 +68,7 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 2000,
+            reproductionCounter: 1000,
         },
         image: {
             totalSpriteWidth: 1992,
@@ -91,6 +94,7 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 2000,
+            reproductionCounter: 1000,
         },
         image: {
             totalSpriteWidth: 1992,
@@ -116,6 +120,7 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 2000,
+            reproductionCounter: 1000,
         },
         image: {
             totalSpriteWidth: 1992,
@@ -141,6 +146,7 @@ const fishTypes = {
             changeYDirection: 4000,
             resetYDirection: 500,
             levelUp: 2000,
+            reproductionCounter: 1000,
         },
         image: {
             totalSpriteWidth: 1992,
