@@ -30,12 +30,22 @@ export default class Fish {
             this.gender = fishInfo.gender;
             this.healthMeter = fishInfo.healthMeter;
             this.hungerMeter = fishInfo.hungerMeter;
+            this.pregnancy = fishInfo.pregnancy;
+            this.postpartum = fishInfo.postpartum;
+            this.reproductionCounter = fishInfo.reproductionCounter;
         } else {
             this.level = 1;
             this.levelMeter = 0;
             this.gender = getGender(); //!to be implemented
             this.healthMeter = 100;
             this.hungerMeter = 0;
+            this.pregnancy = false;
+            this.postpartum = false;
+            this.reproductionCounter = 0;
+        }
+
+        if (this.pregnancy) {
+            this.startReproduction();
         }
 
         this.value = 2 * this.level;
@@ -44,10 +54,6 @@ export default class Fish {
         //image
         this.leftImg = this.game.loadedAssets[`${this.color}_left`];
         this.rightImg = this.game.loadedAssets[`${this.color}_right`];
-        // this.leftImg = new Image();
-        // this.leftImg.src = "./assets/fishes/" + this.type.image.leftSrc;
-        // this.rightImg = new Image();
-        // this.rightImg.src = "./assets/fishes/" + this.type.image.rightSrc;
         this.spriteX = this.type.image.spriteX;
         this.spriteY = this.type.image.spriteY;
         this.spriteWidth = this.type.image.totalSpriteWidth / this.spriteX;
@@ -108,6 +114,7 @@ export default class Fish {
      */
     update = (deltaTime) => {
         this.fishCollisionDetection();
+        if (this.pregnancy || this.postpartum) this.checkReproduction();
         if (
             game.gameMode === this.game.gameModes.SELECT &&
             this.mouse.click &&
@@ -587,6 +594,16 @@ export default class Fish {
         this.levelMeter = 0;
         clearInterval(this.levelUpInterval);
         this.startLevelUpInterval();
+        if (
+            this.level > 15 &&
+            this.gender === "Female" &&
+            !this.pregnancy &&
+            !this.postpartum
+        ) {
+            if (this.checkForMate()) {
+                this.startPregnancy();
+            }
+        }
     };
     startHungerIncreaseInterval = () =>
         (this.hungerIncreaseInterval = setInterval(
@@ -604,6 +621,47 @@ export default class Fish {
             this.changeInterval.levelUp * this.level
         );
     };
+
+    checkForMate = () => {
+        if (this.level < 15) return false;
+        return this.game.fishes.some((fish) => {
+            if (
+                fish.color === this.color &&
+                fish.level >= 15 &&
+                fish.gender === "Male"
+            ) {
+                return true;
+            }
+            return false;
+        });
+    };
+
+    startPregnancy = () => {
+        console.log("startPregnancy");
+        this.pregnancy = true;
+        this.startReproduction();
+    };
+
+    startReproduction = () => {
+        console.log("startReproduction");
+        this.reproductionInterval = setInterval(() => {
+            this.reproductionCounter++;
+        }, this.changeInterval.reproductionCounter);
+    };
+
+    checkReproduction = () => {
+        if (this.reproductionCounter > 70 && this.pregnancy) {
+            console.log("birth");
+            this.game.buyFish(this.color);
+            this.pregnancy = false;
+            this.postpartum = true;
+        } else if (this.reproductionCounter > 100) {
+            clearInterval(this.reproductionInterval);
+            this.reproductionCounter = 0;
+            this.postpartum = false;
+        }
+    };
+
     save = () => {
         this.obj.name = this.name;
         this.obj.color = this.color;
@@ -612,6 +670,9 @@ export default class Fish {
         this.obj.gender = this.gender;
         this.obj.healthMeter = this.healthMeter;
         this.obj.hungerMeter = this.hungerMeter;
+        this.obj.pregnancy = this.pregnancy;
+        this.obj.postpartum = this.postpartum;
+        this.obj.reproductionCounter = this.reproductionCounter;
         return this.obj;
     };
 }

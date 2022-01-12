@@ -54,6 +54,8 @@ export default class FishInfo {
             "Speed: " + this.fish.speed,
             "Health Meter: " + this.fish.healthMeter,
             "Hunger Meter: " + this.fish.hungerMeter,
+            "Pregnancy: " + this.fish.pregnancy,
+            "Postpartum: " + this.fish.postpartum,
         ];
 
         this.textPosition.x = this.startPosition.x;
@@ -109,13 +111,13 @@ export default class FishInfo {
         this.fish.drawHealthBar(
             ctx,
             this.imgPosition.x - this.barWidth / 2,
-            this.imgPosition.y + this.fish.r + 50,
+            this.imgPosition.y + 50,
             this.barWidth
         );
         this.fish.drawHungerBar(
             ctx,
             this.imgPosition.x - this.barWidth / 2,
-            this.imgPosition.y + this.fish.r + 50 + 10,
+            this.imgPosition.y + 50 + 10,
             this.barWidth
         );
         this.drawButton(ctx);
