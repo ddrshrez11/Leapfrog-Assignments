@@ -40,7 +40,7 @@ export default class Fish {
             this.pregnancy = fishInfo.pregnancy;
             this.postpartum = fishInfo.postpartum;
             this.reproductionCounter = fishInfo.reproductionCounter;
-            this.isSick = fishInfo.sick;
+            this.isSick = fishInfo.isSick;
         } else {
             this.level = 1;
             this.levelMeter = 0;
@@ -565,7 +565,7 @@ export default class Fish {
      */
     healthDecrease = () => {
         if (this.game.junks.length !== 0) {
-            this.healthMeter -= 10;
+            this.healthMeter -= 1;
             if (this.healthMeter <= 0) {
                 this.healthMeter = 0;
                 this.isSick = true;
@@ -581,7 +581,7 @@ export default class Fish {
      */
     healthIncrease = () => {
         if (this.healthMeter < 100) {
-            this.healthMeter += 10;
+            this.healthMeter += 30;
             if (this.isSick) {
                 this.isSick = false;
                 this.startLevelUpInterval();
@@ -591,12 +591,11 @@ export default class Fish {
                 this.healthMeter = 100;
                 clearInterval(this.healthDecreaseInterval);
                 this.healthDecreaseInterval = false;
-                if (!this.healthDecreaseInterval) {
-                    setTimeout(
-                        this.startHealthDecreaseInterval,
-                        this.changeInterval.healthTimeout
-                    );
-                }
+
+                setTimeout(() => {
+                    if (!this.healthDecreaseInterval)
+                        this.startHealthDecreaseInterval;
+                }, this.changeInterval.healthTimeout);
             }
         }
     };
@@ -605,7 +604,7 @@ export default class Fish {
      * Decrease hunger of fish
      */
     hungerIncrease = () => {
-        this.hungerMeter -= 10;
+        this.hungerMeter -= 1;
         if (this.hungerMeter < 0) {
             this.hungerMeter = 0;
             setTimeout(() => {
@@ -620,10 +619,12 @@ export default class Fish {
      * Increase hunger of fish
      */
     hungerDecrease = () => {
-        this.hungerMeter += 20;
+        this.hungerMeter += 30;
         if (this.hungerMeter > 100) {
             this.hungerMeter = 100;
             clearInterval(this.hungerIncreaseInterval);
+            clearInterval(this.healthDecreaseInterval);
+            this.healthDecreaseInterval = false;
             setTimeout(
                 this.startHungerIncreaseInterval,
                 this.changeInterval.hungerTimeout

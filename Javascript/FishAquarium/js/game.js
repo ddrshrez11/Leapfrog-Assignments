@@ -44,7 +44,7 @@ export default class Game {
         };
         this.limit = {
             junk: 10,
-            coin: 10,
+            coin: 15,
         };
         this.money = this.save.getMoney() ? Number(this.save.getMoney()) : 100;
         this.bgIndex = this.save.getBgIndex() ? this.save.getBgIndex() : 0;
@@ -57,8 +57,8 @@ export default class Game {
         };
         this.gameMode = this.gameModes.SELECT;
         this.changeInterval = {
-            junk: 20000,
-            coin: 30000,
+            junk: 10000,
+            coin: 20000,
         };
         this.price = {
             food: 1,
@@ -269,8 +269,8 @@ export default class Game {
         });
         this.gameObjects = [
             ...this.junks,
-            ...this.coins,
             ...this.fishes,
+            ...this.coins,
             ...this.foods,
             ...this.pills,
             this.menu,
@@ -336,7 +336,10 @@ export default class Game {
         } else {
             this.fishes.forEach((fish) => {
                 if (!fish.healthDecreaseInterval) {
-                    fish.startHealthDecreaseInterval();
+                    setTimeout(() => {
+                        if (!fish.healthDecreaseInterval)
+                            fish.startHealthDecreaseInterval;
+                    }, fish.changeInterval.healthTimeout);
                 }
             });
         }
@@ -417,6 +420,8 @@ export default class Game {
         } else {
             this.fishInfo.push(new FishInfo(fish));
             this.toggle.showInfo = true;
+            this.gameMode = 0;
+            this.updateCursor();
         }
         this.updateGameObjects();
     };
@@ -431,6 +436,8 @@ export default class Game {
         } else {
             this.fishShop.push(new FishShop(this));
             this.toggle.showFishShop = true;
+            this.gameMode = 0;
+            this.updateCursor();
         }
         this.updateGameObjects();
     };
@@ -445,6 +452,8 @@ export default class Game {
         } else {
             this.shop.push(new Shop(this));
             this.toggle.showShop = true;
+            this.gameMode = 0;
+            this.updateCursor();
         }
         this.updateGameObjects();
     };

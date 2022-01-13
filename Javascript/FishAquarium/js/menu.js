@@ -275,7 +275,6 @@ export default class Menu {
     /**
      * check for click on menu settings - right side
      * @param {number} index index of menuOptions
-     *
      */
     checkForMenuBtnClick = (index) => {
         if (this.game.mouse.click) {
