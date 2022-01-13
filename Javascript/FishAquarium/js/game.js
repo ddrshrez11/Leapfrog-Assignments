@@ -46,7 +46,7 @@ export default class Game {
             junk: 10,
             coin: 10,
         };
-        this.money = this.save.getMoney() ? Number(this.save.getMoney()) : 0;
+        this.money = this.save.getMoney() ? Number(this.save.getMoney()) : 100;
         console.log(typeof this.money);
         this.bgIndex = this.save.getBgIndex() ? this.save.getBgIndex() : 0;
 
@@ -96,7 +96,7 @@ export default class Game {
 
         // this.toggleFishShop(); //! remove
         // this.toggleShop(); //! remove
-        this.toggleHelp(); //! remove
+        // this.toggleHelp(); //! remove
 
         // this.fishes.push(new Fish(this, "black"));
         // this.fishes.push(new Fish(this, "green"));

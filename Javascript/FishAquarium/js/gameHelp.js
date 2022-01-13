@@ -104,7 +104,7 @@ export class Help {
 
     drawText = (ctx) => {
         this.startPosition = {
-            x: (this.gameWidth - this.headerWidth - 100) / 2,
+            x: (this.gameWidth - this.headerWidth - 160) / 2,
             y: this.position.y + 200,
         };
 

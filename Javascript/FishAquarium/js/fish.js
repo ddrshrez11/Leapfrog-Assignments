@@ -21,6 +21,7 @@ export default class Fish {
         this.price = this.type.price;
 
         this.sold = false;
+        this.isSick = false;
         // this.baseSize = this.type.baseSize;
 
         if (fishInfo) {
@@ -33,6 +34,7 @@ export default class Fish {
             this.pregnancy = fishInfo.pregnancy;
             this.postpartum = fishInfo.postpartum;
             this.reproductionCounter = fishInfo.reproductionCounter;
+            this.isSick = fishInfo.sick;
         } else {
             this.level = 1;
             this.levelMeter = 0;
@@ -42,6 +44,7 @@ export default class Fish {
             this.pregnancy = false;
             this.postpartum = false;
             this.reproductionCounter = 0;
+            this.isSick = false;
         }
 
         if (this.pregnancy) {
@@ -118,7 +121,7 @@ export default class Fish {
     update = (deltaTime) => {
         this.fishCollisionDetection();
         if (this.pregnancy || this.postpartum) this.checkReproduction();
-        if (this.healthMeter <= 0) {
+        if (this.isSick) {
             if (this.game.pills.length != 0) this.movementToPill(deltaTime);
             else {
                 if (this.position.y > this.gameHeight - this.r)
@@ -544,6 +547,9 @@ export default class Fish {
             this.healthMeter -= 10;
             if (this.healthMeter <= 0) {
                 this.healthMeter = 0;
+                this.isSick = true;
+                clearInterval(this.levelUpInterval);
+                clearInterval(this.reproductionInterval);
                 // console.log("fish has died");
             }
             // this.game.save.saveFishes();
@@ -552,6 +558,11 @@ export default class Fish {
     healthIncrease = () => {
         if (this.healthMeter < 100) {
             this.healthMeter += 10;
+            if (this.isSick) {
+                this.isSick = false;
+                this.startLevelUpInterval();
+                if (this.pregnancy) this.startReproduction();
+            }
             if (this.healthMeter > 100) {
                 this.healthMeter = 100;
                 clearInterval(this.healthDecreaseInterval);
