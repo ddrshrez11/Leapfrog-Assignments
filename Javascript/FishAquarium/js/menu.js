@@ -242,12 +242,14 @@ export default class Menu {
                 if (
                     !this.game.toggle.showInfo &&
                     !this.game.toggle.showFishShop &&
-                    !this.game.toggle.showFishShop
+                    !this.game.toggle.showShop &&
+                    !this.game.toggle.showHelp
                 ) {
                     if (this.game.toggle.showInfo) this.game.toggleShowInfo();
                     if (this.game.toggle.showFishShop)
                         this.game.toggleFishShop();
                     if (this.game.toggle.showShop) this.game.toggleShop();
+                    if (this.game.toggle.showHelp) this.game.toggleHelp();
                     if (index < 4) {
                         this.game.gameMode = index;
                         this.game.updateCursor();
@@ -273,17 +275,19 @@ export default class Menu {
                 if (
                     !this.game.toggle.showInfo &&
                     !this.game.toggle.showFishShop &&
-                    !this.game.toggle.showFishShop
+                    !this.game.toggle.showShop &&
+                    !this.game.toggle.showHelp
                 ) {
                     if (this.game.toggle.showInfo) this.game.toggleShowInfo();
                     if (this.game.toggle.showFishShop)
                         this.game.toggleFishShop();
                     if (this.game.toggle.showShop) this.game.toggleShop();
+                    if (this.game.toggle.showHelp) this.game.toggleHelp();
                     if (index === 8) {
                         if (!this.game.toggle.isMute) this.resetSound.play();
                         if (this.game.toggle.isMute) this.resetSound.stop();
                         this.game.resetGame();
-                    } else if (index === 7) console.log("info");
+                    } else if (index === 7) this.game.toggleHelp();
                     //! info page
                     else if (index === 6) this.game.toggleMute(); //!mute game
                 }

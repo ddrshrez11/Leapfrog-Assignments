@@ -296,7 +296,8 @@ export default class Fish {
         if (
             !this.game.toggle.showInfo &&
             !this.game.toggle.showFishShop &&
-            !this.game.toggle.showShop
+            !this.game.toggle.showShop &&
+            !this.game.toggle.showHelp
         ) {
             if (!this.game.toggle.isMute) this.controlFishSound.play();
             if (this.game.toggle.isMute) this.controlFishSound.stop();
@@ -462,6 +463,7 @@ export default class Fish {
             this.game.gameMode === this.game.gameModes.SELECT &&
             !this.game.toggle.showInfo &&
             !this.game.toggle.showShop &&
+            !this.game.toggle.showHelp &&
             !this.game.toggle.showFishShop
         ) {
             this.dx = this.position.x - this.game.mouse.x;

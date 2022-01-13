@@ -9,6 +9,7 @@ import FishInfo from "./fishInfo.js";
 import Save from "./save.js";
 import { FishShop, Shop } from "./shop.js";
 import Menu from "./menu.js";
+import { Help } from "./gameHelp.js";
 
 export default class Game {
     /**
@@ -37,6 +38,7 @@ export default class Game {
             showInfo: false,
             showFishShop: false,
             showShop: false,
+            showHelp: false,
             isMute: false,
         };
         // this.showInfo = false;
@@ -87,12 +89,14 @@ export default class Game {
         this.junks = [];
         this.fishShop = [];
         this.shop = [];
+        this.help = [];
         this.fishInfo = [];
         this.menu = new Menu(this);
         this.inputHandler = new InputHandler(this);
 
         // this.toggleFishShop(); //! remove
         // this.toggleShop(); //! remove
+        this.toggleHelp(); //! remove
 
         // this.fishes.push(new Fish(this, "black"));
         // this.fishes.push(new Fish(this, "green"));
@@ -267,6 +271,7 @@ export default class Game {
             ...this.fishInfo,
             ...this.fishShop,
             ...this.shop,
+            ...this.help,
         ];
     };
 
@@ -401,6 +406,16 @@ export default class Game {
         } else {
             this.shop.push(new Shop(this));
             this.toggle.showShop = true;
+        }
+        this.updateGameObjects();
+    };
+    toggleHelp = () => {
+        if (this.toggle.showHelp) {
+            this.toggle.showHelp = false;
+            this.help.pop();
+        } else {
+            this.help.push(new Help(this));
+            this.toggle.showHelp = true;
         }
         this.updateGameObjects();
     };
