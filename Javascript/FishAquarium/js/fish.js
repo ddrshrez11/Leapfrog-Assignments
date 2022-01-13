@@ -118,25 +118,41 @@ export default class Fish {
     update = (deltaTime) => {
         this.fishCollisionDetection();
         if (this.pregnancy || this.postpartum) this.checkReproduction();
-        if (
-            game.gameMode === this.game.gameModes.SELECT &&
-            this.mouse.click &&
-            (this.game.mouse.x < this.game.menu.menuX ||
-                this.game.mouse.x >
-                    this.game.menu.menuX + this.game.menu.menuWidth ||
-                this.game.mouse.y < this.game.menu.menuY ||
-                this.game.mouse.y >
-                    this.game.menu.menuY + this.game.menu.menuHeight)
-        ) {
-            this.userInputMovement(deltaTime);
-            this.checkForClick();
-        } else if (this.game.foods.length != 0 && this.hungerMeter < 100) {
-            this.movementToFood(deltaTime);
-        } else if (this.game.pills.length != 0 && this.healthMeter < 100) {
-            this.movementToPill(deltaTime);
+        if (this.healthMeter <= 0) {
+            if (this.game.pills.length != 0) this.movementToPill(deltaTime);
+            else {
+                if (this.position.y > this.gameHeight - this.r)
+                    this.direction.y = 0;
+                else this.position.y += 2;
+                this.direction.x = -1;
+                if (
+                    game.gameMode === this.game.gameModes.SELECT &&
+                    this.mouse.click
+                )
+                    this.checkForClick();
+            }
         } else {
-            this.normalMovement(deltaTime);
+            if (
+                game.gameMode === this.game.gameModes.SELECT &&
+                this.mouse.click &&
+                (this.game.mouse.x < this.game.menu.menuX ||
+                    this.game.mouse.x >
+                        this.game.menu.menuX + this.game.menu.menuWidth ||
+                    this.game.mouse.y < this.game.menu.menuY ||
+                    this.game.mouse.y >
+                        this.game.menu.menuY + this.game.menu.menuHeight)
+            ) {
+                this.userInputMovement(deltaTime);
+                this.checkForClick();
+            } else if (this.game.foods.length != 0 && this.hungerMeter < 100) {
+                this.movementToFood(deltaTime);
+            } else if (this.game.pills.length != 0 && this.healthMeter < 100) {
+                this.movementToPill(deltaTime);
+            } else {
+                this.normalMovement(deltaTime);
+            }
         }
+
         // if (this.game.gameMode === this.game.gameModes.SELECT)
         //     this.checkForClick();
 

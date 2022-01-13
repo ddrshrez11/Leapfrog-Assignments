@@ -77,6 +77,8 @@ export default class Junk {
             if (Math.abs(getDistance(dx, dy)) < this.r) {
                 // console.log("clean");
                 this.cleaned = true;
+                if (!this.game.toggle.isMute) this.cleanSound.play();
+                if (this.game.toggle.isMute) this.cleanSound.stop();
                 if (!this.game.createJunkInterval) {
                     this.game.createJunkInterval = setInterval(
                         this.game.createJunk,
