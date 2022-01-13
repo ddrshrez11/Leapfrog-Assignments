@@ -1,7 +1,8 @@
-/* #gameScreen {
-    margin: 20px;
-} */
-
+@media screen and (min-width: 768px) {
+    #game-buttons {
+        display: none;
+    }
+}
 #loading {
     position: absolute;
     /* top: 50%; */
@@ -17,6 +18,4 @@
     left: 50%;
     transform: translateY(-50%);
     transform: translateX(-50%);
-
-    /* vertical-align: middle; */
 }

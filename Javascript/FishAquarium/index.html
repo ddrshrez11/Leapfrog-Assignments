@@ -4,6 +4,11 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="./assets/otherObjects/favicon.ico"
+        />
         <title>Fish Aquarium</title>
 
         <link rel="stylesheet" href="css/reset.css" />
@@ -13,13 +18,15 @@
         <div id="loading">
             <h1>LOADING...</h1>
         </div>
-        <!-- <button onClick="handleClick(0)">Select</button>
-        <button onClick="handleClick(1)">feed fish</button>
-        <button onClick="handleClick(2)">clean tank</button>
-        <button onClick="handleClick(3)">Pill</button>
-        <button onClick="window.game.buyFish()">Buy Fish</button>
-        <button onClick="window.game.toggleShop()">Open Shop</button>
-        <button onClick="window.resetGame()">Reset Game</button> -->
+        <div id="game-buttons">
+            <button onClick="handleClick(0)">Select</button>
+            <button onClick="handleClick(1)">feed fish</button>
+            <button onClick="handleClick(2)">clean tank</button>
+            <button onClick="handleClick(3)">Pill</button>
+            <!-- <button onClick="window.game.buyFish()">Buy Fish</button> -->
+            <button onClick="window.game.toggleShop()">Open Shop</button>
+            <button onClick="window.resetGame()">Reset Game</button>
+        </div>
 
         <canvas id="gameScreen"></canvas>
 
