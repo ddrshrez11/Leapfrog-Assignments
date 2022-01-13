@@ -1,4 +1,5 @@
 import Junk from "./junk.js";
+import { getRandomFromRange, getRandomIndex } from "./utils.js";
 
 export default class Pill {
     /**
@@ -22,8 +23,7 @@ export default class Pill {
         };
         this.eaten = false;
         this.pillImg = this.game.loadedAssets[`pill`];
-        // this.pillImg = new Image();
-        // this.pillImg.src = "./assets/otherObjects/pill.png";
+
         this.bottomCollision = false;
         this.changeInterval = {
             clearPillTimeout: 5000,
@@ -35,13 +35,6 @@ export default class Pill {
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
-        // console.log("draw");
-        // ctx.beginPath();
-        // ctx.fillStyle = "brown";
-        // ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
-        // ctx.stroke();
-        // ctx.fill();
-
         ctx.drawImage(
             this.pillImg,
             this.position.x - this.r,
@@ -58,7 +51,6 @@ export default class Pill {
     update = (deltaTime) => {
         this.wallCollisionDetect();
         this.position.y += (this.direction.y * this.speed) / deltaTime;
-        // console.log(this.position.y, this.direction.y, deltaTime);
     };
 
     /**

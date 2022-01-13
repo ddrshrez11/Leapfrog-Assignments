@@ -1,14 +1,24 @@
 import { fishTypes } from "./data.js";
+import {
+    getRandomFromRange,
+    getDistance,
+    getGender,
+    getRandomDirection,
+} from "./utils.js";
+
 export default class Fish {
     /**
      * @constructor
      * @param {Game} game Game object
+     * @param {type} type color/type of fish
+     * @param {object} fishInfo info of fish from local storage
      */
     constructor(game, type, fishInfo) {
         this.game = game;
         this.gameWidth = game.gameWidth;
         this.gameHeight = game.gameHeight;
         this.mouse = game.mouse;
+        this.sold = false;
 
         // different for each fish type
         this.type = fishTypes[type];
@@ -19,10 +29,6 @@ export default class Fish {
         this.maxHungerMeter = this.type.maxhungerMeter;
         this.changeInterval = this.type.changeInterval;
         this.price = this.type.price;
-
-        this.sold = false;
-        this.isSick = false;
-        // this.baseSize = this.type.baseSize;
 
         if (fishInfo) {
             this.name = fishInfo.name;
@@ -38,7 +44,7 @@ export default class Fish {
         } else {
             this.level = 1;
             this.levelMeter = 0;
-            this.gender = getGender(); //!to be implemented
+            this.gender = getGender();
             this.healthMeter = 100;
             this.hungerMeter = 100;
             this.pregnancy = false;
@@ -67,7 +73,7 @@ export default class Fish {
         this.theta = 0;
 
         this.baseSize = this.spriteWidth / 20;
-        this.r = this.baseSize + 2 * this.level; //this.spriteWidth / 20; //getRandomFromRange(10, 30);
+        this.r = this.baseSize + 2 * this.level;
         this.hRatio = 6;
         this.wRatio = 4;
         this.barWidth;
@@ -102,14 +108,9 @@ export default class Fish {
                 (this.frame % (this.spriteX * this.spriteY)) / this.spriteX
             );
         }, 200);
-        // this.healthIncreaseInterval = setInterval(
-        //     this.healthIncrease,
-        //     this.changeInterval.health
-        // );
 
         this.startHungerIncreaseInterval();
         this.startLevelUpInterval();
-        // this.startHealthDecreaseInterval();
 
         this.obj = {};
     }
@@ -129,14 +130,14 @@ export default class Fish {
                 else this.position.y += 2;
                 this.direction.x = -1;
                 if (
-                    game.gameMode === this.game.gameModes.SELECT &&
+                    this.game.gameMode === this.game.gameModes.SELECT &&
                     this.mouse.click
                 )
                     this.checkForClick();
             }
         } else {
             if (
-                game.gameMode === this.game.gameModes.SELECT &&
+                this.game.gameMode === this.game.gameModes.SELECT &&
                 this.mouse.click &&
                 (this.game.mouse.x < this.game.menu.menuX ||
                     this.game.mouse.x >
@@ -155,11 +156,6 @@ export default class Fish {
                 this.normalMovement(deltaTime);
             }
         }
-
-        // if (this.game.gameMode === this.game.gameModes.SELECT)
-        //     this.checkForClick();
-
-        // console.log(this.position.y, this.direction.y, deltaTime);
     };
 
     /**
@@ -167,15 +163,8 @@ export default class Fish {
      * @param {context} ctx context of canvas
      */
     draw = (ctx) => {
-        // ctx.beginPath();
-        // ctx.fillStyle = this.color;
-        // ctx.arc(x, y, this.r, 0, 2 * Math.PI);
-        // ctx.stroke();
-        // ctx.fill();
-
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
-        // ctx.rotate(this.angle);
         if (this.direction.x < 0) {
             ctx.drawImage(
                 this.leftImg,
@@ -211,16 +200,13 @@ export default class Fish {
         }
     };
 
+    /**
+     * draw fish object onto the fish info panel or shop panels
+     * @param {context} ctx context of canvas
+     * @param {number} x x-coordinate to draw fish
+     * @param {number} y y-coordinate to draw fish
+     */
     drawInfo = (ctx, x, y) => {
-        // ctx.beginPath();
-        // ctx.fillStyle = this.color;
-        // ctx.arc(x, y, this.baseSize, 0, 2 * Math.PI);
-        // ctx.stroke();
-        // ctx.fill();
-
-        // ctx.save();
-        // ctx.translate(x, y);
-        // if (this.direction.x < 0) {
         ctx.drawImage(
             this.leftImg,
             this.frameX * this.spriteWidth,
@@ -232,24 +218,15 @@ export default class Fish {
             this.hRatio * this.baseSize,
             this.wRatio * this.baseSize
         );
-        // }
-        // if (this.direction.x > 0) {
-        //     ctx.rotate(1 * Math.PI);
-        //     ctx.drawImage(
-        //         this.rightImg,
-        //         (3 - this.frameX) * this.spriteWidth,
-        //         (2 - this.frameY) * this.spriteHeight,
-        //         this.spriteWidth,
-        //         this.spriteHeight,
-        //         0 - this.baseSize * (this.hRatio / 2),
-        //         0 - this.baseSize * (this.wRatio / 2),
-        //         this.hRatio * this.baseSize,
-        //         this.wRatio * this.baseSize
-        //     );
-        // }
-        // ctx.restore();
     };
 
+    /**
+     * draw health bar of fish object onto the game screen, fish info panel or shop panels
+     * @param {context} ctx context of canvas
+     * @param {number} x x-coordinate to draw health bar
+     * @param {number} y y-coordinate to draw health bar
+     * @param {number} maxWidth max width of health bar
+     */
     drawHealthBar = (ctx, x, y, maxWidth) => {
         if (!x && !y) {
             maxWidth = 40 + this.level;
@@ -266,6 +243,13 @@ export default class Fish {
         ctx.fillRect(x, y, this.barWidth, this.barHeight);
     };
 
+    /**
+     * draw hunger bar of fish object onto the game screen, fish info panel or shop panels
+     * @param {context} ctx context of canvas
+     * @param {number} x x-coordinate to draw hunger bar
+     * @param {number} y y-coordinate to draw hunger bar
+     * @param {number} maxWidth max width of hunger bar
+     */
     drawHungerBar = (ctx, x, y, maxWidth) => {
         if (!x && !y) {
             maxWidth = 40 + this.level;
@@ -282,7 +266,10 @@ export default class Fish {
         ctx.fillRect(x, y, this.barWidth, this.barHeight);
     };
 
-    normalMovement = (deltaTime) => {
+    /**
+     * update position of fish during random movement (no input,food, pill)
+     */
+    normalMovement = () => {
         this.theta = 0;
         if (this.direction.y === 0) {
             this.theta = Math.atan2(this.direction.x, -this.direction.x);
@@ -291,10 +278,14 @@ export default class Fish {
         }
 
         this.angle = this.theta;
-        this.position.x += this.direction.x; //* this.speed) / deltaTime;
-        this.position.y += this.direction.y; //* this.speed) / deltaTime;
+        this.position.x += this.direction.x;
+        this.position.y += this.direction.y;
     };
 
+    /**
+     * update position of fish during user input (select mode)
+     * @param {number} deltaTime change in time from previous frame
+     */
     userInputMovement = (deltaTime) => {
         if (
             !this.game.toggle.showInfo &&
@@ -318,7 +309,6 @@ export default class Fish {
 
         if (this.mouse.x != this.position.x) {
             this.position.x -= this.dx / (3 * deltaTime);
-            // this.mouse.click = false;
         }
         if (this.mouse.y != this.position.y) {
             this.position.y -= this.dy / (3 * deltaTime);
@@ -328,6 +318,10 @@ export default class Fish {
         }
     };
 
+    /**
+     * update position of fish when food is given
+     * @param {number} deltaTime change in time from previous frame
+     */
     movementToFood = (deltaTime) => {
         this.minimumFoodIndex = this.getMinimumFood();
         this.minimumFood = this.game.foods[this.minimumFoodIndex];
@@ -345,7 +339,6 @@ export default class Fish {
 
         if (this.minimumFood.position.x != this.position.x) {
             this.position.x -= this.dx / (3 * deltaTime);
-            // this.mouse.click = false;
         }
         if (this.minimumFood.position.y != this.position.y) {
             this.position.y -= this.dy / (3 * deltaTime);
@@ -360,6 +353,44 @@ export default class Fish {
         }
     };
 
+    /**
+     * update position of fish when pill is given
+     * @param {number} deltaTime change in time from previous frame
+     */
+    movementToPill = (deltaTime) => {
+        this.minimumPillIndex = this.getMinimumPill();
+        this.minimumPill = this.game.pills[this.minimumPillIndex];
+
+        this.dx = this.position.x - this.minimumPill.position.x;
+        this.dy = this.position.y - this.minimumPill.position.y;
+        if (this.dx > 0) {
+            this.changeXDirection(-1);
+        }
+        if (this.dx < 0) {
+            this.changeXDirection(1);
+        }
+        this.theta = Math.atan2(this.dx, this.dy);
+        this.angle = this.theta;
+
+        if (this.minimumPill.position.x != this.position.x) {
+            this.position.x -= this.dx / (3 * deltaTime);
+        }
+        if (this.minimumPill.position.y != this.position.y) {
+            this.position.y -= this.dy / (3 * deltaTime);
+        }
+        if (
+            Math.abs(getDistance(this.dx, this.dy)) <
+            this.r + this.minimumPill.r
+        ) {
+            if (!this.minimumPill.eaten) {
+                this.eatPill(this.minimumPillIndex);
+            }
+        }
+    };
+
+    /**
+     * find and return food object with least distance from fish
+     */
     getMinimumFood = () => {
         this.minimumDistance = undefined;
         this.minimumFoodIndex = undefined;
@@ -383,49 +414,21 @@ export default class Fish {
         return this.minimumFoodIndex;
     };
 
+    /**
+     * remove food object after collision with fish
+     * @param {number} minimumFoodIndex index of foods array in Game object of minimun food
+     */
     eatFood = (minimumFoodIndex) => {
         this.minimumFood = this.game.foods[minimumFoodIndex];
         this.hungerDecrease();
         this.minimumFood.eaten = true;
 
         this.game.updateFoods();
-        // this.game.foods.splice(minimumFoodIndex, 1);
-        // this.game.updateGameObjects();
-        console.log("Food Eaten");
     };
 
-    movementToPill = (deltaTime) => {
-        this.minimumPillIndex = this.getMinimumPill();
-        this.minimumPill = this.game.pills[this.minimumPillIndex];
-
-        this.dx = this.position.x - this.minimumPill.position.x;
-        this.dy = this.position.y - this.minimumPill.position.y;
-        if (this.dx > 0) {
-            this.changeXDirection(-1);
-        }
-        if (this.dx < 0) {
-            this.changeXDirection(1);
-        }
-        this.theta = Math.atan2(this.dx, this.dy);
-        this.angle = this.theta;
-
-        if (this.minimumPill.position.x != this.position.x) {
-            this.position.x -= this.dx / (3 * deltaTime);
-            // this.mouse.click = false;
-        }
-        if (this.minimumPill.position.y != this.position.y) {
-            this.position.y -= this.dy / (3 * deltaTime);
-        }
-        if (
-            Math.abs(getDistance(this.dx, this.dy)) <
-            this.r + this.minimumPill.r
-        ) {
-            if (!this.minimumPill.eaten) {
-                this.eatPill(this.minimumPillIndex);
-            }
-        }
-    };
-
+    /**
+     * find and return pill object with least distance from fish
+     */
     getMinimumPill = () => {
         this.minimumDistance = undefined;
         this.minimumPillIndex = undefined;
@@ -449,17 +452,21 @@ export default class Fish {
         return this.minimumPillIndex;
     };
 
+    /**
+     * remove pill object after collision with fish
+     * @param {number} minimumPillIndex index of pills array in Game object of minimun pill
+     */
     eatPill = (minimumPillIndex) => {
         this.minimumPill = this.game.pills[minimumPillIndex];
         this.healthIncrease();
         this.minimumPill.eaten = true;
 
         this.game.updatePills();
-        // this.game.pills.splice(minimumPillIndex, 1);
-        // this.game.updateGameObjects();
-        console.log("Pill Eaten");
     };
 
+    /**
+     * checks for click on fish to open fish info panel
+     */
     checkForClick = () => {
         if (
             this.game.mouse.click &&
@@ -477,6 +484,7 @@ export default class Fish {
             }
         }
     };
+
     /**
      *detect the edge of the fish tank
      */
@@ -497,6 +505,9 @@ export default class Fish {
         }
     };
 
+    /**
+     *detect the collision with Junk
+     */
     junkCollisionDetection = () => {
         this.game.junks.forEach((junk) => {
             this.dx = this.position.x - junk.position.x;
@@ -509,6 +520,9 @@ export default class Fish {
         });
     };
 
+    /**
+     *detect the different types collision (Junk,tank)
+     */
     fishCollisionDetection = () => {
         this.wallCollisionDetection();
         // this.junkCollisionDetection();
@@ -527,6 +541,10 @@ export default class Fish {
         setTimeout(this.resetYDirection, 500);
     };
 
+    /**
+     * Changes X-direction of fish to given or random value
+     * @param {number} dir change direction of fish in this direction
+     */
     changeXDirection = (dir) => {
         if (dir != undefined) {
             this.direction.x = dir;
@@ -542,6 +560,9 @@ export default class Fish {
         this.direction.y = 0;
     };
 
+    /**
+     * Decrease health of fish
+     */
     healthDecrease = () => {
         if (this.game.junks.length !== 0) {
             this.healthMeter -= 10;
@@ -550,11 +571,14 @@ export default class Fish {
                 this.isSick = true;
                 clearInterval(this.levelUpInterval);
                 clearInterval(this.reproductionInterval);
-                // console.log("fish has died");
+                console.log(this.name + " is sick");
             }
-            // this.game.save.saveFishes();
         }
     };
+
+    /**
+     * Increase health of fish
+     */
     healthIncrease = () => {
         if (this.healthMeter < 100) {
             this.healthMeter += 10;
@@ -574,10 +598,12 @@ export default class Fish {
                     );
                 }
             }
-            // console.log(this.healthMeter);
         }
     };
 
+    /**
+     * Decrease hunger of fish
+     */
     hungerIncrease = () => {
         this.hungerMeter -= 10;
         if (this.hungerMeter < 0) {
@@ -588,13 +614,11 @@ export default class Fish {
                 }
             }, this.changeInterval.healthTimeout);
         }
-        // this.game.save.saveFishes();
-        // console.log(
-        //     "hungerIncrease",
-        //     "hunger:" + this.hungerMeter,
-        //     "health:" + this.healthMeter
-        // );
     };
+
+    /**
+     * Increase hunger of fish
+     */
     hungerDecrease = () => {
         this.hungerMeter += 20;
         if (this.hungerMeter > 100) {
@@ -605,22 +629,22 @@ export default class Fish {
                 this.changeInterval.hungerTimeout
             );
         }
-        console.log(
-            "hungerDecrease",
-            "hunger:" + this.hungerMeter,
-            "health:" + this.healthMeter
-        );
     };
+
+    /**
+     * Increase level meter of fish
+     */
     levelMeterUp = () => {
         this.levelMeter += 10;
-        console.log(this.levelMeter);
         if (this.levelMeter > 100) {
             this.levelUp();
         }
-        // this.game.save.saveFishes();
     };
+
+    /**
+     * Increase level of fish
+     */
     levelUp = () => {
-        console.log("levelUp");
         this.level++;
         this.r = this.r + 2;
         this.value = 2 * this.level;
@@ -640,16 +664,28 @@ export default class Fish {
             }
         }
     };
+
+    /**
+     * start Hunger Increase loop of fish
+     */
     startHungerIncreaseInterval = () =>
         (this.hungerIncreaseInterval = setInterval(
             this.hungerIncrease,
             this.changeInterval.hunger
         ));
+
+    /**
+     * start Health Decrease loop of fish
+     */
     startHealthDecreaseInterval = () =>
         (this.healthDecreaseInterval = setInterval(
             this.healthDecrease,
             this.changeInterval.healthTimeout
         ));
+
+    /**
+     * start Level Meter Increase loop of fish
+     */
     startLevelUpInterval = () => {
         this.levelUpInterval = setInterval(
             this.levelMeterUp,
@@ -657,6 +693,9 @@ export default class Fish {
         );
     };
 
+    /**
+     * Check for suitable mate for fish
+     */
     checkForMate = () => {
         if (this.level < 15) return false;
         return this.game.fishes.some((fish) => {
@@ -671,12 +710,18 @@ export default class Fish {
         });
     };
 
+    /**
+     * Start Pregnancy of fish
+     */
     startPregnancy = () => {
         console.log("startPregnancy");
         this.pregnancy = true;
         this.startReproduction();
     };
 
+    /**
+     * Start reproduction of fish
+     */
     startReproduction = () => {
         console.log("startReproduction");
         this.reproductionInterval = setInterval(() => {
@@ -684,6 +729,9 @@ export default class Fish {
         }, this.changeInterval.reproductionCounter);
     };
 
+    /**
+     * Check if fish is ready to give birth
+     */
     checkReproduction = () => {
         if (this.reproductionCounter > 70 && this.pregnancy) {
             console.log("birth");
@@ -697,6 +745,9 @@ export default class Fish {
         }
     };
 
+    /**
+     * create object of information of the fish to save in local storage
+     */
     save = () => {
         this.obj.name = this.name;
         this.obj.color = this.color;
@@ -708,6 +759,7 @@ export default class Fish {
         this.obj.pregnancy = this.pregnancy;
         this.obj.postpartum = this.postpartum;
         this.obj.reproductionCounter = this.reproductionCounter;
+        this.obj.isSick = this.isSick;
         return this.obj;
     };
 }

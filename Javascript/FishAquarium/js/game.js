@@ -1,15 +1,16 @@
 import Coin from "./coin.js";
+import { fishTypes } from "./data.js";
 import Fish from "./fish.js";
+import FishInfo from "./fishInfo.js";
 import Food from "./food.js";
-import Pill from "./pill.js";
+import { Help } from "./gameHelp.js";
 import InputHandler from "./inputHandler.js";
 import Junk from "./junk.js";
-import { fishTypes } from "./data.js";
-import FishInfo from "./fishInfo.js";
+import Menu from "./menu.js";
+import Pill from "./pill.js";
 import Save from "./save.js";
 import { FishShop, Shop } from "./shop.js";
-import Menu from "./menu.js";
-import { Help } from "./gameHelp.js";
+import { getDistance, getRandomFromArray } from "./utils.js";
 
 export default class Game {
     /**
@@ -41,13 +42,11 @@ export default class Game {
             showHelp: false,
             isMute: false,
         };
-        // this.showInfo = false;
         this.limit = {
             junk: 10,
             coin: 10,
         };
         this.money = this.save.getMoney() ? Number(this.save.getMoney()) : 100;
-        console.log(typeof this.money);
         this.bgIndex = this.save.getBgIndex() ? this.save.getBgIndex() : 0;
 
         this.gameModes = {
@@ -55,7 +54,6 @@ export default class Game {
             FEED: 1,
             PILL: 2,
             CLEAN: 3,
-            // SELECT: 3,
         };
         this.gameMode = this.gameModes.SELECT;
         this.changeInterval = {
@@ -71,17 +69,12 @@ export default class Game {
             y: 0,
             click: false,
         };
-
-        // this.bgImg = loadedAssets[`background${this.bgIndex}`];
-        // this.bgImg = new Image();
-        // this.bgImg.src = "./assets/otherObjects/bg1.jpg";
     }
 
     /**
      * function to initialize objects
      */
     start = () => {
-        // for (let index = 0; index < 10; index++) {
         this.fishes = [];
         this.coins = [];
         this.foods = [];
@@ -93,13 +86,6 @@ export default class Game {
         this.fishInfo = [];
         this.menu = new Menu(this);
         this.inputHandler = new InputHandler(this);
-
-        // this.toggleFishShop(); //! remove
-        // this.toggleShop(); //! remove
-        // this.toggleHelp(); //! remove
-
-        // this.fishes.push(new Fish(this, "black"));
-        // this.fishes.push(new Fish(this, "green"));
 
         this.fishesInfoArr = this.save.getFishes();
         if (this.fishesInfoArr) {
@@ -147,7 +133,6 @@ export default class Game {
         this.updateGameObjects();
 
         this.clearFoodCount = 0;
-        // this.save.saveFishes(this);
     };
 
     /**
@@ -171,20 +156,29 @@ export default class Game {
         this.gameObjects.forEach((object) => {
             object.draw(ctx);
         });
-        // if (this.toggle.showInfo) {
-        //     this.drawShowInfoBox(ctx);
-        // }
     };
 
+    /**
+     * draw all game objects onto the screen
+     * @param {context} ctx
+     */
     drawBg = (ctx) => {
         ctx.drawImage(this.bgImg, 0, 0, this.gameWidth, this.gameHeight);
     };
 
+    /**
+     * add fish to the game
+     * @param {string} color color of fish to add
+     */
     buyFish = (color) => {
         if (!color) color = getRandomFromArray(this.fishTypesArray);
         this.fishes.push(new Fish(this, color));
         this.updateGameObjects();
     };
+
+    /**
+     * add food to the game
+     */
     createFood = () => {
         if (this.handleBuy(this.price.food)) {
             if (!this.toggle.isMute) this.foodSound.play();
@@ -192,19 +186,24 @@ export default class Game {
             this.foods.push(new Food(this, this.mouse.x, this.mouse.y));
             this.updateGameObjects();
             this.inputHandler.resetMouseClick();
-            console.log("new food");
         }
     };
+
+    /**
+     * add pill to the game
+     */
     createPill = () => {
         if (this.handleBuy(this.price.food)) {
             if (!this.toggle.isMute) this.pillSound.play();
             this.pills.push(new Pill(this, this.mouse.x, this.mouse.y));
             this.updateGameObjects();
             this.inputHandler.resetMouseClick();
-            console.log("new pill");
         }
     };
 
+    /**
+     * add Junk to the game
+     */
     createJunk = () => {
         if (this.junks.length >= this.limit.junk) {
             clearInterval(this.createJunkInterval);
@@ -232,6 +231,9 @@ export default class Game {
         this.newJunk = undefined;
     };
 
+    /**
+     * add coin to the game
+     */
     createCoin = (x, y) => {
         if (this.coins.length >= this.limit.coin) {
             clearInterval(this.createCoinInterval);
@@ -257,6 +259,10 @@ export default class Game {
         this.newCoin = undefined;
     };
 
+    /**
+     * update array of all gameobjects of the game
+     *
+     */
     updateGameObjects = () => {
         this.fishes.sort(function (a, b) {
             return b.r - a.r;
@@ -275,17 +281,29 @@ export default class Game {
         ];
     };
 
+    /**
+     * update background image to the required one
+     * @param {number} index index of background
+     */
     updateBg = (index) => {
         if (index !== undefined) this.bgIndex = index;
         this.save.saveBgIndex();
         this.bgImg = this.loadedAssets[`background${this.bgIndex}`];
     };
+
+    /**
+     * update array of all fish objects of the game
+     */
     updateFishes = () => {
         this.fishes = this.fishes.filter((fish) => {
             return !fish.sold;
         });
         this.updateGameObjects();
     };
+
+    /**
+     * update array of all food objects of the game
+     */
     updateFoods = () => {
         this.foods = this.foods.filter((food) => {
             return !food.eaten;
@@ -293,6 +311,9 @@ export default class Game {
         this.updateGameObjects();
     };
 
+    /**
+     * update array of all pill objects of the game
+     */
     updatePills = () => {
         this.pills = this.pills.filter((pill) => {
             return !pill.eaten;
@@ -300,6 +321,9 @@ export default class Game {
         this.updateGameObjects();
     };
 
+    /**
+     * update array of all junk objects of the game
+     */
     updateJunks = () => {
         this.junks = this.junks.filter((junk) => {
             return !junk.cleaned;
@@ -309,27 +333,29 @@ export default class Game {
                 clearInterval(fish.healthDecreaseInterval);
                 fish.healthDecreaseInterval = false;
             });
-            // this.fish.startHealthDecreaseInterval();
         } else {
             this.fishes.forEach((fish) => {
                 if (!fish.healthDecreaseInterval) {
                     fish.startHealthDecreaseInterval();
                 }
             });
-            // clearInterval(this.fish.healthDecreaseInterval);
         }
-        // this.save.saveJunks(this); //!check
         this.updateGameObjects();
     };
 
+    /**
+     * update array of all coin objects of the game
+     */
     updateCoins = () => {
         this.coins = this.coins.filter((coin) => {
             return !coin.collected;
         });
-        // this.save.saveCoins(this); //!check
         this.updateGameObjects();
     };
 
+    /**
+     * update cursor of the game according to game mode
+     */
     updateCursor = () => {
         switch (this.gameMode) {
             case this.gameModes.FEED:
@@ -353,31 +379,37 @@ export default class Game {
         ),default`;
     };
 
+    /**
+     * handle buying of fish and decorations in the game and update money accordingly
+     */
     handleBuy = (price) => {
         if (this.money >= price) {
             this.money -= price;
             this.menu.setMoneyInfo(`-  $ ${price}`, -1);
 
             this.save.saveMoney();
-            // console.log("item Bought for ", price, " Money: ", this.money);
             return true;
         }
         if (!this.toggle.isMute) this.errorSound.play();
         if (this.toggle.isMute) this.errorSound.stop();
         this.menu.setMoneyInfo(`No Money`, -1);
-        // console.log("No Money");
         return false;
     };
+
+    /**
+     * handle selling of fish and decorations in the game and update money accordingly
+     */
     handleSell = (price) => {
         this.money += price;
         if (!this.toggle.isMute) this.sellFishSound.play();
         if (this.toggle.isMute) this.sellFishSound.stop();
         this.menu.setMoneyInfo(`+  $ ${price}`, 1);
-
         this.save.saveMoney();
-        // console.log("item sold for ", price, " Money: ", this.money);
     };
 
+    /**
+     * toggle showing of Fish Info panel
+     */
     toggleShowInfo = (fish) => {
         if (this.toggle.showInfo) {
             this.toggle.showInfo = false;
@@ -389,6 +421,9 @@ export default class Game {
         this.updateGameObjects();
     };
 
+    /**
+     * toggle showing of Fish Shop panel
+     */
     toggleFishShop = () => {
         if (this.toggle.showFishShop) {
             this.toggle.showFishShop = false;
@@ -399,6 +434,10 @@ export default class Game {
         }
         this.updateGameObjects();
     };
+
+    /**
+     * toggle showing of Shop panel
+     */
     toggleShop = () => {
         if (this.toggle.showShop) {
             this.toggle.showShop = false;
@@ -409,6 +448,10 @@ export default class Game {
         }
         this.updateGameObjects();
     };
+
+    /**
+     * toggle showing of Help panel
+     */
     toggleHelp = () => {
         if (this.toggle.showHelp) {
             this.toggle.showHelp = false;
@@ -419,6 +462,10 @@ export default class Game {
         }
         this.updateGameObjects();
     };
+
+    /**
+     * toggle Mute setting
+     */
     toggleMute = () => {
         this.toggle.isMute = !this.toggle.isMute;
     };

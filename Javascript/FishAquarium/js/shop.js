@@ -17,7 +17,7 @@ export class FishShop {
         });
 
         this.width = this.gameWidth - this.gameWidth / 2.5;
-        this.height = this.gameHeight; // - this.gameHeight / 4;
+        this.height = this.gameHeight;
         this.headerWidth = 500;
         this.headerHeight = 70;
         this.btnWidth = 150;
@@ -66,6 +66,10 @@ export class FishShop {
         this.drawShopFishes(ctx);
     };
 
+    /**
+     * draw Fish Shop Panel background on game screen
+     * @param {context} ctx Context of canvas
+     */
     drawPanel = (ctx) => {
         ctx.drawImage(
             this.panelImg,
@@ -77,7 +81,7 @@ export class FishShop {
 
         ctx.drawImage(
             this.panelHeaderImg,
-            (this.gameWidth - this.headerWidth) / 2, //this.position.x,
+            (this.gameWidth - this.headerWidth) / 2,
             this.position.y + 100,
             this.headerWidth,
             this.headerHeight
@@ -108,6 +112,10 @@ export class FishShop {
         );
     };
 
+    /**
+     * draw Fishes on Fish Shop Panel
+     * @param {context} ctx Context of canvas
+     */
     drawShopFishes = (ctx) => {
         this.imgPosition = {
             x: this.position.x + this.startPosition.x + this.leftPadding,
@@ -139,6 +147,15 @@ export class FishShop {
             }
         });
     };
+
+    /**
+     * draw buy button on Shop Panel
+     * @param {context} ctx Context of canvas
+     * @param {number} x X-coordinate of button
+     * @param {number} y y-coordinate of button
+     * @param {string} fishColor color of fish
+     * @param {number} price price of decoration
+     */
     drawButton = (ctx, x, y, fishColor, price) => {
         ctx.drawImage(this.btnImg, x, y, this.btnWidth, this.btnHeight);
         ctx.font = `bold ${this.fontSize}px ${this.font}`;
@@ -162,12 +179,11 @@ export class FishShop {
             x + this.btnWidth / 2,
             y + this.btnHeight / 2
         );
-        // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
         this.checkForBtnClick(x, y, fishColor, price);
     };
 
     /**
-     * update position of junk
+     * update fish shop panel
      * @param {number} deltaTime change in time from previous frame
      */
     update = (deltaTime) => {
@@ -178,12 +194,11 @@ export class FishShop {
         });
     };
 
+    /**
+     * check for click outside the panel
+     */
     checkForOutsideClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showFishShop
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showFishShop) {
             if (
                 this.game.mouse.x < this.position.x ||
                 this.game.mouse.x > this.position.x + this.width ||
@@ -196,19 +211,21 @@ export class FishShop {
         }
     };
 
+    /**
+     * check for click on buy button
+     * @param {number} x X-coordinate of button
+     * @param {number} y y-coordinate of button
+     * @param {string} fishColor color of fish
+     * @param {number} price price of decoration
+     */
     checkForBtnClick = (x, y, fishColor, price) => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showFishShop
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showFishShop) {
             if (
                 this.game.mouse.x > x &&
                 this.game.mouse.x < x + this.btnWidth &&
                 this.game.mouse.y > y &&
                 this.game.mouse.y < y + this.btnHeight
             ) {
-                console.log("buy", price);
                 if (this.game.handleBuy(price)) {
                     if (!this.game.toggle.isMute) this.buySound.play();
                     if (this.game.toggle.isMute) this.buySound.stop();
@@ -219,12 +236,12 @@ export class FishShop {
             }
         }
     };
+
+    /**
+     * check for click on close button
+     */
     checkForCloseBtnClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showFishShop
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showFishShop) {
             if (
                 this.game.mouse.x > this.closeBtn.x &&
                 this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&
@@ -255,7 +272,7 @@ export class Shop {
         this.savedDecorationData = this.game.save.getBg();
 
         this.width = this.gameWidth - this.gameWidth / 2;
-        this.height = this.gameHeight; // - this.gameHeight / 4;
+        this.height = this.gameHeight;
         this.headerWidth = 500;
         this.headerHeight = 70;
         this.btnWidth = 150;
@@ -306,9 +323,11 @@ export class Shop {
         this.drawDecorations(ctx);
     };
 
+    /**
+     * draw Shop Panel background on game screen
+     * @param {context} ctx Context of canvas
+     */
     drawPanel = (ctx) => {
-        // this.position.x = (this.gameWidth - this.width) / 2;
-        // this.position.y = (this.gameHeight - this.height) / 2;
         ctx.drawImage(
             this.panelImg,
             this.position.x,
@@ -319,7 +338,7 @@ export class Shop {
 
         ctx.drawImage(
             this.panelHeaderImg,
-            (this.gameWidth - this.headerWidth) / 2, //this.position.x,
+            (this.gameWidth - this.headerWidth) / 2,
             this.position.y + 100,
             this.headerWidth,
             this.headerHeight
@@ -350,6 +369,10 @@ export class Shop {
         );
     };
 
+    /**
+     * draw Decorations on Shop Panel
+     * @param {context} ctx Context of canvas
+     */
     drawDecorations = (ctx) => {
         this.startPosition.x = this.gameWidth / 2;
         this.startPosition.y = this.gameHeight / 2;
@@ -366,7 +389,6 @@ export class Shop {
             if (index != this.game.bgIndex) {
                 this.count++;
                 this.drawPreview(ctx, decoration);
-                // decoration.drawInfo(ctx, this.imgPosition.x, this.imgPosition.y);
                 this.btnPosition = {
                     x:
                         this.imgPosition.x +
@@ -400,14 +422,11 @@ export class Shop {
         });
     };
 
+    /**
+     * draw Decorations preview on Shop Panel
+     * @param {context} ctx Context of canvas
+     */
     drawPreview = (ctx, decoration) => {
-        // ctx.fillStyle = "#c2c26b";
-        // ctx.fillRect(
-        //     this.imgPosition.x,
-        //     this.imgPosition.y,
-        //     this.baseSize.x,
-        //     this.baseSize.y
-        // );
         this.previewImg = this.game.loadedAssets[decoration];
         ctx.drawImage(
             this.previewImg,
@@ -417,6 +436,15 @@ export class Shop {
             this.baseSize.y
         );
     };
+
+    /**
+     * draw buy button on Shop Panel
+     * @param {context} ctx Context of canvas
+     * @param {number} x X-coordinate of button
+     * @param {number} y y-coordinate of button
+     * @param {number} index index of decoration data
+     * @param {number} price price of decoration
+     */
     drawButton = (ctx, x, y, index, price) => {
         ctx.drawImage(this.btnImg, x, y, this.btnWidth, this.btnHeight);
         ctx.font = `bold ${this.fontSize}px ${this.font}`;
@@ -440,25 +468,22 @@ export class Shop {
             x + this.btnWidth / 2,
             y + this.btnHeight / 2
         );
-        // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
         this.checkForBtnClick(x, y, index, price);
     };
 
     /**
-     * update position of junk
-     * @param {number} deltaTime change in time from previous frame
+     * update fish shop panel
      */
-    update = (deltaTime) => {
+    update = () => {
         this.checkForOutsideClick();
         this.checkForCloseBtnClick();
     };
 
+    /**
+     * check for click outside the panel
+     */
     checkForOutsideClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showShop
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showShop) {
             if (
                 this.game.mouse.x < this.position.x ||
                 this.game.mouse.x > this.position.x + this.width ||
@@ -471,19 +496,21 @@ export class Shop {
         }
     };
 
+    /**
+     * check for click on buy button
+     * @param {number} x X-coordinate of button
+     * @param {number} y y-coordinate of button
+     * @param {number} index index of decoration data
+     * @param {number} price price of decoration
+     */
     checkForBtnClick = (x, y, index, price) => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showShop
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showShop) {
             if (
                 this.game.mouse.x > x &&
                 this.game.mouse.x < x + this.btnWidth &&
                 this.game.mouse.y > y &&
                 this.game.mouse.y < y + this.btnHeight
             ) {
-                console.log("buy", price);
                 if (this.game.handleBuy(price)) {
                     if (!this.game.toggle.isMute) this.buyBgSound.play();
                     if (this.game.toggle.isMute) this.buyBgSound.stop();
@@ -496,12 +523,11 @@ export class Shop {
         }
     };
 
+    /**
+     * check for click on close button
+     */
     checkForCloseBtnClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showShop
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showShop) {
             if (
                 this.game.mouse.x > this.closeBtn.x &&
                 this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&

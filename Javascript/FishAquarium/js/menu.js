@@ -1,4 +1,3 @@
-import Coin from "./coin.js";
 import { menuData } from "./data.js";
 
 export default class Menu {
@@ -12,7 +11,6 @@ export default class Menu {
         this.gameHeight = this.game.gameHeight;
         this.screenMargin = 100;
         this.menuOptions = Object.keys(menuData);
-        console.log(this.menuOptions);
         this.moneyInfo = "";
         this.moneyInfoType = 0;
 
@@ -47,6 +45,7 @@ export default class Menu {
             width: 60,
             height: 60,
         };
+
         this.btnImg = this.game.loadedAssets[`btn2`];
         this.bubbleImg = this.game.loadedAssets[`menuBubble`];
         this.menuCoinImg = this.game.loadedAssets[`coin1`];
@@ -60,7 +59,7 @@ export default class Menu {
     }
 
     /**
-     * draw junk on game screen
+     * draw Menu UI on game screen
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
@@ -74,18 +73,14 @@ export default class Menu {
             this.padding.x;
         this.menuHeight = this.height + this.fontSize;
 
-        // ctx.fillStyle = "#c2c26b";
-        // ctx.fillRect(this.rectX, this.rectY, this.rectWidth, this.rectHeight);
-
         this.menuOptions.forEach((option, index) => {
             this.drawMenuIcons(ctx, option, index);
         });
 
         this.drawMoneyCounter(ctx);
         this.drawMenuBtn(ctx);
-        if (!!this.moneyInfoType) {
+        if (this.moneyInfoType) {
             if (this.moneyInfoType > 0) {
-                console.log("money added");
                 this.displayMoneyGainInfo(ctx, this.moneyInfo);
             } else if (this.moneyInfoType < 0) {
                 this.displayMoneySpentInfo(ctx, this.moneyInfo);
@@ -93,6 +88,11 @@ export default class Menu {
         }
     };
 
+    /**
+     * draw Left side menu options on game screen
+     * @param {context} ctx Context of canvas
+     * @param {number} index index of menuOptions
+     */
     drawMenuIcons = (ctx, option, index) => {
         this.option = menuData[option];
         this.menuIconImg = this.game.loadedAssets[`menu_${option}`];
@@ -101,7 +101,7 @@ export default class Menu {
 
         ctx.drawImage(
             this.bubbleImg,
-            this.startPosition.x, // + this.padding.x,
+            this.startPosition.x,
             this.startPosition.y,
             this.width,
             this.height
@@ -138,10 +138,14 @@ export default class Menu {
         this.startPosition.x += this.width + this.padding.x;
     };
 
+    /**
+     *  draw right side menu options on game screen
+     * @param {context} ctx Context of canvas
+     */
     drawMenuBtn = (ctx) => {
         this.startPosition.x =
             this.gameWidth - this.menuBtnIcon.width - this.padding.x;
-        this.startPosition.y = this.padding.y + 5; //+ this.settingIcon.height / 2;
+        this.startPosition.y = this.padding.y + 5;
 
         ctx.drawImage(
             this.replayBtnImg,
@@ -177,6 +181,10 @@ export default class Menu {
         this.checkForMenuBtnClick(6);
     };
 
+    /**
+     *  draw Money Counter on game screen
+     * @param {context} ctx Context of canvas
+     */
     drawMoneyCounter = (ctx) => {
         this.startPosition.x =
             this.gameWidth -
@@ -223,12 +231,15 @@ export default class Menu {
 
     /**
      * update position of junk
-     * @param {number} deltaTime change in time from previous frame
      */
-    update = (deltaTime) => {
-        // this.checkForOutsideClick();
+    update = () => {
+        return;
     };
 
+    /**
+     * check for click on menu option - left side
+     * @param {number} index index of menuOptions
+     */
     checkForBtnClick = (index) => {
         if (this.game.mouse.click) {
             if (
@@ -238,7 +249,6 @@ export default class Menu {
                 this.game.mouse.y <
                     this.startPosition.y + this.height + this.fontSize
             ) {
-                console.log("Menu Click", index);
                 if (
                     !this.game.toggle.showInfo &&
                     !this.game.toggle.showFishShop &&
@@ -261,6 +271,12 @@ export default class Menu {
             }
         }
     };
+
+    /**
+     * check for click on menu settings - right side
+     * @param {number} index index of menuOptions
+     *
+     */
     checkForMenuBtnClick = (index) => {
         if (this.game.mouse.click) {
             if (
@@ -271,7 +287,6 @@ export default class Menu {
                 this.game.mouse.y <
                     this.startPosition.y + this.menuBtnIcon.height
             ) {
-                console.log("Menu BTN Click", index);
                 if (
                     !this.game.toggle.showInfo &&
                     !this.game.toggle.showFishShop &&
@@ -288,8 +303,7 @@ export default class Menu {
                         if (this.game.toggle.isMute) this.resetSound.stop();
                         this.game.resetGame();
                     } else if (index === 7) this.game.toggleHelp();
-                    //! info page
-                    else if (index === 6) this.game.toggleMute(); //!mute game
+                    else if (index === 6) this.game.toggleMute();
                 }
 
                 this.game.inputHandler.resetMouseClick();
@@ -297,6 +311,11 @@ export default class Menu {
         }
     };
 
+    /**
+     *  display money spent on game screen
+     * @param {context} ctx Context of canvas
+     * @param {string} msg message to be displayed
+     */
     displayMoneySpentInfo = (ctx, msg) => {
         this.startPosition.x =
             this.gameWidth - (this.menuBtnIcon.width + this.padding.x) * 1;
@@ -317,19 +336,22 @@ export default class Menu {
             this.startPosition.y + this.menuBtnIcon.width
         );
         ctx.fillText(
-            // "-  $ 4",
-            // "No Money",
             msg,
             this.startPosition.x,
             this.startPosition.y + this.menuBtnIcon.width
         );
-        // clearTimeout(this.displayMoneyInfoTimeout);
         if (!this.displayMoneyInfoTimeout)
             this.displayMoneyInfoTimeout = setTimeout(() => {
                 this.moneyInfoType = 0;
                 this.displayMoneyInfoTimeout = false;
             }, 2000);
     };
+
+    /**
+     *  display money gained on game screen
+     * @param {context} ctx Context of canvas
+     * @param {string} msg message to be displayed
+     */
     displayMoneyGainInfo = (ctx, msg) => {
         this.startPosition.x =
             this.gameWidth - (this.menuBtnIcon.width + this.padding.x) * 1;
@@ -350,12 +372,10 @@ export default class Menu {
             this.startPosition.y + this.menuBtnIcon.width
         );
         ctx.fillText(
-            // "-  $ 4",
             msg,
             this.startPosition.x,
             this.startPosition.y + this.menuBtnIcon.width
         );
-        // clearTimeout(this.displayMoneyInfoTimeout);
         if (!this.displayMoneyInfoTimeout)
             this.displayMoneyInfoTimeout = setTimeout(() => {
                 this.moneyInfoType = 0;
@@ -363,6 +383,11 @@ export default class Menu {
             }, 2000);
     };
 
+    /**
+     *  display money spent on game screen
+     * @param {string} msg message to be displayed
+     * @param {number} type type of transaction - spent(-1) or gained(1)
+     */
     setMoneyInfo = (msg, type) => {
         this.game.menu.moneyInfo = msg;
         this.game.menu.moneyInfoType = type;

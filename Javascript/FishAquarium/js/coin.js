@@ -1,3 +1,4 @@
+import { getRandomFromRange, getDistance } from "./utils.js";
 export default class Coin {
     /**
      * @constructor
@@ -23,20 +24,17 @@ export default class Coin {
         };
         this.collected = false;
         this.changeInterval = {
-            coinImg: 200,
+            coinImg: 120,
             clearCoinTimeout: 5000,
         };
         this.coinImgIndex = 0;
         this.coinImg = this.game.loadedAssets[`coin${this.coinImgIndex}`];
 
         //sound
-        // this.coinSound = new Sound("./assets/sounds/coin.wav");
         this.coinSound = this.game.sounds.coin;
 
         setInterval(() => {
             this.coinImg = this.game.loadedAssets[`coin${this.coinImgIndex}`];
-            // this.coinImg.src =
-            //     "./assets/coins/coin-" + this.coinImgIndex + ".png";
             this.coinImgIndex++;
             this.coinImgIndex %= 6;
         }, this.changeInterval.coinImg);
@@ -47,13 +45,6 @@ export default class Coin {
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
-        // console.log("draw");
-        // ctx.beginPath();
-        // ctx.fillStyle = "#cbc131";
-        // ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
-        // ctx.stroke();
-        // ctx.fill();
-
         ctx.drawImage(
             this.coinImg,
             this.position.x - this.r,
@@ -71,9 +62,11 @@ export default class Coin {
         this.wallCollisionDetect();
         this.checkForCollection();
         this.position.y += (this.direction.y * this.speed) / deltaTime;
-        // console.log(this.position.y, this.direction.y, deltaTime);
     };
 
+    /**
+     * checks if user has clicked on the coin
+     */
     checkForCollection = () => {
         if (
             this.game.mouse.click &&
@@ -88,7 +81,6 @@ export default class Coin {
                 if (!this.game.toggle.isMute) this.coinSound.play();
                 if (this.game.toggle.isMute) this.coinSound.stop();
 
-                // console.log("Coin Collected", "Coins:", this.game.money);
                 this.collected = true;
                 if (!this.game.createCoinInterval) {
                     this.game.createCoinInterval = setInterval(
@@ -96,7 +88,6 @@ export default class Coin {
                         this.game.changeInterval.coin
                     );
                 }
-                // this.game.save.saveMoney();
                 this.game.updateCoins();
                 this.game.inputHandler.resetMouseClick();
             }
@@ -118,6 +109,10 @@ export default class Coin {
             }
         }
     };
+
+    /**
+     * create object of position and bottomCollition value to save in local storage
+     */
     save = () => {
         this.obj = {};
         this.obj.position = this.position;

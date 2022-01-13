@@ -1,4 +1,6 @@
 import Game from "./game.js";
+import { Sound } from "./utils.js";
+
 const loading = document.getElementById("loading");
 const canvas = document.getElementById("gameScreen");
 const ctx = canvas.getContext("2d");
@@ -11,6 +13,10 @@ canvas.style.border = "2px solid #000";
 let game;
 const loadedAssets = {};
 const sounds = {};
+
+/**
+ * Start the game by creating Game Object
+ */
 const startGame = () => {
     if (localStorage.getItem("version") != GAME_VERSION) {
         localStorage.setItem("version", GAME_VERSION);
@@ -20,19 +26,12 @@ const startGame = () => {
     game.resetGame = resetGame;
     game.start();
 
-    window.addEventListener("beforeunload", function (e) {
-        var confirmationMessage = "Are you sure you want to leave the game?";
-
-        // localStorage.setItem("restart", "yes");
-
+    window.addEventListener("beforeunload", () => {
         game.save.saveFishes();
         game.save.saveCoins();
         game.save.saveJunks();
         game.save.saveMoney();
         game.save.saveBgIndex();
-
-        e.returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
 
     let lastTime = 0;
@@ -55,10 +54,10 @@ const startGame = () => {
     window.game = game;
 };
 
+// Links to all images required in the game
 const assets = [
     //background
     "./assets/otherObjects/bg.jpg",
-    // "./assets/otherObjects/bg2.png",
 
     //fishes
     "./assets/fishes/blue_left.png",
@@ -125,16 +124,18 @@ const assets = [
     "./assets/menu/menu-soundOn.png",
     "./assets/menu/menu-soundOff.png",
 ];
+
+//create image elements from the links in assets
 const assetsLoaded = assets.map(
     (url) =>
         new Promise((resolve) => {
             const img = new Image();
-            img.onerror = (e) => reject(`${url} failed to load`);
-            img.onload = (e) => resolve(img);
+            img.onload = () => resolve(img);
             img.src = url;
         })
 );
 
+//Load all images before starting game
 Promise.all(assetsLoaded)
     .then((images) => {
         loading.style.display = "none";
@@ -221,13 +222,13 @@ Promise.all(assetsLoaded)
         loadedAssets.soundOnBtn = images[42];
         loadedAssets.soundOffBtn = images[43];
 
-        console.log(loadedAssets);
         startGame();
     })
     .catch((err) => console.error(err));
 
-// startGame();
-
+/**
+ * reset the game by deleting all saved data from local storage
+ */
 const resetGame = () => {
     localStorage.removeItem("junks");
     localStorage.removeItem("coins");

@@ -1,3 +1,4 @@
+//object containing base data of all fish types
 const fishTypes = {
     blue: {
         name: "blue",
@@ -157,6 +158,7 @@ const fishTypes = {
     },
 };
 
+//object containing information of all menu options
 const menuData = {
     select: {
         name: "SELECT",
@@ -190,6 +192,7 @@ const menuData = {
     },
 };
 
+//object containing price data of all decorations
 const decorationData = {
     background0: {
         price: 0,

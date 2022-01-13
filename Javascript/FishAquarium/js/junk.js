@@ -1,7 +1,10 @@
+import { getRandomFromRange, getDistance, getRandomIndex } from "./utils.js";
+
 export default class Junk {
     /**
      * @constructor
      * @param {Game} game Game object
+     * @param {Object} junkInfo object containing saved data about junk
      */
     constructor(game, junkInfo) {
         this.game = game;
@@ -22,17 +25,13 @@ export default class Junk {
         this.direction = {
             y: 1,
         };
-        this.speed = 2;
+        this.speed = 1;
         this.cleaned = false;
         this.bottomCollision = false;
 
         this.junkImg = this.game.loadedAssets[`junk${this.junkImgIndex}`];
 
         this.cleanSound = this.game.sounds.clean;
-
-        // this.junkImg = new Image();
-        // this.junkImg.src =
-        //     "./assets/otherObjects/junk" + this.junkImgIndex + ".png";
     }
 
     /**
@@ -40,13 +39,6 @@ export default class Junk {
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
-        // console.log("draw");
-        // ctx.beginPath();
-        // ctx.fillStyle = "red";
-        // ctx.arc(this.position.x, this.position.y, this.r, 0, 2 * Math.PI);
-        // ctx.stroke();
-        // ctx.fill();
-
         ctx.drawImage(
             this.junkImg,
             this.position.x - this.r,
@@ -58,15 +50,16 @@ export default class Junk {
 
     /**
      * update position of junk
-     * @param {number} deltaTime change in time from previous frame
      */
-    update = (deltaTime) => {
+    update = () => {
         this.wallCollisionDetect();
         this.checkForClean();
-        this.position.y += (this.direction.y * this.speed) / deltaTime;
-        // console.log(this.position.y, this.direction.y, deltaTime);
+        this.position.y += this.direction.y * this.speed;
     };
 
+    /**
+     * checks if user has clicked on the junk
+     */
     checkForClean = () => {
         if (
             this.game.mouse.click &&
@@ -75,7 +68,6 @@ export default class Junk {
             const dx = this.position.x - this.game.mouse.x;
             const dy = this.position.y - this.game.mouse.y;
             if (Math.abs(getDistance(dx, dy)) < this.r) {
-                // console.log("clean");
                 this.cleaned = true;
                 if (!this.game.toggle.isMute) this.cleanSound.play();
                 if (this.game.toggle.isMute) this.cleanSound.stop();
@@ -91,6 +83,7 @@ export default class Junk {
             }
         }
     };
+
     /**
      * detect the bottom of the fish tank
      */
@@ -103,6 +96,10 @@ export default class Junk {
             }
         }
     };
+
+    /**
+     * create object of size, position and image index value to save in local storage
+     */
     save = () => {
         this.obj = {};
         this.obj.r = this.r;

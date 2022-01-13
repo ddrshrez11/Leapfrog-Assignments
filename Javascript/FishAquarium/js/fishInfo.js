@@ -1,7 +1,7 @@
 export default class FishInfo {
     /**
      * @constructor
-     * @param {Fish} fish Game object
+     * @param {Fish} fish Fish object
      */
     constructor(fish) {
         this.fish = fish;
@@ -12,7 +12,6 @@ export default class FishInfo {
         this.price = this.fish.value;
 
         this.width = this.gameWidth - this.gameWidth / 2;
-        // this.height = this.gameHeight - this.gameHeight / 4;
         this.height = this.gameHeight;
         this.barWidth = 150;
         this.position = {
@@ -50,7 +49,7 @@ export default class FishInfo {
     }
 
     /**
-     * draw fish on info screen
+     * draw fish info screen on info screen
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
@@ -67,9 +66,6 @@ export default class FishInfo {
 
         this.textPosition.x = this.startPosition.x;
         this.textPosition.y = this.startPosition.y;
-
-        // ctx.fillStyle = "#c2c26b";
-        // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
         ctx.drawImage(
             this.panelImg,
@@ -103,7 +99,6 @@ export default class FishInfo {
             this.position.y + this.textPosition.y
         );
 
-        // this.startPosition.x +=30
         this.textPosition.y = this.startPosition.y + 20;
 
         ctx.font = this.fontSize + "px " + this.font;
@@ -138,6 +133,10 @@ export default class FishInfo {
         this.drawButton(ctx);
     };
 
+    /**
+     * draw sell button on info screen
+     * @param {context} ctx Context of canvas
+     */
     drawButton = (ctx) => {
         this.btnX = this.position.x + this.width / 2 - this.btnWidth / 2;
         this.btnY = this.position.y + this.height / 2 + 150;
@@ -169,19 +168,20 @@ export default class FishInfo {
             this.btnX + this.btnWidth / 2,
             this.btnY + this.btnHeight / 2
         );
-        // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
         this.checkForBtnClick(this.btnX, this.btnY);
     };
 
     /**
      * check for click on each update
-     * @param {number} deltaTime change in time from previous frame
      */
-    update = (deltaTime) => {
+    update = () => {
         this.checkForOutsideClick();
         this.checkForCloseBtnClick();
     };
 
+    /**
+     * check for click outside the panel
+     */
     checkForOutsideClick = () => {
         if (
             this.game.mouse.click &&
@@ -200,19 +200,17 @@ export default class FishInfo {
         }
     };
 
+    /**
+     * check for click on sell button
+     */
     checkForBtnClick = (x, y) => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showInfo
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showInfo) {
             if (
                 this.game.mouse.x > x &&
                 this.game.mouse.x < x + this.btnWidth &&
                 this.game.mouse.y > y &&
                 this.game.mouse.y < y + this.btnHeight
             ) {
-                console.log("buy", this.price);
                 this.game.handleSell(this.price);
                 this.fish.sold = true;
                 this.game.toggleShowInfo();
@@ -222,12 +220,11 @@ export default class FishInfo {
         }
     };
 
+    /**
+     * check for click on close button
+     */
     checkForCloseBtnClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showInfo
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showInfo) {
             if (
                 this.game.mouse.x > this.closeBtn.x &&
                 this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&

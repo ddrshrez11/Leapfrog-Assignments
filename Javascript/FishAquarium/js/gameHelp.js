@@ -10,7 +10,7 @@ export class Help {
         this.screenMargin = 100;
 
         this.width = this.gameWidth - this.gameWidth / 2.5;
-        this.height = this.gameHeight; // - this.gameHeight / 4;
+        this.height = this.gameHeight;
         this.headerWidth = 500;
         this.headerHeight = 70;
         this.btnWidth = 150;
@@ -51,15 +51,18 @@ export class Help {
     }
 
     /**
-     * draw junk on game screen
+     * show Help Panel on game screen
      * @param {context} ctx Context of canvas
      */
     draw = (ctx) => {
         this.drawPanel(ctx);
         this.drawText(ctx);
-        // this.drawShopFishes(ctx);
     };
 
+    /**
+     * draw Help Panel background on game screen
+     * @param {context} ctx Context of canvas
+     */
     drawPanel = (ctx) => {
         ctx.drawImage(
             this.panelImg,
@@ -71,7 +74,7 @@ export class Help {
 
         ctx.drawImage(
             this.panelHeaderImg,
-            (this.gameWidth - this.headerWidth) / 2, //this.position.x,
+            (this.gameWidth - this.headerWidth) / 2,
             this.position.y + 100,
             this.headerWidth,
             this.headerHeight
@@ -102,6 +105,10 @@ export class Help {
         );
     };
 
+    /**
+     * draw Help Panel text on game screen
+     * @param {context} ctx Context of canvas
+     */
     drawText = (ctx) => {
         this.startPosition = {
             x: (this.gameWidth - this.headerWidth - 160) / 2,
@@ -119,7 +126,7 @@ export class Help {
         ctx.shadowBlur = 1;
 
         ctx.fillText(
-            "•  You can feed the fish.Hungry Fishes will get sick.",
+            "•  You can feed the fish. Hungry Fishes will get sick.",
             this.startPosition.x,
             this.startPosition.y
         );
@@ -147,7 +154,7 @@ export class Help {
 
         this.startPosition.y += 40;
         ctx.fillText(
-            "•  So remember to clean the tank and you will be rewarded with coins.",
+            "•  So, remember to clean the tank and you will be rewarded with coins.",
             this.startPosition.x,
             this.startPosition.y
         );
@@ -175,7 +182,7 @@ export class Help {
 
         this.startPosition.y += 40;
         ctx.fillText(
-            "•  Fishes of same type and different gender will give off spring.",
+            "•  Fishes of same type and different gender will give offspring.",
             this.startPosition.x,
             this.startPosition.y
         );
@@ -195,48 +202,19 @@ export class Help {
         );
     };
 
-    drawButton = (ctx, x, y, fishColor, price) => {
-        ctx.drawImage(this.btnImg, x, y, this.btnWidth, this.btnHeight);
-        ctx.font = `bold ${this.fontSize}px ${this.font}`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "#fff";
-        ctx.lineWidth = 2;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.shadowColor = "black";
-        ctx.shadowBlur = 1;
-        ctx.drawImage(
-            this.coinImg,
-            x + 6 + this.btnWidth / 2,
-            y - 1 + this.btnHeight / 4,
-            20,
-            20
-        );
-        ctx.fillText(
-            `BUY       ${price}`,
-            x + this.btnWidth / 2,
-            y + this.btnHeight / 2
-        );
-        // ctx.strokeText("BUY", x + this.btnWidth / 2, y + this.btnHeight / 2);
-        this.checkForBtnClick(x, y, fishColor, price);
-    };
-
     /**
-     * update position of junk
-     * @param {number} deltaTime change in time from previous frame
+     * update panel
      */
-    update = (deltaTime) => {
+    update = () => {
         this.checkForOutsideClick();
         this.checkForCloseBtnClick();
     };
 
+    /**
+     * check for click outside the panel
+     */
     checkForOutsideClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showHelp
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showHelp) {
             if (
                 this.game.mouse.x < this.position.x ||
                 this.game.mouse.x > this.position.x + this.width ||
@@ -249,35 +227,11 @@ export class Help {
         }
     };
 
-    checkForBtnClick = (x, y, fishColor, price) => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showHelp
-        ) {
-            if (
-                this.game.mouse.x > x &&
-                this.game.mouse.x < x + this.btnWidth &&
-                this.game.mouse.y > y &&
-                this.game.mouse.y < y + this.btnHeight
-            ) {
-                console.log("buy", price);
-                if (this.game.handleBuy(price)) {
-                    if (!this.game.toggle.isMute) this.buySound.play();
-                    if (this.game.toggle.isMute) this.buySound.stop();
-                    this.game.toggleHelp();
-                    this.game.buyFish(fishColor);
-                }
-                this.game.inputHandler.resetMouseClick();
-            }
-        }
-    };
+    /**
+     * check for click on close button
+     */
     checkForCloseBtnClick = () => {
-        if (
-            this.game.mouse.click &&
-            //this.game.gameMode === this.game.gameModes.SELECT &&
-            this.game.toggle.showHelp
-        ) {
+        if (this.game.mouse.click && this.game.toggle.showHelp) {
             if (
                 this.game.mouse.x > this.closeBtn.x &&
                 this.game.mouse.x < this.closeBtn.x + this.closeBtn.w &&

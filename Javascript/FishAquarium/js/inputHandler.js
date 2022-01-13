@@ -14,13 +14,15 @@ export default class InputHandler {
         this.canvas.addEventListener("mousedown", this.clickHandler);
     }
 
+    /**
+     * handle clicks in-game
+     * @param {Event} event click event
+     */
     clickHandler = (event) => {
-        // console.log(this.mouse);
         this.mouse.click = true;
         setTimeout(this.resetMouseClick, 500);
         this.mouse.x = event.x - this.canvasPostion.left;
         this.mouse.y = event.y - this.canvasPostion.top;
-        // console.log(this.mouse);
         if (
             this.game.mouse.x < this.menu.menuX ||
             this.game.mouse.x > this.menu.menuX + this.menu.menuWidth ||
@@ -36,6 +38,9 @@ export default class InputHandler {
         }
     };
 
+    /**
+     * reset click in-game
+     */
     resetMouseClick = () => {
         this.mouse.click = false;
     };

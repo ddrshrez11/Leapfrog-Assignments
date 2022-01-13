@@ -1,35 +1,35 @@
-function getRandomFromRange(min, max) {
+export function getRandomFromRange(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-function getRandomFromArray(array) {
+export function getRandomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function getRandomIndex(start, stop) {
+export function getRandomIndex(start, stop) {
     return getRandomFromRange(start, stop);
 }
 
-function getGender() {
+export function getGender() {
     return Math.random() > 0.5 ? "Male" : "Female";
 }
 
-function getRandomDirection() {
+export function getRandomDirection() {
     return Math.random() > 0.5 ? 1 : -1;
 }
 
-function getDistance(x1, y1, x2 = 0, y2 = 0) {
+export function getDistance(x1, y1, x2 = 0, y2 = 0) {
     return Math.floor(Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2));
 }
 
-const getRandomColor = () => {
+export const getRandomColor = () => {
     let r = getRandomFromRange(0, 255);
     let g = getRandomFromRange(0, 255);
     let b = getRandomFromRange(0, 255);
     return `rgb(${r}, ${g}, ${b})`;
 };
 
-function Sound(src) {
+export function Sound(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
     this.sound.setAttribute("preload", "auto");
@@ -45,7 +45,7 @@ function Sound(src) {
 }
 
 //Function to get the mouse position
-function getMousePos(canvas, event) {
+export function getMousePos(canvas, event) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: event.clientX - rect.left,
@@ -53,7 +53,7 @@ function getMousePos(canvas, event) {
     };
 }
 //Function to check whether a point is inside a rectangle
-function isInside(pos, rect) {
+export function isInside(pos, rect) {
     return (
         pos.x > rect.x &&
         pos.x < rect.x + rect.width &&
